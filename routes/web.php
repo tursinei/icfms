@@ -1,0 +1,32 @@
+<?php
+
+use App\Http\Controllers\AbstractFileController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FullPaperController;
+use App\Http\Controllers\PersonalController;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+Route::get('/', function () {
+    return view('front.login');
+});
+Route::middleware('auth')->group(function () {
+    Route::resource('dashboard', DashboardController::class);
+    Route::get('/dashboard/abstract/{id}', [DashboardController::class, 'getAbstracts'])->name('dashboard.abstract');
+    Route::resource('personal', PersonalController::class)->only(['index', 'store']);
+    Route::resource('abstract', AbstractFileController::class)->except(['update']);
+    Route::resource('fullpaper', FullPaperController::class)->except(['update','edit']);
+});
+
+require __DIR__ . '/auth.php';
