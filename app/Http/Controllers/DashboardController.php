@@ -48,9 +48,7 @@ class DashboardController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        $data = $request->validated();
-        $data['password'] = Hash::make($data['password']);
-        User::updateOrCreate(['id' => $request->input('id')], $data);
+
     }
 
     /**
@@ -61,8 +59,8 @@ class DashboardController extends Controller
      */
     public function show($dashboard)
     {
-        $title = 'User Admin Form';
-        $user = User::find($dashboard);
+        $title = 'Form User Admin';
+        $user = User::with('userDetails')->where('id',$dashboard)->first();
         return view('pages.modal.userModal', compact('title', 'user'));
     }
 

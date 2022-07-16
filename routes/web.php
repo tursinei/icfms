@@ -4,6 +4,7 @@ use App\Http\Controllers\AbstractFileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FullPaperController;
 use App\Http\Controllers\PersonalController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +28,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('personal', PersonalController::class)->only(['index', 'store']);
     Route::resource('abstract', AbstractFileController::class)->except(['update']);
     Route::resource('fullpaper', FullPaperController::class)->except(['update','edit']);
+    Route::resource('user', UserController::class);
 });
 
 require __DIR__ . '/auth.php';

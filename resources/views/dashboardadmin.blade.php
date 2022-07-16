@@ -9,7 +9,7 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <button class="btn btn-sm btn-primary mb-sm"  id="btn-addForm"><i class="fa fa-plus"></i> Add User Admin</button>
+                        <button class="btn btn-sm btn-primary mb-sm"  data-id="0" id="btn-addForm"><i class="fa fa-plus"></i> Add User Admin</button>
                         <div class="table-responsive">
                             <table class="table table-sm table-striped table-bordered table-fixed table-condensed" id="tbl-user">
                                 <thead>
@@ -45,35 +45,42 @@
                 { data : 'action', name: 'action',className:'text-center'}
             ];
             refreshTableServerOn('#tbl-user', url, cols);
-        }).on('click', '#btn-addForm',function (e) {
+        }).on('click', '#btn-addForm, .btn-edit',function (e) {
             let b = $(this), url = '{{ route('dashboard.show',['dashboard'=>':id']) }}';
-            url = url.replace(':id', 0);
+            url = url.replace(':id', b.attr('data-id'));
             vAjax(b.find('i'), {
                 url : url,
                 done : function (res) {
                     showModal(res);
                 }
             });
-        }).on('submit', '#fo-abstract', function(e){
+        }).on('submit', '#fo-user', function(e){
             e.preventDefault();
             var b = $(this).find('button[type="submit"]');
-            let datx = toFormData(this);
+            let datx = $(this).serializeArray();
             let i = b.find('i');
             vAjax(i,{
-                url : '{{ route('abstract.store') }}',
+                url : '{{ route('user.store') }}',
                 type : 'POST',
-                processData : false,
-                contentType : false,
                 data : datx,
                 dataType: 'JSON',
                 done : function(res){
-                    $('#tbl-abstract').DataTable().ajax.reload();
+                    $('#tbl-user').DataTable().ajax.reload();
                     b.parents('.modal').modal('hide');
                 }
             });
+        // }).on('click','.btn-edit',function(params) {
+        //     let b = $(this), url = '{{ route('dashboard.show',['dashboard'=>':id']) }}';
+        //     url = url.replace(':id', b.attr('data-id'));
+        //     vAjax(b.find('i'), {
+        //         url : url,
+        //         done : function (res) {
+        //             showModal(res);
+        //         }
+        //     });
         }).on('click','.btn-hapus',function(params) {
             let b = $(this), i = b.find('i');
-            let url = '{{ route('abstract.destroy',['abstract' => ':id']) }}';
+            let url = '{{ route('user.destroy',['user' => ':id']) }}';
             url = url.replace(':id',b.attr('data-id'));
             let conf = bootbox.confirm("Do you want to remove this data ?", function(ans) {
                 if(ans){

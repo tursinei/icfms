@@ -14,7 +14,7 @@ return [
         [
             'icon'     => 'fa-user-secret',
             'title'    => 'Participants',
-            'url'      => '#',
+            'url'      => 'user',
             'akses' => [IS_ADMIN],
         ],
         [
@@ -23,18 +23,18 @@ return [
             'url'      => '#',
             'akses' => [IS_ADMIN],
         ],
-            [
-                'icon'     => 'fa-book',
-                'title'    => 'Full Papper',
-                'url'      => '#',
-                'akses' => [IS_ADMIN],
-            ],
-            [
-                'icon'     => 'fa-bullhorn',
-                'title'    => 'Announcements',
-                'url'      => '#',
-                'akses' => [IS_ADMIN],
-            ],[
+        [
+            'icon'     => 'fa-book',
+            'title'    => 'Full Papper',
+            'url'      => '#',
+            'akses' => [IS_ADMIN],
+        ],
+        [
+            'icon'     => 'fa-bullhorn',
+            'title'    => 'Announcements',
+            'url'      => '#',
+            'akses' => [IS_ADMIN],
+        ], [
             'icon'  => 'fa-user',
             'title' => 'Personal Details',
             'url'   => 'personal',

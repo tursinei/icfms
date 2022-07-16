@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUserRequest;
+use App\Models\User;
+use App\Models\UserDetail;
+use App\Services\UserService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -11,9 +16,15 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if($request->ajax()){
+            $service = new UserService();
+            return $service->listUser(0);
+        }
+        return view('pages.participants');
+
+
     }
 
     /**
@@ -32,9 +43,16 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        //
+        $service = new UserService();
+        $isSuccess = $service->simpanAdmin($request);
+        return response()->json([
+            'status' => $isSuccess,
+            'message' => [
+                'head' => ($isSuccess ? 'Success' : 'Failed') . ' to store data'
+            ]
+        ], 200);
     }
 
     /**
@@ -43,7 +61,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(g $id)
     {
         //
     }
@@ -77,8 +95,14 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        //
+        $isSuccess = $user->delete();
+        return response()->json([
+            'status' => $isSuccess,
+            'message' => [
+                'head' => ($isSuccess ? 'Success' : 'Failed') . ' to remove data'
+            ]
+        ], 200);
     }
 }
