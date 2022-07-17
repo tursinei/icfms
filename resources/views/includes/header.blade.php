@@ -18,7 +18,7 @@
             </figure>
             <div class="profile-info" data-lock-name="John Doe" data-lock-email="johndoe@okler.com">
                 <span class="name">{{ Auth::user()->name }}</span>
-                <span class="role">{{ (session('icfms_login_tipe') == 1 ? 'Administrator' : 'Member') }}</span>
+                <span class="role">{{ (session('icfms_tipe_login') == 1 ? 'Administrator' : 'Member') }}</span>
             </div>
 
             <i class="fa custom-caret"></i>

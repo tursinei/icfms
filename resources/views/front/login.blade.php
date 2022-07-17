@@ -28,7 +28,7 @@
                     <div class="form-group mb-lg">
                         <label>Email</label>
                         <div class="input-group input-group-icon">
-                            <input name="email" type="email" class="form-control input-lg" value="{{ old('email') }}" />
+                            <input name="email" type="text" class="form-control input-lg" value="{{ old('email') }}" />
                             <span class="input-group-addon">
                                 <span class="icon icon-lg">
                                     <i class="fa fa-user"></i>
