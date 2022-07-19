@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AbstractFileController;
+use App\Http\Controllers\AnnouncementsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FullPaperController;
 use App\Http\Controllers\PersonalController;
@@ -29,6 +30,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('abstract', AbstractFileController::class)->except(['update']);
     Route::resource('fullpaper', FullPaperController::class)->except(['update','edit']);
     Route::resource('user', UserController::class);
+    Route::resource('announcement', AnnouncementsController::class)->only(['index','destroy','store']);
+    Route::get('announcement/file/{id}', [AnnouncementsController::class, 'attachment'])->name('announcement.file');
 });
 
 require __DIR__ . '/auth.php';

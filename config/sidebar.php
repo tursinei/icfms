@@ -32,7 +32,7 @@ return [
         [
             'icon'     => 'fa-bullhorn',
             'title'    => 'Announcements',
-            'url'      => '#',
+            'url'      => 'announcement',
             'akses' => [IS_ADMIN],
         ], [
             'icon'  => 'fa-user',
