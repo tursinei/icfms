@@ -23,7 +23,8 @@ class UserService
                 ->orderBy('users.name')->get($select);
         return DataTables::of($data)->addColumn('action', function ($row) use($isAdmin){
             $btnEditOrDel = $isAdmin ? '<a class="btn btn-primary btn-xs btn-edit" data-id="'.$row->id.'" title="Edit Data">
-                    <i class="fa fa-pencil"></i></a>' : '';
+                    <i class="fa fa-pencil"></i></a>' : '<a class="btn btn-success btn-xs btn-download" data-id="'.$row->id.'" title="Download Data">
+                    <i class="fa fa-download"></i></a>';
             $titleDel = $isAdmin ? 'Delete User' : 'Delete Participants';
             return $btnEditOrDel.'&nbsp;<button data-id="' . $row->id . '" class="btn btn-danger btn-xs btn-hapus"
                 title="'.$titleDel.'"><i class="fa fa-trash-o"></i></button>';

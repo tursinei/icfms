@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
+use App\Models\AbstractFile;
+use App\Models\FullPaper;
 use App\Models\User;
-use App\Models\UserDetail;
 use App\Services\UserService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -58,12 +58,15 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(g $id)
+    public function show($user)
     {
-        //
+        $title = 'Download Abstract and Full Paper';
+        $abstract = AbstractFile::leftJoin('full_paper', fn($join)=> $join->on('full_paper.abstract_id','abstract_file.abstract_id'))
+                ->where('abstract_file.user_id', $user)->get(['abstract_file.abstract_id','abstract_title', 'full_paper.title','paper_id']);
+        return view('pages.modal.downloadFile', compact('title', 'abstract'));
     }
 
     /**
