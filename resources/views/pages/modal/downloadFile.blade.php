@@ -18,10 +18,16 @@
                     <td>{{ $f->abstract_title }}</td>
                     <td>{{ $f->title }}</td>
                     <td class="text-center">
+                        @if (!empty($f->abstract_id))
                         <a href="{{ route('abstract.show',['abstract' => $f->abstract_id??0 ]) }}" target="_blank"
-                                title="Download Abstract file" class="btn btn-xs  btn-info"><i class="fa fa-download"></i></a>&nbsp;
+                                title="Download Abstract file" class="btn btn-xs btn-info"><i class="fa fa-download"></i></a>
+                        @endif
+                        &nbsp;
+                        @if (!empty($f->paper_id))
                         <a href="{{ route('fullpaper.show',['fullpaper' => $f->paper_id??0 ]) }}" target="_blank"
-                                title="Download Paper file" class="btn btn-xs  btn-success"><i class="fa fa-download"></i></a>
+                            title="Download Paper file" class="btn btn-xs btn-success"><i class="fa fa-download"></i></a>
+                        @endif
+
                     </td>
                 </tr>
             @endforeach

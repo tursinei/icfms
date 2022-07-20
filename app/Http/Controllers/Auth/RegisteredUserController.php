@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\EmailRegistrationJob;
+use App\Mail\RegistrationMail;
 use App\Models\Country;
 use App\Models\User;
 use App\Models\UserDetail;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class RegisteredUserController extends Controller
 {
@@ -35,7 +38,7 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'firstname' => ['required', 'string', 'max:255'],
-            'midlename' => ['string', 'max:255'],
+            'midlename' => ['nullable','string', 'max:255'],
             'lastname' => ['required', 'string', 'max:255'],
             'email' => ['bail', 'required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', 'min:6'],
@@ -46,12 +49,14 @@ class RegisteredUserController extends Controller
         ]);
 
         $name = implode(' ', [$request->firstname, $request->midlename, $request->lastname]);
-
-        $user = User::create([
+        $data = [
             'name' => $name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-        ]);
+        ];
+        $user = User::create($data);
+
+        $data['password'] = $request->password;
 
         UserDetail::create([
             'user_id'   => $user->id,
@@ -69,7 +74,7 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        // Auth::login($user);
+        dispatch(new EmailRegistrationJob($data)); // add to job
 
         return redirect()->route('login')->with('success','Please Sign In with data you have registered');
     }

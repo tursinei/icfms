@@ -63,4 +63,7 @@ class AbstractFile extends Model
         return $this->belongsTo(Mtopic::class, 'topic_id', 'topic_id');
     }
 
+    public function fullPaper(){
+        return $this->hasMany(FullPaper::class,'abstract_id', 'abstract_id');
+    }
 }

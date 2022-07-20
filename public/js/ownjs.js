@@ -47,9 +47,14 @@
             }
         },
         error: function (e) {
-            let er = e.responseJSON, firstkey = Object.keys(er.errors)[0];
-            let msg = er.errors[firstkey][0];
-            console.log(e);
+            let er = e.responseJSON, msg = '';
+            if(er.errors){
+                let firstkey = Object.keys(er.errors)[0];
+                msg = er.errors[firstkey][0];
+            } else {
+                msg = er.exception;
+            }
+            console.log(er);
             msgAlert(er.message + ' : <b>' + msg+'</b>');
         }
     }, pilihan);
