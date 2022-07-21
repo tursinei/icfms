@@ -41,7 +41,7 @@
                             </div>
                             <div class="form-group">
                                 <div class="col-sm-5">
-                                    <button type="button" class="btn btn-sm btn-info"><i
+                                    <button type="button" class="btn btn-sm btn-info btn-preview"><i
                                             class="fa fa-search"></i>&nbsp;Preview</button>
                                     <button type="submit" class="btn btn-sm btn-success"><i
                                             class="fa fa-send"></i>&nbsp;Send To Email</button>
@@ -64,6 +64,17 @@
             let editor = $('#isi_email').summernote({
                 height: 150
             });
+        }).on('click', '.btn-preview', function(e) {
+            let f = $('#fo-announcement');
+            let b = $(this), i = b.find('i');
+            vAjax(i,{
+                type : 'POST',
+                url  : '{{ route('announcement.preview') }}',
+                data : f.serializeArray(),
+                done : function (res) {
+                    showModal(res);
+                }
+            });
         }).on('submit', '#fo-announcement', function(e) {
             e.preventDefault();
             let f = $(this);
@@ -78,11 +89,12 @@
                 data: datx,
                 dataType: 'JSON',
                 done: function(res) {
-                    f.clear();
                     if(res.status){
-                        msgSuccess(res.head.head);
+                        msgSuccess(res.message.head);
+                        $('#isi_email').summernote('reset');
+                        f[0].reset();
                     } else {
-                        msgAlert(res.head.head);
+                        msgAlert(res.message.head);
                     }
                 }
             });

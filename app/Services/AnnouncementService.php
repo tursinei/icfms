@@ -3,11 +3,11 @@
 namespace App\Services;
 
 use App\Http\Requests\StoreAnnouncementRequest;
+use App\Jobs\EmailAnnouncementJob;
 use App\Models\Announcements;
 use App\Models\User;
-use App\Models\UserDetail;
 use Exception;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\File; 
 use Yajra\DataTables\Facades\DataTables;
 
 
@@ -36,16 +36,26 @@ class AnnouncementService
         $data = $request->validated();
         $file = $request->file('attachment');
         unset($data['attachment']);
-        $dirUpload = 'file_announcement';
-        $nameFileInServer = 'announcement-'.date("ymdHis").'.'.$file->getClientOriginalExtension();
-        $titleFile = $file->getClientOriginalName();
-        $title = str_replace(' ','_', $titleFile).'.'.$file->getClientOriginalExtension();
-        $data['file_name'] = $title;
-        $data['file_path'] = $dirUpload.'/'.$nameFileInServer;
-        $file->move($dirUpload,$nameFileInServer);
+        if($request->hasFile('attachment')){
+            $dirUpload = 'file_announcement';
+            $nameFileInServer = 'announcement-'.date("ymdHis").'.'.$file->getClientOriginalExtension();
+            $titleFile = $file->getClientOriginalName();
+            $title = str_replace(' ','_', $titleFile).'.'.$file->getClientOriginalExtension();
+            $data['file_name'] = $title;
+            $data['file_path'] = $dirUpload.'/'.$nameFileInServer;
+            $data['file_mime'] = $file->getClientMimeType();
+            $file->move($dirUpload,$nameFileInServer);
+        }
+        $presentations = explode(',', $request->input('target'));
+        $email = User::select('users.email')->join('abstract_file', 'users.id','user_id')
+                    ->whereIn('presentation',$presentations)->distinct()->pluck('email')->toArray();
+        $data['sendto'] = json_encode($email);
+
         $announce = Announcements::create($data);
         $urlExtentension = $announce->id.'.'.$file->getClientOriginalExtension();
         $announce->attachment = route('announcement.file',['id' => $urlExtentension]);
+        $data['attachment'] = $announce->attachment;
+        dispatch(new EmailAnnouncementJob($data,$email));
         return $announce->save();
     }
 

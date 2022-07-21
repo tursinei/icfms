@@ -13,3 +13,6 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
+public/file_announcement/
+public/dokumen_abstract/
+public/dokumen_paper/

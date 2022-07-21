@@ -1,4 +1,4 @@
-@extends('layouts.modal', ['modalTitle' => $title, 'idForm' => 'fo-user', 'isLarge' => true])
+@extends('layouts.modal', ['modalTitle' => $title, 'idForm' => 'fo-user', 'isLarge' => true, 'isSubmit' => false])
 
 @section('modalBody')
      <table class="table table-sm table-striped table-bordered table-condensed">

@@ -3,6 +3,10 @@
 @section('title', 'Abstract Submission | ICFMS ' . date('Y'))
 @section('title2', 'Abstract Submission')
 
+@section('css')
+    <<link rel="stylesheet" href="{{ asset('vendor/bootstrap-tagsinput/bootstrap-tagsinput.css') }}" />
+@endsection
+
 @section('content')
     @php
     $title = ['Dr.', 'Prof.', 'Mr.', 'Mrs.'];
@@ -39,6 +43,7 @@
 @endsection
 
 @push('js')
+    <script src="{{ asset('vendor/bootstrap-tagsinput/bootstrap-tagsinput.js') }}"></script>
     <script type="text/javascript">
         $(document).ready(function(evt) {
             let url = '{{ route('abstract.index') }}';
@@ -57,6 +62,7 @@
                 url : '{{ route('abstract.create') }}',
                 done : function (res) {
                     showModal(res);
+                    $('input[name="authors"]').tagsinput();
                 }
             });
         }).on('submit', '#fo-abstract', function(e){

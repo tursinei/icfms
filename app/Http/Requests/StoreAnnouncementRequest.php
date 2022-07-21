@@ -26,7 +26,6 @@ class StoreAnnouncementRequest extends FormRequest
         return [
             'title'          =>  ['required','string'],
             'isi_email'      =>  ['required','string'],
-            'attachment'     =>  ['required', 'file'],
         ];
     }
 }

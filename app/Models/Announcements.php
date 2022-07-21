@@ -22,7 +22,10 @@ class Announcements extends Model
         'target',
         'sendto',
         'isi_email',
-        'attachment'
+        'attachment',
+        'file_name',
+        'file_path',
+        'file_mime',
     ];
 
     protected $guarded = [];
@@ -35,6 +38,9 @@ class Announcements extends Model
         'target' => 'string',
         'sendto' => 'string',
         'isi_email' => 'string',
-        'attachment' => 'string'
+        'attachment' => 'string',
+        'file_name' => 'string',
+        'file_path' => 'string',
+        'file_mime' => 'string',
     ];
 }

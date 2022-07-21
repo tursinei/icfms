@@ -18,7 +18,7 @@ class AnnouncementsController extends Controller
     {
         $target = [
             'oral,poster,audience' => 'Participants (Oral, Poster, Audience)',
-            'keynte speaker' => 'Only Keynote Speaker'
+            'keynote speaker' => 'Only Keynote Speaker'
         ];
 
         return view('pages.announcement', compact('target'));
@@ -29,9 +29,12 @@ class AnnouncementsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function preview(Request $request)
     {
-        //
+        $title = 'Preview Announcement Email';
+        $titleEmail = $request->input('title');
+        $body = $request->input('isi_email');
+        return view('pages.modal.previewAnnouncementModal', compact('title', 'titleEmail', 'body'));
     }
 
     /**
@@ -47,7 +50,7 @@ class AnnouncementsController extends Controller
         return response()->json([
             'status' => $isSuccess,
             'message' => [
-                'head' => ($isSuccess ? 'Success' : 'Failed') . ' to store data'
+                'head' => ($isSuccess ? 'Successfully sent email' : 'Failed to send email')
             ]
         ], 200);
     }
