@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\fullPaper;
+use App\Models\FullPaper;
 use App\Http\Requests\StorefullPaperRequest;
 use App\Models\AbstractFile;
 use App\Services\FullpaperService;
