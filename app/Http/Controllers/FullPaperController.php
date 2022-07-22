@@ -92,7 +92,7 @@ class FullPaperController extends Controller
      * @param  \App\Models\fullPaper  $fullPaper
      * @return \Illuminate\Http\Response
      */
-    public function destroy(fullPaper $fullpaper)
+    public function destroy(FullPaper $fullpaper)
     {
         if(File::exists($fullpaper->file_path)){
             File::delete($fullpaper->file_path);
