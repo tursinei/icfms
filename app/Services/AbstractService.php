@@ -44,7 +44,7 @@ class AbstractService
             $file->move($dirUpload,$nameFileInServer);
             return AbstractFile::create($data);
         } catch (\Exception $th) {
-            throw $th->getMessage();
+            return $th->getMessage();
         }
 
     }
