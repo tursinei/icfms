@@ -25,7 +25,6 @@ class StorefullPaperRequest extends FormRequest
     {
         return [
             'abstract_id'   =>  ['required', 'integer'],
-            'title'         =>  ['required', 'string'],
             'paper_file'    =>  ['required', 'file','mimes:pdf,doc,docx'],
             'user_id'       =>  ['required', 'integer'],
         ];

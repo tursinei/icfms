@@ -3,9 +3,10 @@
 @section('title', 'Abstract Submission | ICFMS ' . date('Y'))
 @section('title2', 'Abstract Submission')
 
-@section('css')
+@push('css')
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
     <<link rel="stylesheet" href="{{ asset('vendor/bootstrap-tagsinput/bootstrap-tagsinput.css') }}" />
-@endsection
+@endpush
 
 @section('content')
     @php
@@ -43,6 +44,7 @@
 @endsection
 
 @push('js')
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
     <script src="{{ asset('vendor/bootstrap-tagsinput/bootstrap-tagsinput.js') }}"></script>
     <script type="text/javascript">
         $(document).ready(function(evt) {
@@ -61,8 +63,12 @@
             vAjax(b.find('i'), {
                 url : '{{ route('abstract.create') }}',
                 done : function (res) {
-                    showModal(res);
-                    $('input[name="authors"]').tagsinput();
+                    showModal(res).on('shown.bs.modal',function(params) {
+                        $('input[name="authors"]').tagsinput();
+                        let editor = $('textarea[name="abstract"]').summernote({
+                            height: 120
+                        });
+                    });
                 }
             });
         }).on('submit', '#fo-abstract', function(e){

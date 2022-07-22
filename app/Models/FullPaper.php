@@ -18,7 +18,6 @@ class FullPaper extends Model
 
     protected $fillable = [
         'abstract_id',
-        'title',
         'file_name',
         'file_path',
         'extensi',
@@ -32,7 +31,6 @@ class FullPaper extends Model
 
     protected $casts = [
         'abstract_id' => 'integer',
-        'title' => 'string',
         'file_name' => 'string',
         'file_path' => 'string',
         'extensi' => 'string',

@@ -27,9 +27,9 @@
     </div>
     <div class="form-group">
         <label class="col-sm-3 control-label">Paper Title</label>
-        <div class="col-sm-9">
-            {!! Form::text('title', '', ['class' => 'form-control input-sm']) !!}
+        <div class="col-sm-9" id="text-papertitle">
         </div>
+        @form_hidden('title','',['id'=>'papertitle'])
     </div>
     <div class="form-group">
         <label class="col-sm-3 control-label">Upload Your Paper</label>

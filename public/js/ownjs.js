@@ -123,7 +123,7 @@ var refreshTableServerOn = function (a, url, setCol, i, orderCol = []) {
 };
 
 var showModal = function(e){
-    $(e).modal({
+    return $(e).modal({
         backdrop: 'static',
         keydrop: false
     }).on('hidden.bs.modal', function () {

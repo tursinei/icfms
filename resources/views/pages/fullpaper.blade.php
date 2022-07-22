@@ -92,9 +92,11 @@
                     $.each(e, function(k,v){
                         let key = k.replace('_','');
                         $('#text-'+key).html(v);
+                        $('#'+key).val(v);
                         if(key == 'topic'){
                             $('#text-topic').html(v.name);
                         }
+
                     });
                 }
             });
@@ -111,6 +113,7 @@
                 data: datx,
                 dataType: 'JSON',
                 done: function(res) {
+                    b.parents('div.modal').modal('hide');
                     $('#tbl-paper').DataTable().ajax.reload();
                 }
             });

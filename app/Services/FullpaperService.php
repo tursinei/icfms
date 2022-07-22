@@ -14,7 +14,7 @@ class FullpaperService
         $data = FullPaper::join('abstract_file AS a', 'a.abstract_id', 'full_paper.abstract_id')
             ->join('m_topic AS t', 't.topic_id', 'a.topic_id')->where('full_paper.user_id', $iduser)
             ->orderBy('full_paper.created_at', 'DESC')
-            ->get(['paper_id', 't.name as topic', 'full_paper.created_at','presenter','presentation', 'authors', 'title']);
+            ->get(['paper_id', 't.name as topic', 'full_paper.created_at','presenter','presentation', 'authors', 'a.paper_title as title']);
         return DataTables::of($data)->addColumn('action', function ($row) {
             return '<a class="btn btn-success btn-xs" href="'.route('fullpaper.show',['fullpaper' => $row->paper_id]).'"
                 title="Download Paper File" target="_blank" ><i class="fa fa-download"></i></a>&nbsp;
@@ -34,7 +34,7 @@ class FullpaperService
         $file = $request->file('paper_file');
         $dirUpload = 'dokumen_fullpaper';
         $nameFileInServer = 'paper-'.$data['user_id'].'-'.date("ymdHis").'.'.$file->getClientOriginalExtension();
-        $titleFile = substr($data['title'],0,125);
+        $titleFile = substr($request->input('title'),0,125);
         $title = str_replace(' ','_', $titleFile).'.'.$file->getClientOriginalExtension();
         $data['file_name'] = $title;
         $data['file_path'] = $dirUpload.'/'.$nameFileInServer;
