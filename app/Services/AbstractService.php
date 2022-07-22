@@ -40,12 +40,12 @@ class AbstractService
         $data['file_path'] = $dirUpload.'/'.$nameFileInServer;
         $data['extensi'] = $file->getClientOriginalExtension();
 
-        try {
+        // try {
             $file->move($dirUpload,$nameFileInServer);
             return AbstractFile::create($data);
-        } catch (\Exception $th) {
-            return $th->getMessage();
-        }
+        // } catch (\Exception $th) {
+        //     return $th->getMessage();
+        // }
 
     }
 }
