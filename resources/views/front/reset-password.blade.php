@@ -10,40 +10,32 @@
 
         <div class="panel panel-sign">
             <div class="panel-title-sign mt-xl text-right">
-                <h2 class="title text-uppercase text-weight-bold m-none"><i class="fa fa-user mr-xs"></i> Sign In</h2>
+                <h2 class="title text-uppercase text-weight-bold m-none"><i class="fa fa-key mr-xs"></i> Reset Password</h2>
             </div>
             <div class="panel-body">
                 <!-- Session Status -->
-                {{-- @if (session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                @endif --}}
-                <x-auth-session-status class="alert alert-success" :status="$status" />
+                <x-auth-session-status class="alert alert-success" :status="0" />
 
                 <!-- Validation Errors -->
                 <x-auth-validation-errors class="alert alert-danger" :errors="$errors" />
-                <form method="POST" action="{{ route('login') }}">
+                <form method="POST" action="{{ route('password.update') }}">
                     @csrf
+                    @form_hidden('token',$request->route('token'))
+                    @form_hidden('email',$request->email??old('email'))
                     <div class="form-group mb-lg">
-                        <label>Email</label>
                         <div class="input-group input-group-icon">
-                            <input name="email" type="text" class="form-control input-lg" value="{{ old('email') }}" />
+                            <input name="password" placeholder="New Password" type="password" class="form-control input-lg" required />
                             <span class="input-group-addon">
                                 <span class="icon icon-lg">
-                                    <i class="fa fa-user"></i>
+                                    <i class="fa fa-key"></i>
                                 </span>
                             </span>
                         </div>
                     </div>
 
                     <div class="form-group mb-lg">
-                        <div class="clearfix">
-                            <label class="pull-left">Password</label>
-                            <a href="{{ route('password.request') }}" class="pull-right">Lost Password?</a>
-                        </div>
                         <div class="input-group input-group-icon">
-                            <input name="password" type="password" class="form-control input-lg" />
+                            <input name="password_confirmation" placeholder="Re-type New Password" type="password" class="form-control input-lg" required/>
                             <span class="input-group-addon">
                                 <span class="icon icon-lg">
                                     <i class="fa fa-lock"></i>
@@ -53,16 +45,9 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-sm-8">
-                            <div class="checkbox-custom checkbox-default">
-                                <input id="RememberMe" name="remember" type="checkbox" />
-                                <label for="RememberMe">Remember Me</label>
-                            </div>
-                        </div>
-                        <div class="col-sm-4 text-right">
-                            <button type="submit" class="btn btn-primary hidden-xs">Sign In</button>
-                            <button type="submit" class="btn btn-primary btn-block btn-lg visible-xs mt-lg">Sign
-                                In</button>
+                        <div class="col-sm-12 text-right">
+                            <button type="submit" class="btn btn-primary hidden-xs">{{ __('Reset Password') }}</button>
+                            <button type="submit" class="btn btn-primary btn-block btn-lg visible-xs mt-lg">{{ __('Reset Password') }}</button>
                         </div>
                     </div>
 

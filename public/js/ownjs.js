@@ -46,16 +46,17 @@
                 $('#divOverlay').css(option).removeClass('hidden');
             }
         },
-        error: function (e) {
-            let er = e.responseJSON, msg = '';
+        error: function (e,status) {
+            let er = e.responseJSON, msg = '', res = '';
             if(er.errors){
                 let firstkey = Object.keys(er.errors)[0];
-                msg = er.errors[firstkey][0];
+                msg = er.errors[firstkey][0];;
+                res = er.message + ' : <b>' + msg+'</b>'
             } else {
-                msg = er.exception;
+                res = 'Error ('+status+')<b>'+er.exception+'</b>';
+                console.log(er.message)
             }
-            console.log(er);
-            msgAlert(er.message + ' : <b>' + msg+'</b>');
+            msgAlert(res);
         }
     }, pilihan);
 

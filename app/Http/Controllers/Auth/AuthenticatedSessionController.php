@@ -17,7 +17,8 @@ class AuthenticatedSessionController extends Controller
      */
     public function create()
     {
-        return view('front.login'); //'auth.login'
+        $status = session('status') ?? false;
+        return view('front.login', compact('status')); //'auth.login'
     }
 
     /**
