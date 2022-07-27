@@ -19,7 +19,7 @@
                         {{ session('success') }}
                     </div>
                 @endif --}}
-                <x-auth-session-status class="alert alert-success" :status="$status" />
+                <x-auth-session-status class="alert alert-success" :status="$status??''" />
 
                 <!-- Validation Errors -->
                 <x-auth-validation-errors class="alert alert-danger" :errors="$errors" />
