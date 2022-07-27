@@ -20,13 +20,13 @@ return [
         [
             'icon'     => 'fa-copy',
             'title'    => 'Abstracts',
-            'url'      => '#',
+            'url'      => 'abstracts',
             'akses' => [IS_ADMIN],
         ],
         [
             'icon'     => 'fa-book',
-            'title'    => 'Full Papper',
-            'url'      => '#',
+            'title'    => 'Full Paper',
+            'url'      => 'fullpapers',
             'akses' => [IS_ADMIN],
         ],
         [
