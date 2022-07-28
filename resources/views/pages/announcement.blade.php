@@ -9,7 +9,7 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <x-auth-session-status class="alert alert-success" />
+                        <x-auth-session-status class="alert alert-success" :status="$status??''" />
                         <!-- Validation Errors -->
                         <x-auth-validation-errors class="alert alert-danger" :errors="$errors" />
                         <form id="fo-announcement" class="form-horizontal">

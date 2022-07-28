@@ -13,12 +13,6 @@
                 <h2 class="title text-uppercase text-weight-bold m-none"><i class="fa fa-user mr-xs"></i> Sign In</h2>
             </div>
             <div class="panel-body">
-                <!-- Session Status -->
-                {{-- @if (session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                @endif --}}
                 <x-auth-session-status class="alert alert-success" :status="$status??''" />
 
                 <!-- Validation Errors -->

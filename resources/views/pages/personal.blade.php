@@ -13,7 +13,7 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-10">
-                        <x-auth-session-status class="alert alert-success" />
+                        <x-auth-session-status class="alert alert-success" :status="$status??''" />
                         <!-- Validation Errors -->
                         <x-auth-validation-errors class="alert alert-danger" :errors="$errors" />
                         <form action="{{ route('personal.store') }}" method="POST" class="form-horizontal">
