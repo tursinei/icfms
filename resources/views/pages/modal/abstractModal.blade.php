@@ -25,7 +25,7 @@
         <label class="col-sm-3 control-label">Authors</label>
         <div class="col-sm-9">
             {!! Form::text('authors', '', ['class' => 'form-control input-sm']) !!}
-            <small>If author more than one, separate by coma (,)</small>
+            <small class="text-muted">If author more than one, separate by coma (,)</small>
         </div>
     </div>
     <div class="form-group">
@@ -47,6 +47,7 @@
         <label class="col-sm-3 control-label">Paper Title</label>
         <div class="col-sm-9">
             {!! Form::text('paper_title', '', ['class' => 'form-control input-sm']) !!}
+            <small class="text-mute">Paper Title must be the same as Abstract Title</small>
         </div>
     </div>
     <div class="form-group">
