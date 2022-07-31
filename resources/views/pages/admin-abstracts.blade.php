@@ -9,7 +9,7 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <a class="btn btn-success btn-sm pull-right mb-sm"><i class="fa fa-file-excel-o"></i> Download Excel</a>
+                        <a class="btn btn-success btn-sm pull-right mb-sm" href="{{ route('abstracts.create') }}" target="_blank"><i class="fa fa-file-excel-o"></i> Download Excel</a>
                     </div>
                     <div class="col-md-12">
                         <div class="table-responsive">

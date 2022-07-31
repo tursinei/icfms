@@ -15,4 +15,10 @@ class AdminFullpaperController extends Controller
         }
         return view('pages.admin-fullpaper');
     }
+
+    public function create()
+    {
+        $service = new FullpaperService();
+        return $service->fullPaperInExcel();
+    }
 }

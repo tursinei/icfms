@@ -28,7 +28,8 @@ class AdminAbstractsController extends Controller
      */
     public function create()
     {
-        //
+        $service = new AbstractService();
+        $service->abstractExcel();
     }
 
     /**

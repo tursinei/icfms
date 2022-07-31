@@ -4,6 +4,13 @@ namespace App\Services;
 
 use App\Http\Requests\StorefullPaperRequest;
 use App\Models\FullPaper;
+use OpenSpout\Common\Entity\Style\Border;
+use OpenSpout\Common\Entity\Style\CellAlignment;
+use OpenSpout\Common\Entity\Style\Color;
+use OpenSpout\Common\Entity\Style\Style;
+use OpenSpout\Writer\Common\Creator\Style\BorderBuilder;
+use OpenSpout\Writer\Common\Creator\Style\StyleBuilder;
+use OpenSpout\Writer\Common\Creator\WriterEntityFactory;
 use Yajra\DataTables\Facades\DataTables;
 
 class FullpaperService
@@ -25,14 +32,19 @@ class FullpaperService
             return $row->created_at->format('d-m-Y');
         })->rawColumns(['action', 'date_upload'])->make(true);
     }
-    //full paper tanpa user
-    public function listFullpaper()
+
+    private function getFullpaper()
     {
-        $data = FullPaper::join('abstract_file AS a', 'a.abstract_id', 'full_paper.abstract_id')
+        return FullPaper::join('abstract_file AS a', 'a.abstract_id', 'full_paper.abstract_id')
             ->join('m_topic AS t', 't.topic_id', 'a.topic_id')
             ->join('users AS u', 'u.id', 'full_paper.user_id')
             ->orderBy('full_paper.created_at', 'DESC')
             ->get(['paper_id', 'u.name as fullname' ,'t.name as topic','full_paper.created_at','presenter','presentation', 'authors', 'a.paper_title as title']);
+    }
+    //full paper tanpa user
+    public function listFullpaper()
+    {
+        $data = $this->getFullpaper();
         return DataTables::of($data)->addColumn('action', function ($row) {
             return '<a class="btn btn-success btn-xs" href="'.route('fullpaper.show',['fullpaper' => $row->paper_id]).'"
                 title="Download Paper File" target="_blank" ><i class="fa fa-download"></i></a>&nbsp;
@@ -46,7 +58,6 @@ class FullpaperService
 
     public function simpan(StorefullPaperRequest $request)
     {
-
         $data = $request->validated();
         unset($data['paper_file']);
         $file = $request->file('paper_file');
@@ -60,5 +71,60 @@ class FullpaperService
         $data['extensi'] = $file->getClientOriginalExtension();
         $file->move($dirUpload,$nameFileInServer);
         return FullPaper::create($data);
+    }
+
+    public function fullPaperInExcel()
+    {
+        $writer = WriterEntityFactory::createXLSXWriter();
+        $defaultStyle = (new StyleBuilder)->setFontName('Arial')->setFontSize(11)->build();
+        $writer->setDefaultRowStyle($defaultStyle);
+        $styleHeader = new Style();
+        $styleHeader->setFontBold();
+        $styleHeader->setFontName('Arial Narrow');
+        $styleHeader->setShouldWrapText(false);
+        $styleHeader->setFontSize(12);
+        $writer->openToBrowser('list-fullpaper.xlsx');
+        $writer->setColumnWidth(20, 1);
+        $writer->setColumnWidth(40, 2);
+        $writer->setColumnWidth(20, 3);
+        $writer->setColumnWidth(30, 4);
+        $writer->setColumnWidth(50, 5);
+        $writer->setColumnWidth(50, 6);
+        $writer->setColumnWidth(50, 7);
+
+        $title1 = WriterEntityFactory::createCell('List FullPaper', $styleHeader);
+        $singleRow = WriterEntityFactory::createRow([$title1]);
+        $writer->addRow($singleRow);
+
+        $writer->addRow(WriterEntityFactory::createRow());
+        $border = (new BorderBuilder)->setBorderBottom(Color::BLACK, Border::WIDTH_THIN, Border::STYLE_SOLID)
+            ->setBorderLeft(Color::BLACK, Border::WIDTH_THIN, Border::STYLE_SOLID)
+            ->setBorderRight(Color::BLACK, Border::WIDTH_THIN, Border::STYLE_SOLID)
+            ->setBorderTop(Color::BLACK, Border::WIDTH_THIN, Border::STYLE_SOLID)->build();
+        $styleHeader->setBorder($border);
+        $styleHeader->setCellAlignment(CellAlignment::CENTER);
+        $styleHeader->setBorder($border);
+        $styleHeader->setBackgroundColor(Color::rgb(218, 227, 243));
+        $namaKolom = ['Date', 'Name', 'Presentation','Presenter Name','Topic', 'Authors', 'Paper Title'];
+        $header = WriterEntityFactory::createRowFromArray($namaKolom, $styleHeader);
+        $writer->addRow($header);
+
+        $fullpaperData = $this->getFullpaper();
+        $styleCenter = (new StyleBuilder())->setBorder($border)->setCellAlignment(CellAlignment::CENTER)->build();
+        $styleLeft = (new StyleBuilder())->setBorder($border)->setCellAlignment(CellAlignment::LEFT)->build();
+
+        foreach ($fullpaperData as $row) {
+            $tgl = $row->created_at->format('d-m-Y');
+            $baris = [
+                    WriterEntityFactory::createCell($tgl, $styleCenter),
+                    WriterEntityFactory::createCell($row->fullname, $styleLeft),
+                    WriterEntityFactory::createCell($row->presentation, $styleCenter),
+                    WriterEntityFactory::createCell($row->presenter, $styleLeft),
+                    WriterEntityFactory::createCell($row->topic, $styleLeft),
+                    WriterEntityFactory::createCell($row->authors, $styleLeft),
+                    WriterEntityFactory::createCell($row->title, $styleLeft)];
+            $writer->addRow(WriterEntityFactory::createRow($baris));
+        }
+        $writer->close();
     }
 }

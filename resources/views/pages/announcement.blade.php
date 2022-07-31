@@ -37,6 +37,10 @@
                                 <label class="control-label col-sm-2">File Attachment</label>
                                 <div class="col-sm-6">
                                     {!! Form::file('attachment', ['class' => 'form-control input-sm']) !!}
+                                    <div class="progress progress-sm progress-striped progress-half-rounded light active" style="margin-bottom: 0">
+                                        <div id="bar-fileprogress" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">%
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -88,6 +92,17 @@
                 contentType: false,
                 data: datx,
                 dataType: 'JSON',
+                xhr : function () {
+                    var xhr = new window.XMLHttpRequest();
+                    xhr.upload.addEventListener('progress', function(evt) {
+                        if(evt.lengthComputable){
+                            var percent = Math.round((evt.loaded/evt.total) * 100);
+                            $('#bar-fileprogress').attr('aria-valuenow',percent).css('width',percent+'%').html(percent+'%');
+                        }
+                    });
+                    return xhr;
+                },
+                async : true,
                 done: function(res) {
                     if(res.status){
                         msgSuccess(res.message.head);
