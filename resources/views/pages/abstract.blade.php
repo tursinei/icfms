@@ -86,6 +86,17 @@
                 done : function(res){
                     $('#tbl-abstract').DataTable().ajax.reload();
                     b.parents('.modal').modal('hide');
+                },
+                async : true,
+                xhr : function(){
+                    var xhr = new window.XMLHttpRequest();
+                    xhr.upload.onprogress = function(evt) {
+                        if(evt.lengthComputable){
+                            var percent = Math.round((evt.loaded / evt.total) * 100);
+                            $('#bar-fileprogress').attr('aria-valuenow', percent).css('width',percent+'%').html(percent+'%');
+                        }
+                    }
+                    return xhr;
                 }
             });
         }).on('click','.btn-hapus',function(params) {

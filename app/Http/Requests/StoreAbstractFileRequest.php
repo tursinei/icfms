@@ -33,7 +33,14 @@ class StoreAbstractFileRequest extends FormRequest
             'paper_title' => ['required', 'string'],
             'abstract' => ['nullable','string'],
             'user_id' => ['required','integer'],
-            'abstract_file' => ['required', 'file','mimes:pdf,doc,docx'],
+            'abstract_file' => ['required', 'file','mimes:pdf,doc,docx','max:3000'],
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'abstract_file.max' => 'Must not be greater than 3 Mb'
         ];
     }
 }

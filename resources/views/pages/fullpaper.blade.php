@@ -115,6 +115,17 @@
                 done: function(res) {
                     b.parents('div.modal').modal('hide');
                     $('#tbl-paper').DataTable().ajax.reload();
+                },
+                async : true,
+                xhr : function(){
+                    var xhr = new window.XMLHttpRequest();
+                    xhr.upload.onprogress = function(evt) {
+                        if(evt.lengthComputable){
+                            var percent = Math.round((evt.loaded / evt.total) * 100);
+                            $('#bar-fileprogress').attr('aria-valuenow', percent).css('width',percent+'%').html(percent+'%');
+                        }
+                    }
+                    return xhr;
                 }
             });
         }).on('click', '.btn-hapus', function(params) {

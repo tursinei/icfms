@@ -17,3 +17,4 @@ public/file_announcement/
 public/dokumen_abstract/
 public/dokumen_paper/
 public/dokumen_fullpaper/
+*.txt
