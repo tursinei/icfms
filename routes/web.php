@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AbstractFileController;
+use App\Http\Controllers\AdminAbstractsController;
+use App\Http\Controllers\AdminFullpaperController;
 use App\Http\Controllers\AnnouncementsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FullPaperController;
@@ -30,6 +32,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('abstract', AbstractFileController::class)->except(['update']);
     Route::resource('fullpaper', FullPaperController::class)->except(['update','edit']);
     Route::resource('user', UserController::class);
+    Route::post('user/changePass', [UserController::class,'changePass'])->name('user.changepass');
+    Route::resource('abstracts', AdminAbstractsController::class)->only(['index']);
+    Route::resource('fullpapers', AdminFullpaperController::class)->only(['index']);
     Route::resource('announcement', AnnouncementsController::class)->only(['index','destroy','store']);
     Route::get('announcement/file/{id}', [AnnouncementsController::class, 'attachment'])->name('announcement.file');
     Route::post('announcement/preview', [AnnouncementsController::class, 'preview'])->name('announcement.preview');

@@ -57,24 +57,27 @@
                 console.log(er.message)
             }
             msgAlert(res);
-        }
-    }, pilihan);
-
-    $.ajax({
-        url: setting.url,
-        dataType: setting.dataType,
-        type: setting.type,
-        beforeSend: setting.beforeSend,
-        processData: setting.processData,
-        contentType: setting.contentType,
-        success: setting.done,
-        data: setting.data,
-        async: setting.async,
-        error: setting.error,
+        },
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
-    }).always(function () {
+    }, pilihan);
+    setting.success = setting.done;
+    delete setting.done; 
+    // {
+    //     url: setting.url,
+    //     dataType: setting.dataType,
+    //     type: setting.type,
+    //     beforeSend: setting.beforeSend,
+    //     processData: setting.processData,
+    //     contentType: setting.contentType,
+    //     success: setting.done,
+    //     data: setting.data,
+    //     async: setting.async,
+    //     error: setting.error,
+
+    // }
+    $.ajax(setting).always(function () {
         if ((i != '') && (i != 'undefined') && (i != null)) {
             i.removeClass().addClass(cls);
             if (i.parent().hasClass('btn')) {

@@ -2,9 +2,11 @@
 
 namespace App\Services;
 
+use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
 use App\Models\UserDetail;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -46,6 +48,12 @@ class UserService
             'affiliation'   => $request->input('affiliation'),
             'phonenumber'   => $request->input('phonenumber'),
         ]);
+    }
+
+    public function changePass(ChangePasswordRequest $request)
+    {
+        $data = $request->validated();
+        return User::find($data['id'])->updated(['password'=> Hash::make($data['password'])]);
     }
 
 }

@@ -25,6 +25,23 @@ class AbstractService
         })->rawColumns(['action', 'date_upload'])->make(true);
     }
 
+    public function listAbstracts()
+    {
+        $data = AbstractFile::join('m_topic', 'm_topic.topic_id', 'abstract_file.topic_id')
+            ->join('users', 'users.id', 'abstract_file.user_id')
+            ->orderBy('created_at', 'DESC')
+            ->get(['abstract_id','users.name as fullname' ,'m_topic.name as topic', 'abstract_file.created_at', 'presentation', 'authors', 'abstract_title']);
+        return DataTables::of($data)->addColumn('action', function ($row) {
+            return '<a class="btn btn-success btn-xs" href="'.route('abstract.show',['abstract' => $row->abstract_id]).'"
+                title="Download Abstract File" target="_blank"><i class="fa fa-download"></i></a>&nbsp;
+                <button data-href="' . route('abstract.destroy', ['abstract' => $row->abstract_id]) . '"
+                data-id="' . $row->abstract_id . '" class="btn btn-danger btn-xs btn-hapus"
+                title="Delete Abstract"><i class="fa fa-trash-o"></i></button>';
+        })->addColumn('date_upload', function ($row) {
+            return $row->created_at->format('d-m-Y');
+        })->rawColumns(['action', 'date_upload'])->make(true);
+    }
+
     public function simpan(StoreAbstractFileRequest $request)
     {
 
@@ -40,12 +57,7 @@ class AbstractService
         $data['file_path'] = $dirUpload.'/'.$nameFileInServer;
         $data['extensi'] = $file->getClientOriginalExtension();
 
-        // try {
-            $file->move($dirUpload,$nameFileInServer);
-            return AbstractFile::create($data);
-        // } catch (\Exception $th) {
-        //     return $th->getMessage();
-        // }
-
+        $file->move($dirUpload,$nameFileInServer);
+        return AbstractFile::create($data);
     }
 }

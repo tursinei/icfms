@@ -17,4 +17,30 @@
 <!-- Theme Initialization Files -->
 {{-- <script src="{{ asset('js/theme.init.js') }}"></script> --}}
 <script src="{{ asset('js/ownjs.js') }}"></script>
+<script type="text/javascript">
+    $(document).on('submit', 'form#fo-changePass',function(e) {
+        e.preventDefault();
+        let f = $(this);
+        let btn = f.find('button[type="submit"]'), i = btn.find('i');
+        let data = f.serializeArray();
+        vAjax(i,{
+            type : 'POST',
+            data : data,
+            url : '{{ route('user.changepass') }}',
+            done :  function (res) {
+                console.log(res);
+                // f.parents("div.modal").modal('hide');
+            }
+        });
+    }).on('click','#mn-changePass',function(ev) {
+        ev.preventDefault();
+        let b = $(this),i = b.find('i');
+        vAjax(i,{
+            url : '{{ route('user.create') }}',
+            done :  function (res) {
+                showModal(res);
+            }
+        });
+    });
+</script>
 @stack('js');

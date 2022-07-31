@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Models\AbstractFile;
-use App\Models\FullPaper;
 use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -23,8 +26,6 @@ class UserController extends Controller
             return $service->listUser(0);
         }
         return view('pages.participants');
-
-
     }
 
     /**
@@ -34,7 +35,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        $user = Auth::user();
+        $title = 'Change Password';
+        return view('pages.modal.passwordModal',compact('user', 'title'));
     }
 
     /**
@@ -87,9 +90,16 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function changePass(ChangePasswordRequest $request)
     {
-        //
+        $service = new UserService();
+        $isSuccess = $service->changePass($request);
+        return response()->json([
+            'status' => $isSuccess,
+            'message' => [
+                'head' => ($isSuccess > 0 ? 'Success' : 'Failed') . ' change password'
+            ]
+        ], 200);
     }
 
     /**
