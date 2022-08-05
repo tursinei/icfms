@@ -31,8 +31,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('personal', PersonalController::class)->only(['index', 'store']);
     Route::resource('abstract', AbstractFileController::class)->except(['update']);
     Route::resource('fullpaper', FullPaperController::class)->except(['update','edit']);
-    Route::resource('user', UserController::class);
+    Route::resource('user', UserController::class)->except(['edit']);
     Route::post('user/changePass', [UserController::class,'changePass'])->name('user.changepass');
+    Route::get('user/download/excel', [UserController::class,'excelFile'])->name('user.excel');
     Route::resource('abstracts', AdminAbstractsController::class)->only(['index','create']);
     Route::resource('fullpapers', AdminFullpaperController::class)->only(['index','create']);
     Route::resource('announcement', AnnouncementsController::class)->only(['index','destroy','store']);
