@@ -21,7 +21,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        if($request->ajax()){
+        if ($request->ajax()) {
             $service = new UserService();
             return $service->listUser(0);
         }
@@ -37,7 +37,7 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $title = 'Change Password';
-        return view('pages.modal.passwordModal',compact('user', 'title'));
+        return view('pages.modal.passwordModal', compact('user', 'title'));
     }
 
     /**
@@ -67,8 +67,8 @@ class UserController extends Controller
     public function show($user)
     {
         $title = 'Download Abstract and Full Paper';
-        $abstract = AbstractFile::leftJoin('full_paper', fn($join)=> $join->on('full_paper.abstract_id','abstract_file.abstract_id'))
-                ->where('abstract_file.user_id', $user)->get(['abstract_file.abstract_id','abstract_title', 'full_paper.title','paper_id']);
+        $abstract = AbstractFile::leftJoin('full_paper', fn ($join) => $join->on('full_paper.abstract_id', 'abstract_file.abstract_id'))
+            ->where('abstract_file.user_id', $user)->get(['abstract_file.abstract_id', 'abstract_title', 'full_paper.title', 'paper_id']);
         return view('pages.modal.downloadFileModal', compact('title', 'abstract'));
     }
 
@@ -91,9 +91,7 @@ class UserController extends Controller
         $isSuccess = $service->changePass($request);
         return response()->json([
             'status' => $isSuccess,
-            'message' => [
-                'head' => ($isSuccess > 0 ? 'Success' : 'Failed') . ' change password'
-            ]
+            'message' => ($isSuccess > 0 ? 'Success' : 'Failed') . ' change password'
         ], 200);
     }
 

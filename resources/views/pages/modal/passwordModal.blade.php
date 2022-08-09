@@ -9,9 +9,9 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="col-sm-4 control-label">Password</label>
+        <label class="col-sm-4 control-label">new Password</label>
         <div class="col-sm-4">
-            {!! Form::password('password', ['class' => 'form-control input-sm']) !!}
+            {!! Form::password('password', ['class' => 'form-control input-sm', 'plcaeholder' => 'new Password']) !!}
         </div>
         <div class="col-sm-4">
             {!! Form::password('password_confirmation', ['class' => 'form-control input-sm', 'placeholder' => 're-Type Password']) !!}

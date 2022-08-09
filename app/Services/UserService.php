@@ -66,7 +66,9 @@ class UserService
     public function changePass(ChangePasswordRequest $request)
     {
         $data = $request->validated();
-        return User::find($data['id'])->updated(['password'=> Hash::make($data['password'])]);
+        $user = User::find($data['id']);
+        $user->password = Hash::make($data['password']);
+        return $user->save();
     }
 
     public function reportExcel()

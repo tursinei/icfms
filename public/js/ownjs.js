@@ -63,7 +63,7 @@
         }
     }, pilihan);
     setting.success = setting.done;
-    delete setting.done; 
+    delete setting.done;
     // {
     //     url: setting.url,
     //     dataType: setting.dataType,
@@ -77,7 +77,7 @@
     //     error: setting.error,
 
     // }
-    $.ajax(setting).always(function () {
+    return $.ajax(setting).always(function () {
         if ((i != '') && (i != 'undefined') && (i != null)) {
             i.removeClass().addClass(cls);
             if (i.parent().hasClass('btn')) {
@@ -87,7 +87,6 @@
             $('#divOverlay').addClass('hidden').removeAttr('style');
         }
     });
-    return false;
 };
 
 var refreshTableServerOn = function (a, url, setCol, i, orderCol = []) {

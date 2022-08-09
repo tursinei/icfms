@@ -24,9 +24,17 @@ class ChangePasswordRequest extends FormRequest
     public function rules()
     {
         return [
-            'current' => ['required'],
+            'current' => ['required', 'current_password:web'],
             'password'  => ['required','confirmed'],
             'id'  => ['numeric']
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'current.required' => 'The current password field is required',
+            'current.current_password' => 'The current password field is incorrect',
         ];
     }
 }

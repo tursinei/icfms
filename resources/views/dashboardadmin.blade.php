@@ -69,15 +69,6 @@
                     b.parents('.modal').modal('hide');
                 }
             });
-        // }).on('click','.btn-edit',function(params) {
-        //     let b = $(this), url = '{{ route('dashboard.show',['dashboard'=>':id']) }}';
-        //     url = url.replace(':id', b.attr('data-id'));
-        //     vAjax(b.find('i'), {
-        //         url : url,
-        //         done : function (res) {
-        //             showModal(res);
-        //         }
-        //     });
         }).on('click','.btn-hapus',function(params) {
             let b = $(this), i = b.find('i');
             let url = '{{ route('user.destroy',['user' => ':id']) }}';
