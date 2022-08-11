@@ -32,8 +32,14 @@ class AnnouncementsController extends Controller
     public function preview(Request $request)
     {
         $title = 'Preview Announcement Email';
+        $service = new AnnouncementService();
         $titleEmail = $request->input('title');
-        $body = $request->input('isi_email');
+        $body   = $request->input('isi_email');
+        $mails  = $service->emails($request->input('target'));
+        $keys   = array_rand($mails); // random pick
+        $names  = explode('#', $mails[$keys]); // 0 firstname, 1 fullname
+        $body   = str_replace($service::$LABEL_FIRST, $names[0], $body);
+        $body   = str_replace($service::$LABEL_FULL, $names[1], $body);
         return view('pages.modal.previewAnnouncementModal', compact('title', 'titleEmail', 'body'));
     }
 

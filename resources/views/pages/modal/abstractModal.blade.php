@@ -47,12 +47,7 @@
         <label class="col-sm-3 control-label">Paper Title</label>
         <div class="col-sm-9">
             {!! Form::text('paper_title', '', ['class' => 'form-control input-sm']) !!}
-            <small class="text-mute">
-                <ul style="list-style:'- '">
-                    <li>Please delete if there are two or more same abstract titles </li>
-                    <li>Paper Title must be the same as Abstract Title</li>
-                </ul>
-                </small>
+            <small class="text-mute">Paper Title must be the same as Abstract Title</small>
         </div>
     </div>
     <div class="form-group">

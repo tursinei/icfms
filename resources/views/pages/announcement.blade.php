@@ -9,7 +9,7 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <x-auth-session-status class="alert alert-success" :status="$status??''" />
+                        <x-auth-session-status class="alert alert-success" :status="$status ?? ''" />
                         <!-- Validation Errors -->
                         <x-auth-validation-errors class="alert alert-danger" :errors="$errors" />
                         <form id="fo-announcement" class="form-horizontal">
@@ -37,8 +37,10 @@
                                 <label class="control-label col-sm-2">File Attachment</label>
                                 <div class="col-sm-6">
                                     {!! Form::file('attachment', ['class' => 'form-control input-sm']) !!}
-                                    <div class="progress progress-sm progress-striped progress-half-rounded light active" style="margin-bottom: 0">
-                                        <div id="bar-fileprogress" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">%
+                                    <div class="progress progress-sm progress-striped progress-half-rounded light active"
+                                        style="margin-bottom: 0">
+                                        <div id="bar-fileprogress" class="progress-bar progress-bar-info" role="progressbar"
+                                            aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">%
                                         </div>
                                     </div>
                                 </div>
@@ -66,16 +68,47 @@
     <script type="text/javascript">
         $(document).ready(function(params) {
             let editor = $('#isi_email').summernote({
-                height: 150
+                height: 150,
+                oninit: function(params) {
+                    console.log(params);
+                }
             });
+            editor.init(function(evt) {
+                var firstBtn =
+                    '<button id="firstNameBtn" type="button" class="btn btn-default btn-sm btn-small btn-name" title="First Name" data-content="firstname"><i class="fa fa-smile-o"></i></button>';
+                var fullBtn =
+                    '<button id="fullNameBtn" type="button" class="btn btn-default btn-sm btn-small btn-name" title="Full Name" data-content="fullname"><i class="fa fa-meh-o"></i></button>';
+                var fileGroup = '<div class="note-btn-group btn-group note-custom">' + firstBtn + fullBtn +
+                    '</div>';
+                $(fileGroup).appendTo($('.note-toolbar'));
+                // Button tooltips
+                $('#firstNameBtn').tooltip({
+                    container: 'body',
+                    placement: 'bottom'
+                });
+                $('#fullNameBtn').tooltip({
+                    container: 'body',
+                    placement: 'bottom'
+                });
+            });
+
+        }).on('click', '.btn-name', function() {
+            var highlight = window.getSelection(),
+                spn = document.createElement('span'),
+                range = highlight.getRangeAt(0);
+
+            spn.innerHTML = '{#' + $(this).attr('data-content') + '#}';
+            range.deleteContents();
+            range.insertNode(spn);
         }).on('click', '.btn-preview', function(e) {
             let f = $('#fo-announcement');
-            let b = $(this), i = b.find('i');
-            vAjax(i,{
-                type : 'POST',
-                url  : '{{ route('announcement.preview') }}',
-                data : f.serializeArray(),
-                done : function (res) {
+            let b = $(this),
+                i = b.find('i');
+            vAjax(i, {
+                type: 'POST',
+                url: '{{ route('announcement.preview') }}',
+                data: f.serializeArray(),
+                done: function(res) {
                     showModal(res);
                 }
             });
@@ -92,21 +125,22 @@
                 contentType: false,
                 data: datx,
                 dataType: 'JSON',
-                xhr : function () {
+                xhr: function() {
                     var xhr = new window.XMLHttpRequest();
                     xhr.upload.addEventListener('progress', function(evt) {
-                        if(evt.lengthComputable){
-                            var percent = Math.round((evt.loaded/evt.total) * 100);
-                            $('#bar-fileprogress').attr('aria-valuenow',percent).css('width',percent+'%').html(percent+'%');
+                        if (evt.lengthComputable) {
+                            var percent = Math.round((evt.loaded / evt.total) * 100);
+                            $('#bar-fileprogress').attr('aria-valuenow', percent).css('width',
+                                percent + '%').html(percent + '%');
                         }
                     });
                     return xhr;
                 },
-                async : true,
+                async: true,
                 done: function(res) {
-                    if(res.status){
+                    if (res.status) {
                         msgSuccess(res.message.head);
-                        $('#isi_email').summernote('reset');
+                        $('#isi_email').summernote('code','');
                         f[0].reset();
                     } else {
                         msgAlert(res.message.head);

@@ -35,6 +35,9 @@
 
                                 </tbody>
                             </table>
+                            <span class="text-danger text-small">
+                                NOTE; Please delete if there are two or more same abstract titles
+                            </span>
                         </div>
                     </div>
                 </div>

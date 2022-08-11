@@ -65,7 +65,7 @@ class RegisteredUserController extends Controller
             'firstname' => $request->firstname,
             'midlename' => $request->midlename,
             'lastname'  => $request->lastname,
-            'afiliasi'  => $request->affiliation,
+            'affiliation'  => $request->affiliation,
             'address'   => $request->address,
             'country'   => $request->country,
             'secondemail'   => $request->secondemail,
