@@ -57,7 +57,7 @@ class RegisteredUserController extends Controller
         $user = User::create($data);
 
         $data['password'] = $request->password;
-        $data['affiliasi'] = $request->affiliation;
+        $data['affiliation'] = $request->affiliation;
 
         UserDetail::create([
             'user_id'   => $user->id,
