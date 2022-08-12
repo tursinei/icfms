@@ -36,7 +36,7 @@
                             <div class="form-group">
                                 <label class="control-label col-sm-2">File Attachment</label>
                                 <div class="col-sm-6">
-                                    {!! Form::file('attachment', ['class' => 'form-control input-sm']) !!}
+                                    {!! Form::file('attachment', ['class' => 'form-control input-sm', 'id' => 'attachment']) !!}
                                     <div class="progress progress-sm progress-striped progress-half-rounded light active"
                                         style="margin-bottom: 0">
                                         <div id="bar-fileprogress" class="progress-bar progress-bar-info" role="progressbar"
@@ -127,6 +127,9 @@
                 dataType: 'JSON',
                 xhr: function() {
                     var xhr = new window.XMLHttpRequest();
+                    if($('#attachment')[0].files.length == 0){
+                        return xhr;
+                    }
                     xhr.upload.addEventListener('progress', function(evt) {
                         if (evt.lengthComputable) {
                             var percent = Math.round((evt.loaded / evt.total) * 100);

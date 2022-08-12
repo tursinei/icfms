@@ -55,12 +55,14 @@ class AnnouncementService
         $mailsSendTo = array_keys($targets);
         $data['sendto'] = json_encode($mailsSendTo);
         $announce = Announcements::create($data);
-        $urlExtentension = $announce->id . '.' . $file->getClientOriginalExtension();
-        $announce->attachment = route('announcement.file', ['id' => $urlExtentension]);
-        $data['attachment'] = $announce->attachment;
+        if ($request->hasFile('attachment')) {
+            $urlExtentension = $announce->id . '.' . $file->getClientOriginalExtension();
+            $announce->attachment = route('announcement.file', ['id' => $urlExtentension]);
+            $data['attachment'] = $announce->attachment;
+        }
         $tmpBody = $data['isi_email'];
         foreach ($targets as $mail => $name) {
-            $names = explode('#', $name);// 0: firstname, 1 : fullname
+            $names = explode('#', $name); // 0: firstname, 1 : fullname
             $data['isi_email'] = $tmpBody;
             $body              = str_replace(self::$LABEL_FIRST, $names[0], $data['isi_email']);
             $data['isi_email'] = str_replace(self::$LABEL_FULL, $names[1], $body);

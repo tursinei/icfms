@@ -53,7 +53,7 @@
                 msg = er.errors[firstkey][0];;
                 res = er.message + ' : <b>' + msg+'</b>'
             } else {
-                res = 'Error ('+status+')<b>'+er.exception+'</b>';
+                res = 'Error ('+status+') <b>'+er.exception+'</b>';
                 console.log(er.message)
             }
             msgAlert(res);
