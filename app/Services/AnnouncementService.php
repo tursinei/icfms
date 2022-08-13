@@ -4,11 +4,13 @@ namespace App\Services;
 
 use App\Http\Requests\StoreAnnouncementRequest;
 use App\Jobs\EmailAnnouncementJob;
+use App\Mail\AnnouncementMail;
 use App\Models\Announcements;
 use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Mail;
 use Yajra\DataTables\Facades\DataTables;
 
 
@@ -61,12 +63,16 @@ class AnnouncementService
             $data['attachment'] = $announce->attachment;
         }
         $tmpBody = $data['isi_email'];
+        if(!strpos($tmpBody, self::$LABEL_FIRST) && !strpos($tmpBody, self::$LABEL_FULL)){
+            Mail::to($mailsSendTo)->send(new AnnouncementMail($data));
+            return $announce->save();
+        }
         foreach ($targets as $mail => $name) {
             $names = explode('#', $name); // 0: firstname, 1 : fullname
             $data['isi_email'] = $tmpBody;
             $body              = str_replace(self::$LABEL_FIRST, $names[0], $data['isi_email']);
             $data['isi_email'] = str_replace(self::$LABEL_FULL, $names[1], $body);
-            dispatch(new EmailAnnouncementJob($data, $mail));
+            Mail::to($mail)->send(new AnnouncementMail($data));
         }
         return $announce->save();
     }

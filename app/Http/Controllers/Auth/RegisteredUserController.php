@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\UserDetail;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
@@ -72,11 +73,11 @@ class RegisteredUserController extends Controller
             'phonenumber'   => $request->phonenumber,
             'mobilenumber'  => $request->mobilenumber
         ]);
-
+        
         event(new Registered($user));
-
-        dispatch(new EmailRegistrationJob($data)); // add to job
-
+        Mail::to($data['email'])->send(new RegistrationMail($data));
+        // dispatch(new EmailRegistrationJob($data)); // add to job
+        // Artisan::call('queue:work');
         return redirect()->route('login')->with('success','Please Sign In with data you have registered');
     }
 }

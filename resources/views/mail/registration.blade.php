@@ -6,7 +6,7 @@
         <tr>
             <td style="padding:10px;font-size:12px;font-family:arial,verdana,tahoma;color:#444;line-height:180%">
                 <h2 style="padding:10px 0;font-size:24px;color:#29347b">Signing up completed!</h2>
-                Dear {{ $dataUser['name'] }}, Affiliator {{ $dataUser['affiliasi'] }}
+                Dear {{ $dataUser['name'] }}, Affiliator {{ $dataUser['affiliation'] }}
                 <table style="margin:20px 15px" width="650" cellspacing="1" cellpadding="10" border="0" bgcolor="#cccccc">
                     <tbody><tr>
                             <td width="15%" bgcolor="#e7e7e7"><strong>ID(Username)</strong></td>
