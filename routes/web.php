@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminFullpaperController;
 use App\Http\Controllers\AnnouncementsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FullPaperController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PersonalController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
@@ -39,9 +40,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('announcement', AnnouncementsController::class)->only(['index','destroy','store']);
     Route::get('announcement/file/{id}', [AnnouncementsController::class, 'attachment'])->name('announcement.file');
     Route::post('announcement/preview', [AnnouncementsController::class, 'preview'])->name('announcement.preview');
-    Route::get('certificate', function(){
-        return view('pages.certificate');
-    })->name('certificate');
+    Route::resource('payment', PaymentController::class);
 });
 
 require __DIR__ . '/auth.php';

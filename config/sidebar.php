@@ -50,9 +50,9 @@ return [
             'url'   => 'fullpaper',
             'akses' => [IS_MEMBER],
         ], [
-            'icon'  => 'fa-file-text-o',
-            'title' => 'Certificate',
-            'url'   => 'certificate',
+            'icon'  => 'fa-cc-mastercard',
+            'title' => 'Payment',
+            'url'   => 'payment',
             'akses' => [IS_MEMBER]
         ]
     ]

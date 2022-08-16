@@ -102,7 +102,7 @@
             });
         }).on('submit', '#fo-paper', function(e) {
             e.preventDefault();
-            var b = $(this).find('button[type="submit"]');
+            var fo = $(this), b = fo.find('button[type="submit"]');
             let datx = toFormData(this);
             let i = b.find('i');
             vAjax(i, {
@@ -119,6 +119,9 @@
                 async : true,
                 xhr : function(){
                     var xhr = new window.XMLHttpRequest();
+                    if(fo.find('input[type="file"]').files.length == 0){
+                        return xhr;
+                    }
                     xhr.upload.onprogress = function(evt) {
                         if(evt.lengthComputable){
                             var percent = Math.round((evt.loaded / evt.total) * 100);
