@@ -18,6 +18,7 @@ class AnnouncementService
 {
     public static $LABEL_FIRST = '{#firstname#}';
     public static $LABEL_FULL = '{#fullname#}';
+    public static $LABEL_AFFILIATION = '{#affiliation#}';
 
     public function listUser($tipeUser)
     {
@@ -63,15 +64,17 @@ class AnnouncementService
             $data['attachment'] = $announce->attachment;
         }
         $tmpBody = $data['isi_email'];
-        if(!strpos($tmpBody, self::$LABEL_FIRST) && !strpos($tmpBody, self::$LABEL_FULL)){
+        if(!strpos($tmpBody, self::$LABEL_FIRST) && !strpos($tmpBody, self::$LABEL_FULL)
+            && !strpos($tmpBody, self::$LABEL_AFFILIATION)){
             Mail::to($mailsSendTo)->send(new AnnouncementMail($data));
             return $announce->save();
         }
         foreach ($targets as $mail => $name) {
-            $names = explode('#', $name); // 0: firstname, 1 : fullname
+            $names = explode('#', $name); // 0: firstname, 1 : fullname, 2 :affiliation
             $data['isi_email'] = $tmpBody;
             $body              = str_replace(self::$LABEL_FIRST, $names[0], $data['isi_email']);
-            $data['isi_email'] = str_replace(self::$LABEL_FULL, $names[1], $body);
+            $body              = str_replace(self::$LABEL_FIRST, $names[1], $body);
+            $data['isi_email'] = str_replace(self::$LABEL_AFFILIATION, $names[2], $body);
             Mail::to($mail)->send(new AnnouncementMail($data));
         }
         return $announce->save();
@@ -80,7 +83,7 @@ class AnnouncementService
     public function emails($target)
     {
         $presentations = explode(',', $target);
-        return User::select('users.email', DB::raw("CONCAT(users_details.firstname,'#',users.name) AS nama"))
+        return User::select('users.email', DB::raw("CONCAT(users_details.firstname,'#',users.name,'#',users_details.affiliation) AS nama"))
             ->join('abstract_file', 'users.id', 'abstract_file.user_id')
             ->join('users_details', 'users.id', 'users_details.user_id')
             ->whereIn('presentation', $presentations)->distinct()->pluck('nama', 'email')->toArray();

@@ -78,7 +78,9 @@
                     '<button id="firstNameBtn" type="button" class="btn btn-default btn-sm btn-small btn-name" title="First Name" data-content="firstname"><i class="fa fa-smile-o"></i></button>';
                 var fullBtn =
                     '<button id="fullNameBtn" type="button" class="btn btn-default btn-sm btn-small btn-name" title="Full Name" data-content="fullname"><i class="fa fa-meh-o"></i></button>';
-                var fileGroup = '<div class="note-btn-group btn-group note-custom">' + firstBtn + fullBtn +
+                var affiliationBtn =
+                    '<button id="affiliationBtn" type="button" class="btn btn-default btn-sm btn-small btn-name" title="Affiliation" data-content="affiliation"><i class="fa fa-buysellads"></i></button>';
+                var fileGroup = '<div class="note-btn-group btn-group note-custom">' + firstBtn + fullBtn + affiliationBtn +
                     '</div>';
                 $(fileGroup).appendTo($('.note-toolbar'));
                 // Button tooltips
@@ -87,6 +89,10 @@
                     placement: 'bottom'
                 });
                 $('#fullNameBtn').tooltip({
+                    container: 'body',
+                    placement: 'bottom'
+                });
+                $('#affiliationBtn').tooltip({
                     container: 'body',
                     placement: 'bottom'
                 });

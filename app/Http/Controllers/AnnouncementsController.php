@@ -35,11 +35,13 @@ class AnnouncementsController extends Controller
         $service = new AnnouncementService();
         $titleEmail = $request->input('title');
         $body   = $request->input('isi_email');
-        $mails  = $service->emails($request->input('target'));
+        $mail  = $service->emails($request->input('target'));
+        $mails = array_filter($mail);
         $keys   = array_rand($mails); // random pick
         $names  = explode('#', $mails[$keys]); // 0 firstname, 1 fullname
         $body   = str_replace($service::$LABEL_FIRST, $names[0], $body);
         $body   = str_replace($service::$LABEL_FULL, $names[1], $body);
+        $body   = str_replace($service::$LABEL_AFFILIATION, $names[2], $body);
         return view('pages.modal.previewAnnouncementModal', compact('title', 'titleEmail', 'body'));
     }
 

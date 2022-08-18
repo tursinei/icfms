@@ -18,3 +18,4 @@ public/dokumen_abstract/
 public/dokumen_paper/
 public/dokumen_fullpaper/
 *.txt
+public/dokumen_payment/*
