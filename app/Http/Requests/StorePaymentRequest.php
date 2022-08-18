@@ -25,7 +25,7 @@ class StorePaymentRequest extends FormRequest
     {
         return [
             'payment_id'    =>  ['required', 'integer'],
-            'note'          =>  ['required_if:payment_id,==,0','nullable', 'mimes:pdf,jpg,jpeg,png', 'max:5024'],
+            // 'note'          =>  ['required_if:payment_id,==,0','nullable', 'mimes:pdf,jpg,jpeg,png', 'max:5024'],
             'currency'      =>  ['required', 'string'],
             'nominal'       =>  ['required'],
             'user_id'       =>  ['required', 'integer'],

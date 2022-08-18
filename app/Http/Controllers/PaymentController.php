@@ -20,8 +20,15 @@ class PaymentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        if(session('icfms_tipe_login') == 1){
+            if($request->ajax()){
+                $service = new PaymentService();
+                return $service->listTable();
+            }
+            return view('pages.admin-payments');
+        }
         $users = UserDetail::find(Auth::user()->id);
         $totalAbstract = AbstractFile::where('user_id', Auth::user()->id)->count();
         $totalPaper = FullPaper::where('user_id', Auth::user()->id)->count();
@@ -37,7 +44,8 @@ class PaymentController extends Controller
      */
     public function create()
     {
-        //
+        $service = new PaymentService();
+        return $service->paymentsInExcel();
     }
 
     /**

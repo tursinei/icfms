@@ -34,7 +34,7 @@ return [
             'title'    => 'Announcements',
             'url'      => 'announcement',
             'akses' => [IS_ADMIN],
-        ], [
+        ],[
             'icon'  => 'fa-user',
             'title' => 'Personal Details',
             'url'   => 'personal',
@@ -53,7 +53,7 @@ return [
             'icon'  => 'fa-cc-mastercard',
             'title' => 'Payment',
             'url'   => 'payment',
-            'akses' => [IS_MEMBER]
+            'akses' => [IS_MEMBER, IS_ADMIN]
         ]
     ]
 ];
