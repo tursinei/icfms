@@ -24,6 +24,7 @@ class PaymentService
     {
         $data = $request->validated();
         unset($data['note']);
+        $data['nominal'] = str_replace('.','', $data['nominal']);
         if($request->hasFile('note')){
             $file = $request->file('note');
             $dirUpload = 'dokumen_payment';

@@ -33,7 +33,11 @@ class PaymentController extends Controller
         $totalAbstract = AbstractFile::where('user_id', Auth::user()->id)->count();
         $totalPaper = FullPaper::where('user_id', Auth::user()->id)->count();
         $payment = Payments::where('user_id',Auth::user()->id)->first();
-        $isFileUploaded = File::exists($payment->file_path);
+        $isFileUploaded = false;
+        if($payment !== null){
+            $isFileUploaded = File::exists($payment->file_path);
+        }
+
         return view('pages.payment', compact('totalAbstract','totalPaper', 'users','payment', 'isFileUploaded'));
     }
 
