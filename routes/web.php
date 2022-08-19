@@ -40,7 +40,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('announcement', AnnouncementsController::class)->only(['index','destroy','store']);
     Route::get('announcement/file/{id}', [AnnouncementsController::class, 'attachment'])->name('announcement.file');
     Route::post('announcement/preview', [AnnouncementsController::class, 'preview'])->name('announcement.preview');
-    Route::resource('payment', PaymentController::class)->except(['edit','update','destroy']);
+    Route::resource('payment', PaymentController::class)->except(['edit','update', 'show']);
+    Route::get('payment/{payment}/{action}',[PaymentController::class,'show'])->name('payment.show');
 });
 
 require __DIR__ . '/auth.php';

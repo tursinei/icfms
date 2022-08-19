@@ -43,7 +43,7 @@
                         <label class="col-sm-3 control-label">Upload Your Payment Note</label>
                         <div class="col-sm-5">
                             <div class="btn-group @if(!$isFileUploaded) hidden @endif">
-                                <a id="a-view" href="{{ route('payment.show',['payment' => $payment->payment_id??0]) }}" target="_blank" class="btn btn-primary btn-sm">View File</a>
+                                <a id="a-view" href="{{ route('payment.show',['payment' => $payment->payment_id??0, 'action' => 'view']) }}" target="_blank" class="btn btn-primary btn-sm">View File</a>
                                 <button type="button" id="btn-removeFile" class="btn btn-danger btn-sm">
                                     <i class="fa fa-times"></i>
                                 </button>
@@ -90,6 +90,7 @@ $(document).ready(function(e) {
         dataType : 'JSON',
         done : function(res) {
             $('#a-view').attr('href', res.url);
+            $('input[name="payment_id"]').val(res.id);
             let dv = $('#dv-upload');
             dv.prev('div').removeClass('hidden');
             dv.addClass('hidden');

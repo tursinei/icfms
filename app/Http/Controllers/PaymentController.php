@@ -63,7 +63,8 @@ class PaymentController extends Controller
         $service = new PaymentService();
         $payment = $service->simpan($request);
         return response()->json([
-            'url' => route('payment.show', ['payment' => $payment->payment_id]),
+            'url'   => route('payment.show', ['payment' => $payment->payment_id, 'action' => 'view']),
+            'id'    => $payment->payment_id,
             'message' => ($payment ? 'Success' : 'Failed') . ' to store data'
         ], 200);
     }
@@ -74,11 +75,11 @@ class PaymentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Payments $payment)
+    public function show(Payments $payment, $action)
     {
         $path = public_path($payment->file_path);
         if(File::exists($path)){
-            return response()->file($path);
+            return $action == 'view' ? response()->file($path) : response()->download($path);
         } else {
             throw new Exception('File Not Found');
         }
@@ -110,11 +111,20 @@ class PaymentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Payments  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        //
+        $payment = Payments::find($id);
+        $path = public_path($payment->file_path);
+        if(File::exists($path)){
+            File::delete($path);
+        }
+        $isDelete = $payment->delete();
+        return response()->json([
+            'status' => $isDelete,
+            'message' => ($isDelete ? 'Success' : 'Failed') . ' to delete data'
+        ], 200);
     }
 }

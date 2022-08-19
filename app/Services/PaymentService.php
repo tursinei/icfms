@@ -49,8 +49,12 @@ class PaymentService
     {
         $data = $this->getPayments();
         return DataTables::of($data)->addColumn('action', function ($row) {
-            return '<a class="btn btn-success btn-xs" href="'.route('payment.show',['payment' => $row->payment_id]).'"
-                title="View Payment File" target="_blank"><i class="fa fa-file-o"></i></a>';
+            return '<a class="btn btn-info btn-xs" href="'.route('payment.show',['payment' => $row->payment_id, 'action' => 'view']).'"
+                title="View Payment File" target="_blank"><i class="fa fa-file-o"></i></a>&nbsp;
+                <a class="btn btn-success btn-xs" href="'.route('payment.show',['payment' => $row->payment_id, 'action' => 'download']).'"
+                title="Download Payment File" target="_blank"><i class="fa fa-download"></i></a>&nbsp
+                <button class="btn btn-danger btn-xs btn-delete" data-url="'.route('payment.destroy',['payment' => $row->payment_id]).'"
+                title="Delete Payment"><i class="fa fa-trash"></i></button>';
         })->addColumn('date_upload', function ($row) {
             return $row->created_at->format('d-m-Y');
         })->addColumn('terbilang', function($row){

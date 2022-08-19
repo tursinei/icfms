@@ -38,7 +38,23 @@
 
 @push('js')
     <script type="text/javascript">
-        $(document).ready(function(evt) {
+        $(document).on('click', '.btn-delete',function(params) {
+            let b = $(this);
+            let conf = bootbox.confirm("Do you want to remove this data ?", function(ans) {
+                if(ans){
+                    vAjax(b.find('i'),{
+                        url : b.attr('data-url'),
+                        type : 'DELETE',
+                        dataType : 'JSON',
+                        done : function (params) {
+                            if(params.status){
+                                b.parents('tr').remove();
+                            }
+                        }
+                    });
+                }
+            });
+        }).ready(function(evt) {
             let url = '{{ route('payment.index') }}';
             let cols = [{
                     data: 'date_upload',
