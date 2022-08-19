@@ -55,6 +55,7 @@ class AnnouncementService
         }
 
         $targets = $this->emails($request->input('target'));
+        $targets = array_filter($targets);
         $mailsSendTo = array_keys($targets);
         $data['sendto'] = json_encode($mailsSendTo);
         $announce = Announcements::create($data);
@@ -69,11 +70,12 @@ class AnnouncementService
             Mail::to($mailsSendTo)->send(new AnnouncementMail($data));
             return $announce->save();
         }
+
         foreach ($targets as $mail => $name) {
             $names = explode('#', $name); // 0: firstname, 1 : fullname, 2 :affiliation
             $data['isi_email'] = $tmpBody;
             $body              = str_replace(self::$LABEL_FIRST, $names[0], $data['isi_email']);
-            $body              = str_replace(self::$LABEL_FIRST, $names[1], $body);
+            $body              = str_replace(self::$LABEL_FULL, $names[1], $body);
             $data['isi_email'] = str_replace(self::$LABEL_AFFILIATION, $names[2], $body);
             Mail::to($mail)->send(new AnnouncementMail($data));
         }

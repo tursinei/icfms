@@ -18,6 +18,7 @@ class AnnouncementsController extends Controller
     {
         $target = [
             'oral,poster,audience' => 'Participants (Oral, Poster, Audience)',
+            'oral' => 'Participants (Oral)',
             'keynote speaker' => 'Only Keynote Speaker'
         ];
 
