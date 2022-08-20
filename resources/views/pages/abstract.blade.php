@@ -36,7 +36,8 @@
                                 </tbody>
                             </table>
                             <span class="text-info text-small">
-                                Please delete if there are two or more same abstract titles
+                                Please delete if there are two or more same abstract titles<br/>
+                                If you want to revise the abstract, please delete the abstract and then add the revised abstract
                             </span>
                         </div>
                     </div>

@@ -48,7 +48,8 @@
         },
         error: function (e,status) {
             let er = e.responseJSON, msg = '', res = '';
-            if(er.errors){
+            console.error('Ownjs {'+status+'} :: '+e.statusText);
+            if(typeof er.errors !== 'undefined'){
                 let firstkey = Object.keys(er.errors)[0];
                 msg = er.errors[firstkey][0];;
                 res = er.message + ' : <b>' + msg+'</b>'

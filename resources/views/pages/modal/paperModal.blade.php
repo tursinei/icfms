@@ -42,8 +42,8 @@
             <small>Only file with pdf,doc,docx,odt Extension allowed</small>
         </div>
     </div>
-    <div class="form-group alert alert-info">
-        if you change the paper title,please delete both uploaded files of the abstract & paper
+    {{-- <div class="form-group alert alert-info">
+
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-    </div>
+    </div> --}}
 @endsection

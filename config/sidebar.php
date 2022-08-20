@@ -19,7 +19,7 @@ return [
         ],
         [
             'icon'     => 'fa-copy',
-            'title'    => 'Abstracts',
+            'title'    => 'Abstracs',
             'url'      => 'abstracts',
             'akses' => [IS_ADMIN],
         ],

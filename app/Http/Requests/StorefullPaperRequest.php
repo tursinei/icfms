@@ -25,7 +25,7 @@ class StorefullPaperRequest extends FormRequest
     {
         return [
             'abstract_id'   =>  ['required', 'integer'],
-            'paper_file'    =>  ['required', 'file','mimes:pdf,doc,docx', 'max:5024'],
+            'paper_file'    =>  ['required', 'mimes:pdf,doc,docx', 'max:10048'],
             'user_id'       =>  ['required', 'integer'],
         ];
     }
@@ -33,7 +33,7 @@ class StorefullPaperRequest extends FormRequest
     public function messages()
     {
         return [
-            'paper_file.max'    => 'Must not be greater than 5 Mb'
+            'paper_file.max'    => 'Must not be greater than 10 Mb'
         ];
     }
 }

@@ -61,11 +61,12 @@
         <div class="col-sm-9">
             {!! Form::file('abstract_file', ['class' => 'form-control input-sm']) !!}
             <div class="progress progress-sm progress-striped progress-half-rounded light active" style="margin-bottom: 0">
-                <div id="bar-fileprogress" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">%
+                <div id="bar-fileprogress" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="0"
+                    aria-valuemin="0" aria-valuemax="100" style="width: 0%;">%
                 </div>
             </div>
             <small>
-                If you want to revise the abstract, please delete the abstract and then add the revised abstract
+                Only file with pdf,doc,docx,odt Extension allowed (max. 5 MB)
             </small>
         </div>
     </div>

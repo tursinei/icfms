@@ -21,15 +21,15 @@
                 Please remember your ID(Email) and password, which you can see above.<br>
                 You can check the status of your paper submission, registration, and personal information by logging in with the ID and password you registered.<br>
                 <br>
-                We thank you very much for your participation in ICFMS 2020 and hope you visit our official website <a href="{{ URL::to('/') }}">{{ URL::to('/') }}</a> constantly for updated information.<br>
+                We thank you very much for your participation in ICFMS {{ date('Y') }} and hope you visit our official website <a href="{{ URL::to('/') }}">{{ URL::to('/') }}</a> constantly for updated information.<br>
                 Should you have further inquiries, please feel free to contact the secretariat below. <br>
                 <br>
                 We look forward to meeting you in Indonesia. <br>
                 <br>
                 Best regards,<br>
                 <br>
-                <br>
-                <strong>ICFMS {{ date('Y') }} Organizing Committee</strong><br>
+                <br>{{ date('Y') }}
+                <strong>ICFMS  Organizing Committee</strong><br>
                 <br>
             </td>
         </tr>

@@ -29,6 +29,9 @@
 
                                 </tbody>
                             </table>
+                            <span class="text-info text-small">
+                                if you change the paper title,please delete both uploaded files of the abstract & paper
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -119,7 +122,7 @@
                 async : true,
                 xhr : function(){
                     var xhr = new window.XMLHttpRequest();
-                    if(fo.find('input[type="file"]').files.length == 0){
+                    if(fo.find('input[type="file"]')[0].files.length == 0){
                         return xhr;
                     }
                     xhr.upload.onprogress = function(evt) {
