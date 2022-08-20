@@ -30,13 +30,14 @@
                             @php
                                 $cur = ['IDR','USD'];
                                 $opt = array_combine($cur,$cur);
+                                $nominal = empty($payment->nominal)?'':number_format($payment->nominal, 0,',','.');
                             @endphp
                             @form_hidden('user_id',$users->user_id??'0')
                             @form_hidden('payment_id',$payment->payment_id??'0')
                             @form_select('currency',$opt,$payment->currency??'',['class' => 'form-control input-sm'])
                         </div>
                         <div class="col-md-3">
-                            {!! Form::text('nominal', $payment->nominal??'', ['class' =>'form-control input-sm', 'id'=>'nominal', 'placeholder' => '0,-']) !!}
+                            {!! Form::text('nominal', $nominal, ['class' =>'form-control input-sm', 'id'=>'nominal', 'placeholder' => '0,-']) !!}
                         </div>
                     </div>
                     <div class="form-group">

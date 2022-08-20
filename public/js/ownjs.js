@@ -177,7 +177,8 @@ let toFormData = function(formObject){
         foData.append(e.name, e.value);
     });
     $(formObject).find('input[type="file"]').each(function(i, e){
-        foData.append(e.name, e.files[0]);
+        let val = typeof e.files[0] === 'undefined' ? '' : e.files[0];
+        foData.append(e.name, val);
     });
     return foData;
 }
