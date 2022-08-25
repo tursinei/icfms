@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('title', 'Abstracts | ICFMS ' . date('Y'))
-@section('title2', 'Abstracs')
+@section('title2', 'Abstracts')
 
 @section('content')
     <div class="row">
