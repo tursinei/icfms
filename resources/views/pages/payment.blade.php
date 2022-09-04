@@ -45,8 +45,8 @@
                         <div class="col-sm-5">
                             <div class="btn-group @if(!$isFileUploaded) hidden @endif">
                                 <a id="a-view" href="{{ route('payment.show',['payment' => $payment->payment_id??0, 'action' => 'view']) }}" target="_blank" class="btn btn-primary btn-sm">View File</a>
-                                <button type="button" id="btn-removeFile" class="btn btn-danger btn-sm">
-                                    <i class="fa fa-times"></i>
+                                <button type="button" id="btn-removeFile" title="Change Payment File" class="btn btn-danger btn-sm">
+                                    <i class="fa fa-rotate-left"></i>
                                 </button>
                             </div>
                             <div id="dv-upload" class="@if($isFileUploaded) hidden @endif">
@@ -95,6 +95,8 @@ $(document).ready(function(e) {
             let dv = $('#dv-upload');
             dv.prev('div').removeClass('hidden');
             dv.addClass('hidden');
+            $('input[name="note"]').val('');
+            $('#bar-fileprogress').attr('aria-valuenow', 0).css('width',0+'%').html(0+'%');
             msgSuccess(res.message);
         },
         async : true,
