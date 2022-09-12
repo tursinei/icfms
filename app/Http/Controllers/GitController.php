@@ -13,6 +13,7 @@ class GitController extends Controller
         $old = getcwd();
         chdir($old);
         $output = shell_exec('git pull');
-        echo $output;
+        $nToBr = str_replace('\n','<br/>', $output);
+        echo $nToBr;
     }
 }
