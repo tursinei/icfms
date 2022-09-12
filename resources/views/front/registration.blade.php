@@ -64,7 +64,8 @@
                         </div>
                         <div class="form-group">
                             <label>Affiliation</label>
-                            <input name="affiliation" type="text" class="form-control input-sm" value="{{ old('affiliation') }}">
+                            @form_select('affiliation',$afiliations,old('affiliation'),['class' => 'form-control input-sm'])
+                            {{-- <input name="affiliation" type="text" class="form-control input-sm" value="{{ old('affiliation') }}"> --}}
                         </div>
                         <div class="form-group">
                             <label>Address (Optional)</label>
@@ -74,7 +75,7 @@
                             <label>Country</label>
                             @php
                                 $country = array_combine($negara, $negara);
-                                array_unshift($country, '-- Choose Country --');
+                                $country = array_merge(['' => '-- Choose Country --'],$country);
                             @endphp
                             {!! Form::select('country', $country, old('country'), ['class' =>'form-control']) !!}
                         </div>

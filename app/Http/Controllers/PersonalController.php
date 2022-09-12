@@ -19,7 +19,9 @@ class PersonalController extends Controller
     {
         $user = UserDetail::find(Auth::user()->id);
         $country = Country::all()->pluck('nicename')->toArray();
-        return view('pages.personal', compact('user','country'));
+        $affiliations = UserDetail::affiliations();
+        $affiliations = array_merge(['' => '--Choose your affiliation--'], $affiliations);
+        return view('pages.personal', compact('user','country', 'affiliations'));
     }
 
     /**

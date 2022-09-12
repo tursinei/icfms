@@ -1,7 +1,10 @@
 <div class="logo-container">
     <a href="../" class="logo">
-        <img src="{{ asset('img/logo.png') }}" height="35" alt="ACFMS Logo Drajat" />
+        <img src="{{ asset('img/logo.png') }}" height="35" alt="ICFMS Logo" />
     </a>
+    <h2 style="float: left;font-family:'Noto Sans','Comic Sans MS';color: #0088CC;margin-top:10px;font-weight:bold;">
+        <span class="alternative-fonts">ICFMS</span>
+    </h2>
     <div class="visible-xs toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html" data-fire-event="sidebar-left-opened">
         <i class="fa fa-bars" aria-label="Toggle sidebar"></i>
     </div>

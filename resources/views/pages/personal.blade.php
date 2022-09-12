@@ -40,7 +40,8 @@
                             <div class="form-group">
                                 <label class="control-label col-sm-3">Affiliation</label>
                                 <div class="col-sm-6">
-                                    <input type="text" value="{{ $user->affiliation }}" name="affiliation" class="form-control">
+                                    {!! Form::select('affiliation', $affiliations, $user->affiliation, [ 'class' =>'form-control input-sm']) !!}
+                                    {{-- <input type="text" value="{{ $user->affiliation }}" name="affiliation" class="form-control"> --}}
                                 </div>
                             </div>
                             <div class="form-group">

@@ -21,6 +21,7 @@
                                         <th style="width: 10%" class="text-center">Name</th>
                                         <th style="width: 20%" class="text-center">Affiliation</th>
                                         <th style="width: 20%" class="text-center">Nominal</th>
+                                        <th style="width: 20%" class="text-center">Email</th>
                                         <th style="width: 10%" class="text-center">Note Payments</th>
                                     </tr>
                                 </thead>
@@ -73,6 +74,10 @@
                 {
                     data: 'terbilang',
                     name: 'terbilang'
+                },
+                {
+                    data: 'email',
+                    name: 'email'
                 },
                 {
                     data: 'action',

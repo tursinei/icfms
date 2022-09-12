@@ -24,7 +24,9 @@ class RegisteredUserController extends Controller
     public function create()
     {
         $negara = Country::all()->pluck('nicename')->toArray();
-        return view('front.registration',compact('negara'));//'auth.register'
+        $afiliations = UserDetail::affiliations();
+        $afiliations = array_merge(['' => '-- Choose your affiliation --'], $afiliations);
+        return view('front.registration',compact('negara','afiliations'));//'auth.register'
     }
 
     /**
@@ -73,7 +75,7 @@ class RegisteredUserController extends Controller
             'phonenumber'   => $request->phonenumber,
             'mobilenumber'  => $request->mobilenumber
         ]);
-        
+
         event(new Registered($user));
         Mail::to($data['email'])->send(new RegistrationMail($data));
         // dispatch(new EmailRegistrationJob($data)); // add to job

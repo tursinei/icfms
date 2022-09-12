@@ -13,7 +13,7 @@
 <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('js/dataTables.bootstrap4.min.js') }}"></script>
 <script src="{{ asset('js/dataTables.buttons.min.js') }}"></script>
-{{-- <script src="{{ asset('js/theme.js') }}"></script> --}}
+<script src="{{ asset('js/theme.js') }}"></script>
 <!-- Theme Initialization Files -->
 {{-- <script src="{{ asset('js/theme.init.js') }}"></script> --}}
 <script src="{{ asset('js/ownjs.js') }}"></script>
@@ -33,7 +33,7 @@
             url: '{{ route('user.changepass') }}',
             success: function(params) {
                 f.parents('div.modal').modal('hide');
-                
+
                 msgSuccess(params.message);
             },
             error: function(e) {

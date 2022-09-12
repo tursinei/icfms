@@ -42,7 +42,7 @@ class PaymentService
         return Payments::join('users', 'users.id', 'payments.user_id')
         ->join('users_details', 'users.id', 'users_details.user_id')
         ->orderBy('payments.created_at', 'DESC')
-        ->get(['payment_id', 'users.name', 'payments.created_at', 'users_details.affiliation','currency', 'nominal']);
+        ->get(['payment_id', 'users.name', 'payments.created_at', 'users_details.affiliation','currency', 'nominal','email']);
     }
 
     public function listTable()
