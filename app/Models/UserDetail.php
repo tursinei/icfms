@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserDetail extends Model
 {
-    
+
     protected $table = 'users_details';
 
     protected $primaryKey = 'user_id';
@@ -49,8 +49,19 @@ class UserDetail extends Model
         'mobilenumber' => 'string',
     ];
 
+    public static function affiliations()
+    {
+        $afiliations =  [
+            'Riken Nishina Center', "Institut Teknologi Sepuluh Nopember",
+            "Universitas Padjadjaran", "Institut Teknologi Bandung",
+            "Universitas Gajah Mada", "Universitas Indonesia", "Another"
+        ];
+        return array_combine($afiliations,$afiliations);
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
+
 }

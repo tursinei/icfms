@@ -4,10 +4,12 @@
 
 @section('content')
     <div class="center-sign">
-        <a href="/" class="logo pull-left">
+        <a href="/" class="logo pull-left" style="margin-top: 15px">
             <img src="{{ asset('img/logo.png') }}" height="54" alt="ICFMS 2022" />
         </a>
-
+        <h2 style="float: left;font-family: 'Noto Sans','Comic Sans MS';color: #0088CC;margin-top:30px;font-weight:bold">
+            <span class="alternative-fonts">ICFMS</span>
+        </h2>
         <div class="panel panel-sign">
             <div class="panel-title-sign mt-xl text-right">
                 <h2 class="title text-uppercase text-weight-bold m-none"><i class="fa fa-briefcase mr-xs"></i> Forgot Password</h2>
