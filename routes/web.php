@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminFullpaperController;
 use App\Http\Controllers\AnnouncementsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FullPaperController;
+use App\Http\Controllers\GitController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PersonalController;
 use App\Http\Controllers\UserController;
@@ -26,6 +27,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('front.login');
 });
+Route::get('git-pull',[GitController::class,'pull']);
 Route::middleware('auth')->group(function () {
     Route::resource('dashboard', DashboardController::class);
     Route::get('/dashboard/abstract/{id}', [DashboardController::class, 'getAbstracts'])->name('dashboard.abstract');
