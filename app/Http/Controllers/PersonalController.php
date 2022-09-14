@@ -21,7 +21,9 @@ class PersonalController extends Controller
         $country = Country::all()->pluck('nicename')->toArray();
         $affiliations = UserDetail::affiliations();
         $affiliations = array_merge(['' => '--Choose your affiliation--'], $affiliations);
-        return view('pages.personal', compact('user','country', 'affiliations'));
+        $isOtherAffiliation = (!array_search($user->affiliation, $affiliations) && ($user->affiliation != ''));
+
+        return view('pages.personal', compact('user', 'country', 'affiliations', 'isOtherAffiliation'));
     }
 
     /**
@@ -32,12 +34,16 @@ class PersonalController extends Controller
      */
     public function store(PersonalRequest $request)
     {
-        UserDetail::updateOrCreate(['user_id' => $request->input('user_id')], $request->validated());
+        $data = $request->validated();
+        if($data['affiliation'] == 'Another'){
+            $data['affiliation'] = $data['another_affiliation'];
+            unset($data['another_affiliation']);
+        }
+        UserDetail::updateOrCreate(['user_id' => $request->input('user_id')], );
         $name = implode(' ', [$request->input('firstname'), $request->input('midlename'), $request->input('lastname')]);
         $user = User::find($request->input('user_id'));
         $user->name = $name;
         $user->save();
         return back()->with('success', 'Data has been updated');
     }
-
 }

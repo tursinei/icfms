@@ -31,6 +31,7 @@ class PersonalRequest extends FormRequest
             'address' => ['nullable', 'string'],
             'country' => ['required'],
             'affiliation' => ['required', 'string'],
+            'another_affiliation' => ['required_if:affiliation,Another'],
             'email'     => ['email', 'required'],
             'secondemail' =>['nullable', 'email'],
             'phonenumber' => ['required', 'string'],

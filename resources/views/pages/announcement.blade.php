@@ -74,28 +74,20 @@
                 }
             });
             editor.init(function(evt) {
-                var firstBtn =
-                    '<button id="firstNameBtn" type="button" class="btn btn-default btn-sm btn-small btn-name" title="First Name" data-content="firstname"><i class="fa fa-smile-o"></i></button>';
-                var fullBtn =
-                    '<button id="fullNameBtn" type="button" class="btn btn-default btn-sm btn-small btn-name" title="Full Name" data-content="fullname"><i class="fa fa-meh-o"></i></button>';
-                var affiliationBtn =
-                    '<button id="affiliationBtn" type="button" class="btn btn-default btn-sm btn-small btn-name" title="Affiliation" data-content="affiliation"><i class="fa fa-buysellads"></i></button>';
-                var fileGroup = '<div class="note-btn-group btn-group note-custom">' + firstBtn + fullBtn + affiliationBtn +
+                let buttonsCustom =
+                    '<button id="firstNameBtn" type="button" class="btn btn-default btn-sm btn-small btn-name" title="First Name" data-content="firstname"><i class="fa fa-smile-o"></i></button>' +
+                    '<button id="fullNameBtn" type="button" class="btn btn-default btn-sm btn-small btn-name" title="Full Name" data-content="fullname"><i class="fa fa-meh-o"></i></button>' +
+                    '<button id="affiliationBtn" type="button" class="btn btn-default btn-sm btn-small btn-name" title="Affiliation" data-content="affiliation"><i class="fa fa-buysellads"></i></button>' +
+                    '<button id="abstractBtn" type="button" class="btn btn-default btn-sm btn-small btn-name" title="Abstract Title" data-content="abstract"><i class="fa fa-text-width"></i></button>' +
+                    '<button id="presentationBtn" type="button" class="btn btn-default btn-sm btn-small btn-name" title="Presentation" data-content="presentation"><i class="fa fa-pinterest-p"></i></button>';
+                var fileGroup = '<div class="note-btn-group btn-group note-custom">' + buttonsCustom +
                     '</div>';
                 $(fileGroup).appendTo($('.note-toolbar'));
                 // Button tooltips
-                $('#firstNameBtn').tooltip({
+                $('.btn-name').tooltip({
                     container: 'body',
                     placement: 'bottom'
-                });
-                $('#fullNameBtn').tooltip({
-                    container: 'body',
-                    placement: 'bottom'
-                });
-                $('#affiliationBtn').tooltip({
-                    container: 'body',
-                    placement: 'bottom'
-                });
+                }); 
             });
 
         }).on('click', '.btn-name', function() {

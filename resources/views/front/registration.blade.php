@@ -65,7 +65,12 @@
                         <div class="form-group">
                             <label>Affiliation</label>
                             @form_select('affiliation',$afiliations,old('affiliation'),['class' => 'form-control input-sm'])
-                            {{-- <input name="affiliation" type="text" class="form-control input-sm" value="{{ old('affiliation') }}"> --}}
+                            @php
+                                $isOtherHidden = old('affiliation') != 'Another' ? 'hidden' : '';
+                            @endphp
+                            {!! Form::text('another_affiliation', old('another_affiliation'), ['class' =>'form-control input-sm '.$isOtherHidden,
+                                'style' =>'margin-top:5px',
+                                'placeholder' => 'Input Another Affiliation Name']) !!}
                         </div>
                         <div class="form-group">
                             <label>Address (Optional)</label>
@@ -77,6 +82,7 @@
                                 $country = array_combine($negara, $negara);
                                 $country = array_merge(['' => '-- Choose Country --'],$country);
                             @endphp
+
                             {!! Form::select('country', $country, old('country'), ['class' =>'form-control']) !!}
                         </div>
                         <div class="row mb-md">
@@ -122,6 +128,13 @@
                 pas.focus();
             }else{
                 $('form#fo-register').submit();
+            }
+        }).on('change','select[name="affiliation"]',function(params) {
+            let c = $(this), anotherInput = c.siblings('input[name="another_affiliation"]');
+            if(c.val() == 'Another'){
+                anotherInput.removeClass('hidden');
+            } else {
+                anotherInput.addClass('hidden');
             }
         });
     </script>

@@ -26,7 +26,7 @@ class RegisteredUserController extends Controller
         $negara = Country::all()->pluck('nicename')->toArray();
         $afiliations = UserDetail::affiliations();
         $afiliations = array_merge(['' => '-- Choose your affiliation --'], $afiliations);
-        return view('front.registration',compact('negara','afiliations'));//'auth.register'
+        return view('front.registration', compact('negara', 'afiliations')); //'auth.register'
     }
 
     /**
@@ -41,11 +41,12 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'firstname' => ['required', 'string', 'max:255'],
-            'midlename' => ['nullable','string', 'max:255'],
+            'midlename' => ['nullable', 'string', 'max:255'],
             'lastname' => ['required', 'string', 'max:255'],
             'email' => ['bail', 'required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', 'min:6'],
             'affiliation' => ['required', 'string', 'max:255'],
+            'another_affiliation' => ['required_if:affiliation,Another'],
             'country' => ['required', 'string', 'max:255'],
             'phonenumber' => ['required', 'string', 'max:255'],
             'mobilenumber' => ['required', 'string', 'max:255'],
@@ -60,7 +61,8 @@ class RegisteredUserController extends Controller
         $user = User::create($data);
 
         $data['password'] = $request->password;
-        $data['affiliation'] = $request->affiliation;
+        $data['affiliation'] = $request->affiliation == 'Another' ?
+            $request->another_affiliation : $request->affiliation;
 
         UserDetail::create([
             'user_id'   => $user->id,
@@ -68,7 +70,8 @@ class RegisteredUserController extends Controller
             'firstname' => $request->firstname,
             'midlename' => $request->midlename,
             'lastname'  => $request->lastname,
-            'affiliation'  => $request->affiliation,
+            'affiliation'  => $request->affiliation == 'Another' ?
+                $request->another_affiliation : $request->affiliation,
             'address'   => $request->address,
             'country'   => $request->country,
             'secondemail'   => $request->secondemail,
@@ -80,6 +83,6 @@ class RegisteredUserController extends Controller
         Mail::to($data['email'])->send(new RegistrationMail($data));
         // dispatch(new EmailRegistrationJob($data)); // add to job
         // Artisan::call('queue:work');
-        return redirect()->route('login')->with('success','Please Sign In with data you have registered');
+        return redirect()->route('login')->with('success', 'Please Sign In with data you have registered');
     }
 }
