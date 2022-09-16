@@ -52,9 +52,9 @@ class UserDetail extends Model
     public static function affiliations()
     {
         $afiliations =  [
-            'Riken Nishina Center', "Institut Teknologi Sepuluh Nopember",
+            'Riken', "Institut Teknologi Sepuluh Nopember",
             "Universitas Padjadjaran", "Institut Teknologi Bandung",
-            "Universitas Gajah Mada", "Universitas Indonesia", "Another"
+            "Universitas Gadjah Mada", "Universitas Indonesia", "Another"
         ];
         return array_combine($afiliations,$afiliations);
     }

@@ -36,10 +36,18 @@ class AnnouncementsController extends Controller
         $titleEmail = $request->input('title');
         $body   = $request->input('isi_email');
         $mail  = $service->emails($request->input('target'));
+
         $mails = array_filter($mail);
-        $keys   = array_rand($mails); // random pick
-        $names  = explode('#', $mails[$keys]); // 0 firstname, 1 fullname
-        $body   = str_replace($service::$LABEL_FIRST, $names[0], $body);
+        $selectedMail   = array_rand($mails); // random pick
+        $names  = explode('#', $mails[$selectedMail]); // 0 firstname, 1 fullname
+
+        if (strpos($body, AnnouncementService::$LABEL_ABSTRACT) OR
+                strpos($body, AnnouncementService::$LABEL_AFFILIATION)) {
+            $abstractData = $service->getAbstractPresentation($request->input('target'));
+            $absPesentration = $abstractData[$selectedMail];
+            $body   = str_replace($service::$LABEL_ABSTRACT, $absPesentration['abstract'], $body);
+            $body   = str_replace($service::$LABEL_PRESENTATION, $absPesentration['presentation'], $body);
+        }
         $body   = str_replace($service::$LABEL_FULL, $names[1], $body);
         $body   = str_replace($service::$LABEL_AFFILIATION, $names[2], $body);
         return view('pages.modal.previewAnnouncementModal', compact('title', 'titleEmail', 'body'));

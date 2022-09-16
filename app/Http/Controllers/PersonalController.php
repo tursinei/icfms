@@ -38,8 +38,9 @@ class PersonalController extends Controller
         if($data['affiliation'] == 'Another'){
             $data['affiliation'] = $data['another_affiliation'];
             unset($data['another_affiliation']);
+            // dd($data);
         }
-        UserDetail::updateOrCreate(['user_id' => $request->input('user_id')], );
+        UserDetail::updateOrCreate(['user_id' => $request->input('user_id')],$data);
         $name = implode(' ', [$request->input('firstname'), $request->input('midlename'), $request->input('lastname')]);
         $user = User::find($request->input('user_id'));
         $user->name = $name;

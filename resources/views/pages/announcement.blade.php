@@ -74,8 +74,8 @@
                 }
             });
             editor.init(function(evt) {
+                // '<button id="firstNameBtn" type="button" class="btn btn-default btn-sm btn-small btn-name" title="First Name" data-content="firstname"><i class="fa fa-smile-o"></i></button>' +
                 let buttonsCustom =
-                    '<button id="firstNameBtn" type="button" class="btn btn-default btn-sm btn-small btn-name" title="First Name" data-content="firstname"><i class="fa fa-smile-o"></i></button>' +
                     '<button id="fullNameBtn" type="button" class="btn btn-default btn-sm btn-small btn-name" title="Full Name" data-content="fullname"><i class="fa fa-meh-o"></i></button>' +
                     '<button id="affiliationBtn" type="button" class="btn btn-default btn-sm btn-small btn-name" title="Affiliation" data-content="affiliation"><i class="fa fa-buysellads"></i></button>' +
                     '<button id="abstractBtn" type="button" class="btn btn-default btn-sm btn-small btn-name" title="Abstract Title" data-content="abstract"><i class="fa fa-text-width"></i></button>' +
@@ -87,7 +87,7 @@
                 $('.btn-name').tooltip({
                     container: 'body',
                     placement: 'bottom'
-                }); 
+                });
             });
 
         }).on('click', '.btn-name', function() {

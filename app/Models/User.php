@@ -46,4 +46,14 @@ class User extends Authenticatable
     public function userDetails(){
         return $this->hasOne(UserDetail::class,'user_id', 'id');
     }
+
+    public function abstractFiles($presentation = [])
+    { 
+        return $this->hasOne(AbstractFile::class, 'user_id','id')->latestOfMany('created_at');
+    }
+
+    public function scopePresentation()
+    {
+
+    }
 }

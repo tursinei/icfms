@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Http\Requests\StoreAnnouncementRequest;
 use App\Jobs\EmailAnnouncementJob;
 use App\Mail\AnnouncementMail;
+use App\Models\AbstractFile;
 use App\Models\Announcements;
 use App\Models\User;
 use Exception;
@@ -16,9 +17,11 @@ use Yajra\DataTables\Facades\DataTables;
 
 class AnnouncementService
 {
-    public static $LABEL_FIRST = '{#firstname#}';
+    // public static $LABEL_FIRST = '{#firstname#}';
     public static $LABEL_FULL = '{#fullname#}';
     public static $LABEL_AFFILIATION = '{#affiliation#}';
+    public static $LABEL_ABSTRACT = '{#abstract#}';
+    public static $LABEL_PRESENTATION = '{#presentation#}';
 
     public function listUser($tipeUser)
     {
@@ -55,6 +58,7 @@ class AnnouncementService
         }
 
         $targets = $this->emails($request->input('target'));
+
         $targets = array_filter($targets);
         $mailsSendTo = array_keys($targets);
         $data['sendto'] = json_encode($mailsSendTo);
@@ -65,21 +69,41 @@ class AnnouncementService
             $data['attachment'] = $announce->attachment;
         }
         $tmpBody = $data['isi_email'];
-        if(!strpos($tmpBody, self::$LABEL_FIRST) && !strpos($tmpBody, self::$LABEL_FULL)
-            && !strpos($tmpBody, self::$LABEL_AFFILIATION)){
-            Mail::to($mailsSendTo)->send(new AnnouncementMail($data));
-            return $announce->save();
+        $abstract = [];
+        if (strpos($tmpBody, self::$LABEL_ABSTRACT) OR strpos($tmpBody, self::$LABEL_AFFILIATION)) {
+            $abstract = $this->getAbstractPresentation($request->input('target'));
         }
+        $this->sendMails($data, $targets, $tmpBody, $abstract);
+        return $announce->save();
+    }
 
+    public function getAbstractPresentation($target)
+    {
+        $targetPresentation = explode(',', $target);
+        $abstractData = AbstractFile::select('user_id', DB::raw('max(abstract_id) as id'))->whereIn('presentation', $targetPresentation)
+            ->groupBy('user_id')->pluck('user_id', 'id');
+        $seletedIds = array_keys($abstractData->toArray());
+        $titlePresentation =  AbstractFile::whereIn('abstract_id', $seletedIds)->with('user')->get();
+        $keyByEmail = [];
+        foreach ($titlePresentation as  $abs) {
+            $keyByEmail[$abs->user->email] = ['abstract' => $abs->abstract_title,  'presentation' => $abs->presentation];
+        }
+        return $keyByEmail;
+    }
+
+    private function sendMails($data, $targets, $bodyEmail, $keyByEmail = [])
+    {
         foreach ($targets as $mail => $name) {
             $names = explode('#', $name); // 0: firstname, 1 : fullname, 2 :affiliation
-            $data['isi_email'] = $tmpBody;
-            $body              = str_replace(self::$LABEL_FIRST, $names[0], $data['isi_email']);
-            $body              = str_replace(self::$LABEL_FULL, $names[1], $body);
-            $data['isi_email'] = str_replace(self::$LABEL_AFFILIATION, $names[2], $body);
+            $body  = $bodyEmail;
+            if (isset($keyByEmail[$mail])) {
+                $body           = str_replace(self::$LABEL_ABSTRACT, $keyByEmail[$mail]['abstract'], $body);
+                $body           = str_replace(self::$LABEL_PRESENTATION, $keyByEmail[$mail]['presentation'], $body);
+            }
+            $body               = str_replace(self::$LABEL_FULL, $names[1], $body);
+            $data['isi_email']  = str_replace(self::$LABEL_AFFILIATION, $names[2], $body);
             Mail::to($mail)->send(new AnnouncementMail($data));
         }
-        return $announce->save();
     }
 
     public function emails($target)
