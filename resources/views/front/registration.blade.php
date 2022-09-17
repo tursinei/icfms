@@ -30,7 +30,7 @@
                             <input name="firstname" type="text" class="form-control input-sm" value="{{ old('firstname') }}" required>
                         </div>
                         <div class="form-group">
-                            <label>Midle Name (Optional)</label>
+                            <label>Middle Name (Optional)</label>
                             <input name="midlename" type="text" class="form-control input-sm" value="{{ old('midlename') }}">
                         </div>
                         <div class="form-group">
