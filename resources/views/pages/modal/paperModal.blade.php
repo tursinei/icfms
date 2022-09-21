@@ -39,7 +39,7 @@
                 <div id="bar-fileprogress" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">%
                 </div>
             </div>
-            <small>Only file with pdf,doc,docx,odt Extension allowed</small>
+            <small>Only file with pdf,doc,docx,odt Extension allowed (max. 10 MB) </small>
         </div>
     </div>
     {{-- <div class="form-group alert alert-info">
