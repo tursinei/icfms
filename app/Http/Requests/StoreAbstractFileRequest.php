@@ -24,7 +24,6 @@ class StoreAbstractFileRequest extends FormRequest
     public function rules()
     {
         return [
-            'presentation' => ['required'],
             'presenter' => ['required', 'string'],
             'authors' => ['required', 'string'],
             'topic_id' => ['required', 'integer'],

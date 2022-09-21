@@ -69,9 +69,9 @@
                 done : function (res) {
                     showModal(res).on('shown.bs.modal',function(params) {
                         $('input[name="authors"]').tagsinput();
-                        let editor = $('textarea[name="abstract"]').summernote({
-                            height: 120
-                        });
+                        // let editor = $('textarea[name="abstract"]').summernote({
+                        //     height: 120
+                        // });
                     });
                 }
             });

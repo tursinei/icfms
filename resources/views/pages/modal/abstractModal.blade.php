@@ -50,12 +50,12 @@
             <small class="text-mute">Paper Title must be the same as Abstract Title</small>
         </div>
     </div>
-    <div class="form-group">
+    {{-- <div class="form-group">
         <label class="col-sm-3 control-label">Abstract</label>
         <div class="col-sm-9">
             {!! Form::textarea('abstract', '', ['class' => 'form-control', 'rows' => '', 'cols' => '']) !!}
         </div>
-    </div>
+    </div> --}}
     <div class="form-group">
         <label class="col-sm-3 control-label">Your Abstract File</label>
         <div class="col-sm-9">
@@ -66,7 +66,7 @@
                 </div>
             </div>
             <small>
-                Only file with pdf,doc,docx,odt Extension allowed (max. 5 MB)
+                Only file with pdf,doc,docx,odt Extension allowed (max. 3 MB)
             </small>
         </div>
     </div>
