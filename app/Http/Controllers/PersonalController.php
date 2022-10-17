@@ -6,6 +6,7 @@ use App\Http\Requests\PersonalRequest;
 use App\Models\Country;
 use App\Models\User;
 use App\Models\UserDetail;
+use App\Services\UserService;
 use Illuminate\Support\Facades\Auth;
 
 class PersonalController extends Controller
@@ -17,11 +18,13 @@ class PersonalController extends Controller
      */
     public function index()
     {
-        $user = UserDetail::find(Auth::user()->id);
+        $user =  UserDetail::find(Auth::user()->id);
+
         $country = Country::all()->pluck('nicename')->toArray();
-        $affiliations = UserDetail::affiliations();
+        $affiliations = UserService::affiliations();
         $affiliations = array_merge(['' => '--Choose your affiliation--'], $affiliations);
-        $isOtherAffiliation = (!array_search($user->affiliation, $affiliations) && ($user->affiliation != ''));
+        $affiliation  = $user->affiliation??'';
+        $isOtherAffiliation = (!array_search($affiliation, $affiliations) && ($affiliation != ''));
 
         return view('pages.personal', compact('user', 'country', 'affiliations', 'isOtherAffiliation'));
     }

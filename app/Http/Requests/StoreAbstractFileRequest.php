@@ -24,10 +24,10 @@ class StoreAbstractFileRequest extends FormRequest
     public function rules()
     {
         return [
+            'presentation' => ['required', 'string'],
             'presenter' => ['required', 'string'],
             'authors' => ['required', 'string'],
             'topic_id' => ['required', 'integer'],
-            'presentation' => ['required', 'string'],
             'abstract_title' => ['required', 'string'],
             'paper_title' => ['required', 'string'],
             'abstract' => ['nullable','string'],
@@ -39,6 +39,8 @@ class StoreAbstractFileRequest extends FormRequest
     public function messages()
     {
         return [
+            'presentation.required' => 'Presentation type must be selected',
+            'topic_id.required' => 'Topic must be selected',
             'abstract_file.max' => 'Must not be greater than 3 Mb'
         ];
     }

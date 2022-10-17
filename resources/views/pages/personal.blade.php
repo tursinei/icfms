@@ -18,39 +18,39 @@
                         <x-auth-validation-errors class="alert alert-danger" :errors="$errors" />
                         <form action="{{ route('personal.store') }}" method="POST" class="form-horizontal">
                             @csrf
-                            {!! Form::hidden('user_id', $user->user_id) !!}
+                            {!! Form::hidden('user_id', $user->user_id??0) !!}
                             <div class="form-group">
                                 <label class="control-label col-sm-3">Title </label>
                                 <div class="col-sm-3">
-                                    {!! Form::select('title', $optTitle, $user->title, ['class' => 'form-control']) !!}
+                                    {!! Form::select('title', $optTitle, $user->title??'', ['class' => 'form-control']) !!}
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-3">Name</label>
                                 <div class="col-sm-3">
-                                    {!! Form::text('firstname', $user->firstname, ['placeholder' => 'First name', 'class' => 'form-control']) !!}
+                                    {!! Form::text('firstname', $user->firstname??'', ['placeholder' => 'First name', 'class' => 'form-control']) !!}
                                 </div>
                                 <div class="col-sm-3">
-                                    {!! Form::text('midlename', $user->midlename, [
+                                    {!! Form::text('midlename', $user->midlename??'', [
                                         'placeholder' => 'Middle name (Optional)',
                                         'class' => 'form-control',
                                     ]) !!}
                                 </div>
                                 <div class="col-sm-3">
-                                    {!! Form::text('lastname', $user->lastname, ['placeholder' => 'Last name', 'class' => 'form-control']) !!}
+                                    {!! Form::text('lastname', $user->lastname??'', ['placeholder' => 'Last name', 'class' => 'form-control']) !!}
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-3">Affiliation</label>
                                 <div class="col-sm-6">
                                     @php
-                                        $valueAffiliation   = $user->affiliation;
+                                        $valueAffiliation   = $user->affiliation??'';
                                         $isHidden           = 'hidden';
                                         $valueAnother       = '';
                                         if ($isOtherAffiliation OR old('affiliation') == 'Another') {
                                             $isHidden           = '';
                                             $valueAffiliation   = 'Another';
-                                            $valueAnother       = old('affiliation') == 'Another' ? '' : $user->affiliation;
+                                            $valueAnother       = old('affiliation') == 'Another' ? '' : $valueAffiliation;
                                         }
                                     @endphp
                                     {!! Form::select('affiliation', $affiliations, $valueAffiliation , ['class' => 'form-control input-sm']) !!}
@@ -64,7 +64,7 @@
                             <div class="form-group">
                                 <label class="control-label col-sm-3">Address (Optional)</label>
                                 <div class="col-sm-6">
-                                    <textarea name="address" class="form-control">{{ $user->address }}</textarea>
+                                    <textarea name="address" class="form-control">{{ $user->address??'' }}</textarea>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -74,7 +74,7 @@
                                         $listCountry = array_combine($country, $country);
                                         array_unshift($listCountry, '-- Choose Country --');
                                     @endphp
-                                    {!! Form::select('country', $listCountry, $user->country, ['class' => 'form-control']) !!}
+                                    {!! Form::select('country', $listCountry, $user->country??'', ['class' => 'form-control']) !!}
                                 </div>
                             </div>
                             <div class="form-group">
@@ -88,19 +88,19 @@
                                 <label class="control-label col-sm-3">2<sup>nd</sup> Email (Optional)</label>
                                 <div class="col-sm-6">
                                     <input type="email" name="secondemail" class="form-control"
-                                        value="{{ $user->secondemail }}">
+                                        value="{{ $user->secondemail??'' }}">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-3">Contact Number</label>
                                 <div class="col-sm-3">
-                                    {!! Form::text('mobilenumber', $user->mobilenumber, [
+                                    {!! Form::text('mobilenumber', $user->mobilenumber??'', [
                                         'placeholder' => 'Mobile Number',
                                         'class' => 'form-control',
                                     ]) !!}
                                 </div>
                                 <div class="col-sm-3">
-                                    {!! Form::text('phonenumber', $user->phonenumber, ['placeholder' => 'Phone Number', 'class' => 'form-control']) !!}
+                                    {!! Form::text('phonenumber', $user->phonenumber??'', ['placeholder' => 'Phone Number', 'class' => 'form-control']) !!}
                                 </div>
                             </div>
                             <div class="form-group">

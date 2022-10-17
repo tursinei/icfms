@@ -11,6 +11,7 @@ use App\Models\UserDetail;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
@@ -58,29 +59,35 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ];
-        $user = User::create($data);
+        DB::beginTransaction();
+        try {
+            $user = User::create($data);
 
-        $data['password'] = $request->password;
-        $data['affiliation'] = $request->affiliation == 'Another' ?
-            $request->another_affiliation : $request->affiliation;
+            $data['password'] = $request->password;
+            $data['affiliation'] = $request->affiliation == 'Another' ?
+                $request->another_affiliation : $request->affiliation;
 
-        UserDetail::create([
-            'user_id'   => $user->id,
-            'title'     => $request->title,
-            'firstname' => $request->firstname,
-            'midlename' => $request->midlename,
-            'lastname'  => $request->lastname,
-            'affiliation'  => $request->affiliation == 'Another' ?
-                $request->another_affiliation : $request->affiliation,
-            'address'   => $request->address,
-            'country'   => $request->country,
-            'secondemail'   => $request->secondemail,
-            'phonenumber'   => $request->phonenumber,
-            'mobilenumber'  => $request->mobilenumber
-        ]);
-
-        event(new Registered($user));
-        Mail::to($data['email'])->send(new RegistrationMail($data));
+            UserDetail::create([
+                'user_id'   => $user->id,
+                'title'     => $request->title,
+                'firstname' => $request->firstname,
+                'midlename' => $request->midlename,
+                'lastname'  => $request->lastname,
+                'affiliation'  => $request->affiliation == 'Another' ?
+                    $request->another_affiliation : $request->affiliation,
+                'address'   => $request->address,
+                'country'   => $request->country,
+                'secondemail'   => $request->secondemail,
+                'phonenumber'   => $request->phonenumber,
+                'mobilenumber'  => $request->mobilenumber
+            ]);
+            DB::commit();
+            event(new Registered($user));
+            Mail::to($data['email'])->send(new RegistrationMail($data));
+        } catch (\Exception $ex) {
+            DB::rollBack();
+            return redirect()->route('login')->with('error', 'Failed to Sign Up. <b>Error :'.$ex->getMessage().'</b>');
+        }
         // dispatch(new EmailRegistrationJob($data)); // add to job
         // Artisan::call('queue:work');
         return redirect()->route('login')->with('success', 'Please Sign In with data you have registered');

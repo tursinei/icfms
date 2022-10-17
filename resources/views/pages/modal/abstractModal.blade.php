@@ -5,7 +5,7 @@
     $presentation = ['oral', 'poster', 'audience', 'keynote speaker'];
     $value = array_map('ucwords', $presentation);
     $listPresentation = array_combine($presentation, $value);
-    array_unshift($listPresentation, '-- Choose Type --');
+    $listPresentation = array_merge(['' =>'-- Choose Type --'],$listPresentation);
     @endphp
     <div class="form-group mt-lg">
         <label class="col-sm-3 control-label">Presentation</label>
@@ -32,7 +32,7 @@
         <label class="col-sm-3 control-label">Topic</label>
         <div class="col-sm-9">
             @php
-                array_unshift($topic, '-- Choose Topic --');
+                $topic = array_merge(['' => '-- Choose Topic --'], $topic);
             @endphp
             {!! Form::select('topic_id', $topic, [], ['class' => 'form-control input-sm']) !!}
         </div>

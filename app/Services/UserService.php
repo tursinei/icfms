@@ -22,6 +22,16 @@ use function PHPUnit\Framework\isNull;
 class UserService
 {
 
+    public static function affiliations()
+    {
+        $afiliations =  [
+            'Riken', "Institut Teknologi Sepuluh Nopember",
+            "Universitas Padjadjaran", "Institut Teknologi Bandung",
+            "Universitas Gadjah Mada", "Universitas Indonesia", "Another"
+        ];
+        return array_combine($afiliations,$afiliations);
+    }
+
     private function getUsers($tipeUser = 1)
     {
         $isAdmin = $tipeUser == 1;
@@ -35,7 +45,7 @@ class UserService
 
     public function listUser($tipeUser){
         $isAdmin = $tipeUser == 1;
-        $data = $this->getUsers($tipeUser);
+        $data = $this->getUsers($tipeUser); 
         return DataTables::of($data)->addColumn('action', function ($row) use($isAdmin){
             $btnEditOrDel = $isAdmin ? '<a class="btn btn-primary btn-xs btn-edit" data-id="'.$row->id.'" title="Edit Data">
                     <i class="fa fa-pencil"></i></a>' : '<a class="btn btn-success btn-xs btn-download" data-id="'.$row->id.'" title="Download Data">
