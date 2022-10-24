@@ -65,7 +65,7 @@ class FullPaperController extends Controller
      * @param  \App\Models\fullPaper  $fullPaper
      * @return \Illuminate\Http\Response
      */
-    public function show(fullPaper $fullpaper)
+    public function show(FullPaper $fullpaper)
     {
         $path = public_path($fullpaper->file_path);
         if (File::exists($path)) {
@@ -81,7 +81,7 @@ class FullPaperController extends Controller
      * @param  \App\Models\fullPaper  $fullPaper
      * @return \Illuminate\Http\Response
      */
-    public function edit(fullPaper $fullPaper)
+    public function edit(FullPaper $fullPaper)
     {
         //
     }
