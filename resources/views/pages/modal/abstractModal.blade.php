@@ -32,7 +32,8 @@
         <label class="col-sm-3 control-label">Topic</label>
         <div class="col-sm-9">
             @php
-                $topic = array_merge(['' => '-- Choose Topic --'], $topic);
+                $topic[''] = '-- Choose Topic --';
+                ksort($topic);
             @endphp
             {!! Form::select('topic_id', $topic, [], ['class' => 'form-control input-sm']) !!}
         </div>
