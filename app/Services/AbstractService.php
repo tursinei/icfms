@@ -36,9 +36,10 @@ class AbstractService
     {
         return AbstractFile::join('m_topic', 'm_topic.topic_id', 'abstract_file.topic_id')
         ->join('users', 'users.id', 'abstract_file.user_id')
+        ->join('users_details','users_details.user_id','users.id')
         ->orderBy('created_at', 'DESC')
         ->get(['abstract_id','users.name as fullname' ,'m_topic.name as topic', 'abstract_file.created_at',
-                'presentation', 'authors', 'abstract_title']);
+                'presentation', 'authors', 'abstract_title', 'users_details.title','users.email']);
     }
 
     public function listAbstracts()
@@ -86,12 +87,14 @@ class AbstractService
         $styleHeader->setShouldWrapText(false);
         $styleHeader->setFontSize(12);
         $writer->openToBrowser('list-abstracts.xlsx');
-        $writer->setColumnWidth(30, 1);
+        $writer->setColumnWidth(20, 1);
         $writer->setColumnWidth(40, 2);
-        $writer->setColumnWidth(25, 3);
-        $writer->setColumnWidth(50, 4);
-        $writer->setColumnWidth(45, 5);
-        $writer->setColumnWidth(35, 6);
+        $writer->setColumnWidth(20, 3);
+        $writer->setColumnWidth(40, 4);
+        $writer->setColumnWidth(25, 5);
+        $writer->setColumnWidth(50, 6);
+        $writer->setColumnWidth(45, 7);
+        $writer->setColumnWidth(35, 8);
 
         $title1 = WriterEntityFactory::createCell('List Abstracts', $styleHeader);
         $singleRow = WriterEntityFactory::createRow([$title1]);
@@ -106,7 +109,7 @@ class AbstractService
         $styleHeader->setCellAlignment(CellAlignment::CENTER);
         $styleHeader->setBorder($border);
         $styleHeader->setBackgroundColor(Color::rgb(218, 227, 243));
-        $namaKolom = ['Date', 'Name', 'Presentation', 'Topic', 'Authors', 'Abstract Title'];
+        $namaKolom = ['Date', 'Email','Title','Name', 'Presentation', 'Topic', 'Authors', 'Abstract Title'];
         $header = WriterEntityFactory::createRowFromArray($namaKolom, $styleHeader);
         $writer->addRow($header);
         $abstractData = $this->getAbstract();
@@ -117,6 +120,8 @@ class AbstractService
             $tgl = $row->created_at->format('d-m-Y');
             $baris = [
                     WriterEntityFactory::createCell($tgl, $styleNumber),
+                    WriterEntityFactory::createCell($row->email, $styleLeft),
+                    WriterEntityFactory::createCell($row->title, $styleNumber),
                     WriterEntityFactory::createCell($row->fullname, $styleLeft),
                     WriterEntityFactory::createCell($row->presentation, $styleNumber),
                     WriterEntityFactory::createCell($row->topic, $styleLeft),
