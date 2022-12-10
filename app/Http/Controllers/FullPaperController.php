@@ -69,7 +69,7 @@ class FullPaperController extends Controller
     {
         $path = public_path($fullpaper->file_path);
         if (File::exists($path)) {
-            return response()->download($path, $fullpaper->file_name);
+            return response()->download($path, urlencode($fullpaper->file_name));
         } else {
             throw new Exception("File Not Found", 1);
         }

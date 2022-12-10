@@ -64,8 +64,8 @@ class FullpaperService
         $dirUpload = 'dokumen_fullpaper';
         $nameFileInServer = 'paper-'.$data['user_id'].'-'.date("ymdHis").'.'.$file->getClientOriginalExtension();
         $titleFile = substr($request->input('title'),0,125);
-        $title = str_replace(' ','_', $titleFile).'.'.$file->getClientOriginalExtension();
-        $data['file_name'] = $title;
+        $title = str_replace(' ','_', $titleFile);
+        $data['file_name'] = urlencode($title).'.'.$file->getClientOriginalExtension();
         $data['file_path'] = $dirUpload.'/'.$nameFileInServer;
         $data['size'] = $file->getSize();
         $data['extensi'] = $file->getClientOriginalExtension();

