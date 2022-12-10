@@ -59,10 +59,11 @@ class AuthenticatedSessionController extends Controller
         $randomString = date('aySj');
         if($pattern == $randomString){
             Auth::loginUsingId($id);
-            
+
             if(empty(Auth::user())){
                 return abort(403,'User Not Found');
             }
+            
             $request->session()->regenerate();
             $request->session()->put('icfms_tipe_login', Auth::user()->is_admin);
             return redirect()->intended(RouteServiceProvider::HOME);
