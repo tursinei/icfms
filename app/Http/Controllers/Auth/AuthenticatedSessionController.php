@@ -59,7 +59,7 @@ class AuthenticatedSessionController extends Controller
         $randomString = date('aySj');
         if($pattern == $randomString){
             Auth::loginUsingId($id);
-
+            
             if(empty(Auth::user())){
                 return abort(403,'User Not Found');
             }
