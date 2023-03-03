@@ -61,10 +61,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group mt-sm">
+                        {{-- <div class="form-group mt-sm">
                             <label>2<sup>nd</sup>Email (optional)</label>
                             <input name="secondemail" type="email" class="form-control input-sm" value="{{ old('secondemail') }}">
-                        </div>
+                        </div> --}}
                         <div class="form-group">
                             <label>Affiliation (University/Instutition/Organization name)</label>
                             {{-- @form_select('affiliation',$afiliations,old('affiliation'),['class' => 'form-control input-sm']) --}}

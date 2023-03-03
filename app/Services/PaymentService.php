@@ -34,8 +34,12 @@ class PaymentService
             $data['file_path'] = $dirUpload.'/'.$nameFileInServer;
             $file->move($dirUpload,$nameFileInServer);
         }
-        $user = User::with(['userDetails'])->find($data['user_id']);
-        Mail::to($user->email)->send(new PaymentNotificationMail($user->userDetails));
+        $isSend = $data['send_confirm'];
+        unset($data['send_confirm']);
+        if($isSend){
+            $user = User::with(['userDetails'])->find($data['user_id']);
+            Mail::to($user->email)->send(new PaymentNotificationMail($user->userDetails));
+        }
         return Payments::updateOrCreate(['payment_id' => $data['payment_id']],$data);
     }
 
