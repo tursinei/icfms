@@ -11,14 +11,15 @@ class PaymentNotificationMail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $dataAbstract;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($dataAbstract)
     {
-        //
+        $this->dataAbstract = $dataAbstract;
     }
 
     /**
@@ -29,7 +30,7 @@ class PaymentNotificationMail extends Mailable
     public function build()
     {
         $this->subject('Payment Completed - IcAUMS '.date('Y'));
-        $details = '';
+        $details = $this->dataAbstract;
         return $this->view('mail.payment')->with([
             'name'  => implode(' ', [$details->firstname, $details->midlename, $details->lastname]),
             'affiliation' => $details->affiliation,

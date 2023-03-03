@@ -6,7 +6,7 @@ use App\Http\Requests\StorePaymentRequest;
 use App\Mail\PaymentNotificationMail;
 use App\Models\Payments;
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use OpenSpout\Common\Entity\Style\Border;
 use OpenSpout\Common\Entity\Style\CellAlignment;
 use OpenSpout\Common\Entity\Style\Color;
@@ -16,8 +16,6 @@ use OpenSpout\Writer\Common\Creator\Style\StyleBuilder;
 use OpenSpout\Writer\Common\Creator\WriterEntityFactory;
 use Yajra\DataTables\Facades\DataTables;
 
-use function PHPUnit\Framework\isEmpty;
-use function PHPUnit\Framework\isNull;
 
 class PaymentService
 {
@@ -37,7 +35,7 @@ class PaymentService
             $file->move($dirUpload,$nameFileInServer);
         }
         $user = User::with(['userDetails'])->find($data['user_id']);
-        Mail::to($user->email)->send(new PaymentNotificationMail($user));
+        Mail::to($user->email)->send(new PaymentNotificationMail($user->userDetails));
         return Payments::updateOrCreate(['payment_id' => $data['payment_id']],$data);
     }
 
