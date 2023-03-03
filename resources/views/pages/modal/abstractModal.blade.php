@@ -2,15 +2,14 @@
 
 @section('modalBody')
     @php
-    $presentation = ['oral', 'poster', 'audience', 'keynote speaker'];
     $value = array_map('ucwords', $presentation);
     $listPresentation = array_combine($presentation, $value);
     $listPresentation = array_merge(['' =>'-- Choose Type --'],$listPresentation);
     @endphp
     <div class="form-group mt-lg">
-        <label class="col-sm-3 control-label">Presentation</label>
+        <label class="col-sm-3 control-label">Your Role</label>
         <div class="col-sm-3">
-            {!! Form::select('presentation', $listPresentation, [], ['class' => 'form-control input-sm']) !!}
+            {!! Form::select('presentation', $listPresentation, $userRole, ['class' => 'form-control input-sm']) !!}
             {!! Form::hidden('user_id', Auth::user()->id) !!}
         </div>
         <div class="col-sm-6">
@@ -43,21 +42,33 @@
         <div class="col-sm-9">
             {!! Form::text('abstract_title', '', ['class' => 'form-control input-sm']) !!}
         </div>
+        <div class="col-sm-9 col-md-offset-3">
+            <div class="checkbox">
+                <label>
+                    {!! Form::checkbox('sama', '', false,['id'=>'cektitle']) !!}
+                    Check this option if you are sure that your abstract
+                    title is the same as the title of your full paper
+                </label>
+            </div>
+        </div>
     </div>
     <div class="form-group">
         <label class="col-sm-3 control-label">Paper Title</label>
         <div class="col-sm-9">
             {!! Form::text('paper_title', '', ['class' => 'form-control input-sm']) !!}
-            <small class="text-mute">Paper Title must be the same as Abstract Title</small><br>
-            <small class="text-mute">If you don't want to include a Full Paper, please keep the Paper Title filled with the same Title as the Abstract Title</small>
+            {{-- <small class="text-mute">Paper Title must be the same as Abstract Title</small><br>
+            <small class="text-mute">If you don't want to include a Full Paper, please keep the Paper Title filled with the same Title as the Abstract Title</small> --}}
         </div>
     </div>
-    {{-- <div class="form-group">
-        <label class="col-sm-3 control-label">Abstract</label>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">Presentation Only</label>
         <div class="col-sm-9">
-            {!! Form::textarea('abstract', '', ['class' => 'form-control', 'rows' => '', 'cols' => '']) !!}
+            <label class="radio-inline">
+                {!! Form::radio('is_presentation', 1, false) !!} Yes</label>
+            <label class="radio-inline">
+                {!! Form::radio('is_presentation', 0, true) !!} No</label>
         </div>
-    </div> --}}
+    </div>
     <div class="form-group">
         <label class="col-sm-3 control-label">Your Abstract File</label>
         <div class="col-sm-9">

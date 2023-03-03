@@ -7,7 +7,9 @@ use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
 use App\Models\UserDetail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 use OpenSpout\Common\Entity\Style\Border;
 use OpenSpout\Common\Entity\Style\CellAlignment;
 use OpenSpout\Common\Entity\Style\Color;
@@ -32,6 +34,20 @@ class UserService
         return array_combine($afiliations,$afiliations);
     }
 
+    public static function isNotVerifyEmail(Request $request)
+    {
+        $verifyEmail = Auth::user()->email_verified_at;
+        if(is_null($verifyEmail)){
+            throw ValidationException::withMessages([
+                'email' => 'Email has registered, but not verified yet. <a id="resend-verification" href="' . route('verification.send') . '">Resend Verification</a>',
+            ]);
+            Auth::guard('web')->logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            return redirect(route('login'));
+        }
+    }
+
     private function getUsers($tipeUser = 1)
     {
         $isAdmin = $tipeUser == 1;
@@ -45,7 +61,7 @@ class UserService
 
     public function listUser($tipeUser){
         $isAdmin = $tipeUser == 1;
-        $data = $this->getUsers($tipeUser); 
+        $data = $this->getUsers($tipeUser);
         return DataTables::of($data)->addColumn('action', function ($row) use($isAdmin){
             $btnEditOrDel = $isAdmin ? '<a class="btn btn-primary btn-xs btn-edit" data-id="'.$row->id.'" title="Edit Data">
                     <i class="fa fa-pencil"></i></a>' : '<a class="btn btn-success btn-xs btn-download" data-id="'.$row->id.'" title="Download Data">

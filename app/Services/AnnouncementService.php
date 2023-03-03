@@ -18,10 +18,10 @@ use Yajra\DataTables\Facades\DataTables;
 class AnnouncementService
 {
     // public static $LABEL_FIRST = '{#firstname#}';
-    public static $LABEL_FULL = '{#fullname#}';
-    public static $LABEL_AFFILIATION = '{#affiliation#}';
-    public static $LABEL_ABSTRACT = '{#abstract#}';
-    public static $LABEL_PRESENTATION = '{#presentation#}';
+    const LABEL_FULL = '{#fullname#}';
+    const LABEL_AFFILIATION = '{#affiliation#}';
+    const LABEL_ABSTRACT = '{#abstract#}';
+    const LABEL_PRESENTATION = '{#presentation#}';
 
     public function listUser($tipeUser)
     {
@@ -70,7 +70,7 @@ class AnnouncementService
         }
         $tmpBody = $data['isi_email'];
         $abstract = [];
-        if (strpos($tmpBody, self::$LABEL_ABSTRACT) OR strpos($tmpBody, self::$LABEL_AFFILIATION)) {
+        if (strpos($tmpBody, self::LABEL_ABSTRACT) OR strpos($tmpBody, self::LABEL_AFFILIATION)) {
             $abstract = $this->getAbstractPresentation($request->input('target'));
         }
         $this->sendMails($data, $targets, $tmpBody, $abstract);
@@ -97,18 +97,18 @@ class AnnouncementService
             $names = explode('#', $name); // 0: firstname, 1 : fullname, 2 :affiliation
             $body  = $bodyEmail;
             if (isset($keyByEmail[$mail])) {
-                $body           = str_replace(self::$LABEL_ABSTRACT, $keyByEmail[$mail]['abstract'], $body);
-                $body           = str_replace(self::$LABEL_PRESENTATION, $keyByEmail[$mail]['presentation'], $body);
+                $body           = str_replace(self::LABEL_ABSTRACT, $keyByEmail[$mail]['abstract'], $body);
+                $body           = str_replace(self::LABEL_PRESENTATION, $keyByEmail[$mail]['presentation'], $body);
             }
-            $body               = str_replace(self::$LABEL_FULL, $names[1], $body);
-            $data['isi_email']  = str_replace(self::$LABEL_AFFILIATION, $names[2], $body);
+            $body               = str_replace(self::LABEL_FULL, $names[1], $body);
+            $data['isi_email']  = str_replace(self::LABEL_AFFILIATION, $names[2], $body);
             Mail::to($mail)->send(new AnnouncementMail($data));
         }
     }
 
     public function emails($target)
     {
-        $presentations = explode(',', $target);
+        $presentations = [$target];//explode(',', $target);
         return User::select('users.email', DB::raw("CONCAT(users_details.firstname,'#',users.name,'#',users_details.affiliation) AS nama"))
             ->join('abstract_file', 'users.id', 'abstract_file.user_id')
             ->join('users_details', 'users.id', 'users_details.user_id')

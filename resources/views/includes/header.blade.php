@@ -1,9 +1,9 @@
 <div class="logo-container">
-    <a href="../" class="logo">
+    {{-- <a href="../" class="logo">
         <img src="{{ asset('img/logo.png') }}" height="35" alt="ICFMS Logo" />
-    </a>
-    <h2 style="float: left;font-family:'Noto Sans','Comic Sans MS';color: #0088CC;margin-top:10px;font-weight:bold;">
-        <span class="alternative-fonts">ICFMS</span>
+    </a> --}}
+    <h2 style="float: left;font-family:'Noto Sans','Comic Sans MS';color: #0088CC;margin-top:10px;margin-left:25px;font-weight:bold;">
+        <span class="alternative-fonts">IcAUMS 2023</span>
     </h2>
     <div class="visible-xs toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html" data-fire-event="sidebar-left-opened">
         <i class="fa fa-bars" aria-label="Toggle sidebar"></i>
@@ -19,7 +19,7 @@
             <figure class="profile-picture">
                 <img src="asset/images/!logged-user.jpg" alt="Joseph Doe" class="img-circle" data-lock-picture="asset/images/!logged-user.jpg" />
             </figure>
-            <div class="profile-info" data-lock-name="John Doe" data-lock-email="johndoe@okler.com">
+            <div class="profile-info">
                 <span class="name">{{ Auth::user()->name }}</span>
                 <span class="role">{{ (session('icfms_tipe_login') == 1 ? 'Administrator' : 'Member') }}</span>
             </div>

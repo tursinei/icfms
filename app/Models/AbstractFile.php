@@ -29,7 +29,8 @@ class AbstractFile extends Model
         'extensi',
         'size',
         'user_id',
-        'topic_id'
+        'topic_id',
+        'is_presentation'
     ];
 
     protected $guarded = [];
@@ -50,7 +51,8 @@ class AbstractFile extends Model
         'extensi' => 'string',
         'size' => 'double',
         'user_id' => 'integer',
-        'topic_id' => 'integer'
+        'topic_id' => 'integer',
+        'is_presentation' => 'boolean'
     ];
 
     public function user()

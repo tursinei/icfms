@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Abstracts | ICFMS ' . date('Y'))
+@section('title', 'Abstracts')
 @section('title2', 'Abstracts')
 
 @section('content')
@@ -18,11 +18,16 @@
                                 <thead>
                                     <tr>
                                         <th style="width: 10%" class="text-center">Date</th>
+                                        <th style="width: 15%" class="text-center">Email</th>
+                                        <th style="width: 10%" class="text-center">Title</th>
                                         <th style="width: 10%" class="text-center">Name</th>
+                                        <th style="width: 20%" class="text-center">Affiliation</th>
+                                        <th style="width: 10%" class="text-center">Country</th>
                                         <th style="width: 20%" class="text-center">Presentation</th>
                                         <th style="width: 20%" class="text-center">Topic</th>
                                         <th style="width: 20%" class="text-center">Authors</th>
                                         <th style="width: 10%" class="text-center">Abstract Title</th>
+                                        <th style="width: 15%" class="text-center">Remarks</th>
                                         <th style="width: 10%" class="text-center">&nbsp;</th>
                                     </tr>
                                 </thead>
@@ -48,8 +53,24 @@
                     className: 'text-center'
                 },
                 {
+                    data: 'email',
+                    name: 'email'
+                },
+                {
+                    data: 'title',
+                    name: 'title'
+                },
+                {
                     data: 'fullname',
                     name: 'fullname'
+                },
+                {
+                    data: 'affiliation',
+                    name: 'affiliation'
+                },
+                {
+                    data: 'country',
+                    name: 'country'
                 },
                 {
                     data: 'presentation',
@@ -66,6 +87,10 @@
                 {
                     data: 'abstract_title',
                     name: 'abstract_title'
+                },
+                {
+                    data: 'remarks',
+                    name: 'remarks'
                 },
                 {
                     data: 'action',

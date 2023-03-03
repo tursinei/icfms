@@ -4,6 +4,7 @@ use App\Http\Controllers\AbstractFileController;
 use App\Http\Controllers\AdminAbstractsController;
 use App\Http\Controllers\AdminFullpaperController;
 use App\Http\Controllers\AnnouncementsController;
+use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FullPaperController;
 use App\Http\Controllers\GitController;
@@ -44,6 +45,8 @@ Route::middleware('auth')->group(function () {
     Route::post('announcement/preview', [AnnouncementsController::class, 'preview'])->name('announcement.preview');
     Route::resource('payment', PaymentController::class)->except(['edit','update', 'show']);
     Route::get('payment/{payment}/{action}',[PaymentController::class,'show'])->name('payment.show');
+    Route::post('email/resend-verification', [EmailVerificationNotificationController::class, 'resendEmail'])
+                ->name('verification.resend');
 });
 
 require __DIR__ . '/auth.php';

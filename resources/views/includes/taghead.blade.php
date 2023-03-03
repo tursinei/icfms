@@ -1,6 +1,6 @@
-<title>@yield('title')</title>
+<title>@yield('title') | IcAUMS {{ date('Y') }}</title>
 <meta name="keywords" content="HTML5 Admin Template" />
-<meta name="description" content="Porto Admin - Responsive HTML5 Template">
+<meta name="description" content="Porto Admin">
 <meta name="author" content="Velly Coderz">
 <meta name="csrf-token" content="{{ csrf_token() }}" />
 <!-- Mobile Metas -->

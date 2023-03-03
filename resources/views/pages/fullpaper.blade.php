@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Full Paper Submission | ICFMS ' . date('Y'))
+@section('title', 'Full Paper Submission')
 @section('title2', 'Full Paper Submission')
 
 @section('content')

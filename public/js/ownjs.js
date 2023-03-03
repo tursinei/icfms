@@ -28,6 +28,16 @@
             "background-color": 'rgba(255,255,255,0.5)'
         };
     }
+
+    if (i != "" && i != "undefined" && i != null) {
+        i.removeClass().addClass("fa fa-spin fa-spinner");
+        if (i.parent().hasClass("btn")) {
+            i.parent().attr("disabled", "disabled");
+        }
+    } else {
+        $("#divOverlay").css(option).removeClass("hidden");
+    }
+
     let setting = $.extend({
         type: 'GET',
         url: '',
@@ -37,14 +47,6 @@
         done: function (ss) {
         },
         beforeSend: function () {
-            if ((i != '') && (i != 'undefined') && (i != null)) {
-                i.removeClass().addClass('fa fa-spin fa-spinner');
-                if (i.parent().hasClass('btn')) {
-                    i.parent().attr('disabled', 'disabled');
-                }
-            } else {
-                $('#divOverlay').css(option).removeClass('hidden');
-            }
         },
         error: function (e,status) {
             let er = e.responseJSON, msg = '', res = '';
@@ -78,16 +80,21 @@
     //     error: setting.error,
 
     // }
-    return $.ajax(setting).always(function () {
-        if ((i != '') && (i != 'undefined') && (i != null)) {
-            i.removeClass().addClass(cls);
-            if (i.parent().hasClass('btn')) {
-                i.parent().removeAttr('disabled');
+
+    setTimeout(() => {
+        $.ajax(setting).always(function () {
+            if (i != "" && i != "undefined" && i != null) {
+                i.removeClass().addClass(cls);
+                if (i.parent().hasClass("btn")) {
+                    i.parent().removeAttr("disabled");
+                }
+            } else {
+                $("#divOverlay").addClass("hidden").removeAttr("style");
             }
-        } else {
-            $('#divOverlay').addClass('hidden').removeAttr('style');
-        }
-    });
+        });
+    }, 10);
+
+    return false
 };
 
 var refreshTableServerOn = function (a, url, setCol, i, orderCol = []) {

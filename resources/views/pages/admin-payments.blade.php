@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Payments | ICFMS ' . date('Y'))
+@section('title', 'Payments')
 @section('title2', 'Payments')
 
 @section('content')
@@ -18,10 +18,12 @@
                                 <thead>
                                     <tr>
                                         <th style="width: 10%" class="text-center">Date</th>
+                                        <th style="width: 20%" class="text-center">Email</th>
+                                        <th style="width: 10%" class="text-center">Title</th>
                                         <th style="width: 10%" class="text-center">Name</th>
                                         <th style="width: 20%" class="text-center">Affiliation</th>
+                                        <th style="width: 15%" class="text-center">Presentation Role</th>
                                         <th style="width: 20%" class="text-center">Nominal</th>
-                                        <th style="width: 20%" class="text-center">Email</th>
                                         <th style="width: 10%" class="text-center">Note Payments</th>
                                     </tr>
                                 </thead>
@@ -61,23 +63,29 @@
                     data: 'date_upload',
                     name: 'date_upload',
                     className: 'text-center'
+                },{
+                    data: 'email',
+                    name: 'email'
+                }, {
+                    data: 'title',
+                    name: 'title',
+                    className : 'text-center'
                 },
                 {
                     data: 'name',
                     name: 'name',
-                    className: 'text-center'
                 },
                 {
                     data: 'affiliation',
                     name: 'affiliation'
                 },
                 {
-                    data: 'terbilang',
-                    name: 'terbilang'
+                    data: 'presentation',
+                    name: 'presentation'
                 },
                 {
-                    data: 'email',
-                    name: 'email'
+                    data: 'terbilang',
+                    name: 'terbilang'
                 },
                 {
                     data: 'action',

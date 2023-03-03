@@ -28,6 +28,7 @@ class UserDetail extends Model
         'country',
         'secondemail',
         'phonenumber',
+        'presentation',
         'mobilenumber'
     ];
 
@@ -47,6 +48,7 @@ class UserDetail extends Model
         'secondemail' => 'string',
         'phonenumber' => 'string',
         'mobilenumber' => 'string',
+        'presentation' => 'string'
     ];
 
     public static function affiliations()
@@ -54,7 +56,7 @@ class UserDetail extends Model
         $afiliations =  [
             'Riken', "Institut Teknologi Sepuluh Nopember",
             "Universitas Padjadjaran", "Institut Teknologi Bandung",
-            "Universitas Gadjah Mada", "Universitas Indonesia", "Another"
+            "Universitas Gadjah Mada", "Universitas Indonesia","Another"
         ];
         return array_combine($afiliations,$afiliations);
     }

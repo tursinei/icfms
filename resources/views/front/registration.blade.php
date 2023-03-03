@@ -1,12 +1,15 @@
 @extends('layouts.front')
 
-@section('title', 'Registration ICFMS 2022')
+@section('title', 'Registration ')
 
 @section('content')
     <div class="center-sign">
-        <a href="/" class="logo pull-left">
+        {{-- <a href="/" class="logo pull-left">
             <h3>Registration Form</h3>
-        </a>
+        </a> --}}
+        <h2 style="float: left;font-family: 'Noto Sans','Comic Sans MS';color: #0088CC;margin-top:30px;font-weight:bold">
+            <span class="alternative-fonts">Registration Form</span>
+        </h2>
         <div class="panel panel-sign">
             <div class="panel-title-sign mt-xl text-right">
                 <h2 class="title text-uppercase text-weight-bold m-none"><i class="fa fa-user mr-xs"></i> Sign Up</h2>
@@ -63,14 +66,15 @@
                             <input name="secondemail" type="email" class="form-control input-sm" value="{{ old('secondemail') }}">
                         </div>
                         <div class="form-group">
-                            <label>Affiliation</label>
-                            @form_select('affiliation',$afiliations,old('affiliation'),['class' => 'form-control input-sm'])
-                            @php
-                                $isOtherHidden = old('affiliation') != 'Another' ? 'hidden' : '';
-                            @endphp
-                            {!! Form::text('another_affiliation', old('another_affiliation'), ['class' =>'form-control input-sm '.$isOtherHidden,
+                            <label>Affiliation (University/Instutition/Organization name)</label>
+                            {{-- @form_select('affiliation',$afiliations,old('affiliation'),['class' => 'form-control input-sm']) --}}
+                            {!! Form::text('affiliation', old('affliiation'), [
+                                    'class' => "form-control input-sm",
+                                    'placeholder' => 'Input Affiliation Name']) !!}
+                            <small class="text-muted">Please fill in the English name of your affiliation</small>
+                            {{-- {!! Form::text('another_affiliation', old('another_affiliation'), ['class' =>'form-control input-sm '.$isOtherHidden,
                                 'style' =>'margin-top:5px',
-                                'placeholder' => 'Input Another Affiliation Name']) !!}
+                                'placeholder' => 'Input Another Affiliation Name']) !!} --}}
                         </div>
                         <div class="form-group">
                             <label>Address (Optional)</label>
@@ -83,7 +87,7 @@
                                 $country = array_merge(['' => '-- Choose Country --'],$country);
                             @endphp
 
-                            {!! Form::select('country', $country, old('country'), ['class' =>'form-control']) !!}
+                            {!! Form::select('country', $country, old('country'), ['class' =>'form-control input-sm']) !!}
                         </div>
                         <div class="row mb-md">
                             <div class="col-md-6">
@@ -99,6 +103,10 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label>Your Role</label>
+                            {!! Form::select('presentation', $roles, '', ['class' => 'form-control input-sm', 'placeholder' => '--Choose Your Role--']) !!}
+                        </div>
                         <div class="row">
                             <div class="col-md-offset-8 col-md-4 text-right">
                                 <button type="button" id="btn-submit" class="btn btn-primary">Sign Up</button>
@@ -111,7 +119,7 @@
             </div>
         </div>
 
-        <p class="text-center text-muted mt-md mb-md">&copy; Copyright 2022. All Rights Reserved.</p>
+        <p class="text-center text-muted mt-md mb-md">&copy; Copyright {{ date('Y') }}. All Rights Reserved.</p>
     </div>
 @endsection
 @once

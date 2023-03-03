@@ -1,14 +1,11 @@
 @extends('layouts.front')
 
-@section('title', 'Login ICFMS 2022')
+@section('title', 'Login ')
 
 @section('content')
     <div class="center-sign">
-        <a href="/" class="logo pull-left" style="margin-top: 15px">
-            <img src="{{ asset('img/logo.png') }}" height="54" alt="ICFMS 2022" />
-        </a>
         <h2 style="float: left;font-family: 'Noto Sans','Comic Sans MS';color: #0088CC;margin-top:30px;font-weight:bold">
-            <span class="alternative-fonts">ICFMS</span>
+            <span class="alternative-fonts">IcAUMS</span>
         </h2>
         <div class="panel panel-sign">
             <div class="panel-title-sign mt-xl text-right">
@@ -71,6 +68,6 @@
             </div>
         </div>
 
-        <p class="text-center text-muted mt-md mb-md">&copy; Copyright 2022. All Rights Reserved.</p>
+        <p class="text-center text-muted mt-md mb-md">&copy; Copyright {{ date('Y') }}. All Rights Reserved.</p>
     </div>
 @endsection

@@ -37,7 +37,9 @@ class AbstractFileController extends Controller
     {
         $title = 'Abstract Submission Form';
         $topic = Mtopic::pluck('name', 'topic_id')->toArray();
-        return view('pages.modal.abstractModal', compact('title', 'topic'));
+        $presentation = AbstractService::ROLES;
+        $userRole = Auth::user()->userDetails->presentation;
+        return view('pages.modal.abstractModal', compact('title', 'topic','presentation','userRole'));
     }
 
     /**

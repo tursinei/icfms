@@ -33,6 +33,7 @@ class StoreAbstractFileRequest extends FormRequest
             'abstract' => ['nullable','string'],
             'user_id' => ['required','integer'],
             'abstract_file' => ['required', 'file','mimes:pdf,doc,docx','max:3000'],
+            'is_presentation' => ['required'],
         ];
     }
 
@@ -42,6 +43,13 @@ class StoreAbstractFileRequest extends FormRequest
             'presentation.required' => 'Presentation type must be selected',
             'topic_id.required' => 'Topic must be selected',
             'abstract_file.max' => 'Must not be greater than 3 Mb'
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
+            'is_presentation' => 'Presentation Only'
         ];
     }
 }

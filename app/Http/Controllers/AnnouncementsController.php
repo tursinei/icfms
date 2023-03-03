@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreAnnouncementRequest;
 use App\Models\Announcements;
+use App\Models\Mtopic;
+use App\Services\AbstractService;
 use App\Services\AnnouncementService;
 use Illuminate\Http\Request;
 
@@ -16,10 +18,11 @@ class AnnouncementsController extends Controller
      */
     public function index()
     {
-        $target = [
-            'oral,poster,audience' => 'Participants (Oral, Poster, Audience)',
-            'keynote speaker' => 'Only Keynote Speaker'
-        ];
+        // $target = [
+        //     'oral,poster,audience' => 'Participants (Oral, Poster, Audience)',
+        //     'keynote speaker' => 'Only Keynote Speaker'
+        // ];
+        $target = array_combine(AbstractService::ROLES, AbstractService::ROLES);
 
         return view('pages.announcement', compact('target'));
     }
@@ -36,20 +39,19 @@ class AnnouncementsController extends Controller
         $titleEmail = $request->input('title');
         $body   = $request->input('isi_email');
         $mail  = $service->emails($request->input('target'));
-
         $mails = array_filter($mail);
         $selectedMail   = array_rand($mails); // random pick
         $names  = explode('#', $mails[$selectedMail]); // 0 firstname, 1 fullname
 
-        if (strpos($body, AnnouncementService::$LABEL_ABSTRACT) OR
-                strpos($body, AnnouncementService::$LABEL_AFFILIATION)) {
+        if (strpos($body, AnnouncementService::LABEL_ABSTRACT) OR
+                strpos($body, AnnouncementService::LABEL_AFFILIATION)) {
             $abstractData = $service->getAbstractPresentation($request->input('target'));
             $absPesentration = $abstractData[$selectedMail];
-            $body   = str_replace($service::$LABEL_ABSTRACT, $absPesentration['abstract'], $body);
-            $body   = str_replace($service::$LABEL_PRESENTATION, $absPesentration['presentation'], $body);
+            $body   = str_replace($service::LABEL_ABSTRACT, $absPesentration['abstract'], $body);
+            $body   = str_replace($service::LABEL_PRESENTATION, $absPesentration['presentation'], $body);
         }
-        $body   = str_replace($service::$LABEL_FULL, $names[1], $body);
-        $body   = str_replace($service::$LABEL_AFFILIATION, $names[2], $body);
+        $body   = str_replace($service::LABEL_FULL, $names[1], $body);
+        $body   = str_replace($service::LABEL_AFFILIATION, $names[2], $body);
         return view('pages.modal.previewAnnouncementModal', compact('title', 'titleEmail', 'body'));
     }
 

@@ -3,14 +3,20 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RegisterUserRequest;
 use App\Jobs\EmailRegistrationJob;
 use App\Mail\RegistrationMail;
 use App\Models\Country;
 use App\Models\User;
 use App\Models\UserDetail;
+use App\Services\AbstractService;
+use Carbon\Carbon;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -27,7 +33,12 @@ class RegisteredUserController extends Controller
         $negara = Country::all()->pluck('nicename')->toArray();
         $afiliations = UserDetail::affiliations();
         $afiliations = array_merge(['' => '-- Choose your affiliation --'], $afiliations);
-        return view('front.registration', compact('negara', 'afiliations')); //'auth.register'
+        $roles  = array_combine(AbstractService::ROLES,AbstractService::ROLES);
+        $roles  = array_map(function(string $value){
+            return ucfirst($value);
+        }, $roles);
+
+        return view('front.registration', compact('negara', 'afiliations','roles')); //'auth.register'
     }
 
     /**
@@ -38,20 +49,9 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request)
+    public function store(RegisterUserRequest $request)
     {
-        $request->validate([
-            'firstname' => ['required', 'string', 'max:255'],
-            'midlename' => ['nullable', 'string', 'max:255'],
-            'lastname' => ['required', 'string', 'max:255'],
-            'email' => ['bail', 'required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'confirmed', 'min:6'],
-            'affiliation' => ['required', 'string', 'max:255'],
-            'another_affiliation' => ['required_if:affiliation,Another'],
-            'country' => ['required', 'string', 'max:255'],
-            'phonenumber' => ['required', 'string', 'max:255'],
-            'mobilenumber' => ['required', 'string', 'max:255'],
-        ]);
+        $request->validated();
 
         $name = implode(' ', [$request->firstname, $request->midlename, $request->lastname]);
         $data = [
@@ -64,8 +64,6 @@ class RegisteredUserController extends Controller
             $user = User::create($data);
 
             $data['password'] = $request->password;
-            $data['affiliation'] = $request->affiliation == 'Another' ?
-                $request->another_affiliation : $request->affiliation;
 
             UserDetail::create([
                 'user_id'   => $user->id,
@@ -73,23 +71,25 @@ class RegisteredUserController extends Controller
                 'firstname' => $request->firstname,
                 'midlename' => $request->midlename,
                 'lastname'  => $request->lastname,
-                'affiliation'  => $request->affiliation == 'Another' ?
-                    $request->another_affiliation : $request->affiliation,
+                'affiliation'  => $request->affiliation,
                 'address'   => $request->address,
                 'country'   => $request->country,
                 'secondemail'   => $request->secondemail,
                 'phonenumber'   => $request->phonenumber,
-                'mobilenumber'  => $request->mobilenumber
+                'mobilenumber'  => $request->mobilenumber,
+                'presentation'  => $request->presentation
             ]);
             DB::commit();
+            Auth::login($user);
             event(new Registered($user));
-            Mail::to($data['email'])->send(new RegistrationMail($data));
+            // Mail::to($data['email'])->send(new RegistrationMail($data));
         } catch (\Exception $ex) {
             DB::rollBack();
             return redirect()->route('login')->with('error', 'Failed to Sign Up. <b>Error :'.$ex->getMessage().'</b>');
         }
         // dispatch(new EmailRegistrationJob($data)); // add to job
         // Artisan::call('queue:work');
-        return redirect()->route('login')->with('success', 'Please Sign In with data you have registered');
+        return redirect()->route('verification.notice');//->with('success', 'Please Sign In with data you have registered');
     }
+
 }

@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Personal Detail | ICFMS ' . date('Y'))
+@section('title', 'Personal Detail')
 @section('title2', 'Personal Detail')
 
 @section('content')
@@ -42,24 +42,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-3">Affiliation</label>
-                                <div class="col-sm-6">
-                                    @php
-                                        $valueAffiliation   = $user->affiliation??'';
-                                        $isHidden           = 'hidden';
-                                        $valueAnother       = '';
-                                        if ($isOtherAffiliation OR old('affiliation') == 'Another') {
-                                            $isHidden           = '';
-                                            $valueAffiliation   = 'Another';
-                                            $valueAnother       = old('affiliation') == 'Another' ? '' : $valueAffiliation;
-                                        }
-                                    @endphp
-                                    {!! Form::select('affiliation', $affiliations, $valueAffiliation , ['class' => 'form-control input-sm']) !!}
-                                    {!! Form::text('another_affiliation', $valueAnother, [
-                                        'class' => 'form-control input-sm ' . $isHidden,
-                                        'style' => 'margin-top:5px',
-                                        'placeholder' => 'Input Another Affiliation Name',
-                                    ]) !!}
-                                </div>
+                                <label class="col-sm-6 pt-xs"> {{ $user->affiliation??'' }} </label>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-3">Address (Optional)</label>
