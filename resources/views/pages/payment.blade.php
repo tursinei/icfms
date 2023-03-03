@@ -60,6 +60,23 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="col-sm-3 control-label">Send Payment Confirmation by Email</label>
+                        <div class="col-md-3">
+                            <div class="radio-inline">
+                                <label>
+                                    {!! Form::radio('send_confirm', 1, true) !!}
+                                    Yes
+                                </label>
+                            </div>
+                            <div class="radio-inline">
+                                <label>
+                                    {!! Form::radio('send_confirm', 0, false) !!}
+                                    No
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <div class="col-sm-9 text-right">
                             <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-save"></i>&nbsp;Save</button>
                         </div>

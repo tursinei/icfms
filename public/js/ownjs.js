@@ -56,8 +56,12 @@
                 msg = er.errors[firstkey][0];;
                 res = er.message + ' : <b>' + msg+'</b>'
             } else {
-                res = 'Error ('+status+') <b>'+er.exception+'</b>';
-                console.log(er.message)
+                let msg = er.exception;
+                if (msg == "Swift_TransportException"){
+                    msg = 'Got Empty Response for Sending Email. Plese try again.';
+                }
+                res = "<b>Error (" + status + ") :</b><br/>" + msg + "";
+                console.error(er.message)
             }
             msgAlert(res);
         },

@@ -29,6 +29,7 @@ class StorePaymentRequest extends FormRequest
             'currency'      =>  ['required', 'string'],
             'nominal'       =>  ['required'],
             'user_id'       =>  ['required', 'integer'],
+            'send_confirm'  =>  ['boolean']
         ];
     }
 
