@@ -9,8 +9,20 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <button class="btn btn-sm btn-primary mb-sm" id="btn-addForm"><i class="fa fa-plus"></i> Add
-                            Paper</button>
+                        @if (session()->has('success'))
+                            <div class="alert alert-success">{{ session()->get('success') }}</div>
+                        @elseif(empty(Auth::user()->email_verified_at))
+                            <div class="alert alert-danger">
+                                <form method="POST" action="{{ route('verification.resend') }}">
+                                    @csrf
+                                    Please verify your email address first, for Abstract Submission.
+                                    <strong>[ <a href="#" id="resend-verification">Resend Verification </a>]</strong>
+                                </form>
+                            </div>
+                        @else
+                            <button class="btn btn-sm btn-primary mb-sm" id="btn-addForm"><i class="fa fa-plus"></i> Add
+                                Paper</button>
+                        @endif
                         <div class="table-responsive">
                             <table class="table table-sm table-striped table-bordered table-fixed table-condensed"
                                 id="tbl-paper">
@@ -76,6 +88,10 @@
                 }
             ];
             refreshTableServerOn('#tbl-paper', url, cols);
+        }).on('click', '#resend-verification', function(e) {
+            e.preventDefault();
+            let form = $(this).parents('form');
+            form.submit()
         }).on('click', '#btn-addForm', function(e) {
             let b = $(this);
             vAjax(b.find('i'), {
