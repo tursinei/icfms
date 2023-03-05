@@ -42,7 +42,9 @@
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-3">Affiliation</label>
-                                <label class="col-sm-6 pt-xs"> {{ $user->affiliation??'' }} </label>
+                                <div class="col-sm-6">
+                                    {!! Form::text('affiliation', $user->affiliation??'', ['placeholder' => 'Your Affiliation', 'class' => 'form-control']) !!}
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-3">Address (Optional)</label>
@@ -62,10 +64,12 @@
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-3">Main Email</label>
-                                <div class="col-sm-6">
+                                <label class="col-sm-6 pt-xs">{{ Auth::user()->email }}</label>
+                                {!! Form::hidden('email', Auth::user()->email) !!}
+                                {{-- <div class="col-sm-6">
                                     <input type="email" name="email" class="form-control"
                                         value="{{ Auth::user()->email }}">
-                                </div>
+                                </div> --}}
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-3">2<sup>nd</sup> Email (Optional)</label>

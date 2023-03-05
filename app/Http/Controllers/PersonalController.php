@@ -38,11 +38,12 @@ class PersonalController extends Controller
     public function store(PersonalRequest $request)
     {
         $data = $request->validated();
-        if($data['affiliation'] == 'Another'){
-            $data['affiliation'] = $data['another_affiliation'];
-            unset($data['another_affiliation']);
-            // dd($data);
-        }
+        //  versi 2023 tidak digunakan
+        // if($data['affiliation'] == 'Another'){
+        //     $data['affiliation'] = $data['another_affiliation'];
+        //     unset($data['another_affiliation']);
+        //     // dd($data);
+        // }
         UserDetail::updateOrCreate(['user_id' => $request->input('user_id')],$data);
         $name = implode(' ', [$request->input('firstname'), $request->input('midlename'), $request->input('lastname')]);
         $user = User::find($request->input('user_id'));
