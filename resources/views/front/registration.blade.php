@@ -104,7 +104,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>Your Role</label>
+                            <label>Your Presentation Role </label>
                             {!! Form::select('presentation', $roles, '', ['class' => 'form-control input-sm', 'placeholder' => '--Choose Your Role--']) !!}
                         </div>
                         <div class="row">
