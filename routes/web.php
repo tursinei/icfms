@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminAbstractsController;
 use App\Http\Controllers\AdminFullpaperController;
 use App\Http\Controllers\AnnouncementsController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
+use App\Http\Controllers\Auth\IndexController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FullPaperController;
 use App\Http\Controllers\GitController;
@@ -29,9 +30,7 @@ if (env('APP_ENV') === 'production') {
     URL::forceSchema('https');
 }
 
-Route::get('/', function () {
-    return view('front.login');
-});
+Route::get('/',  [IndexController::class,'index']);
 Route::get('git-pull',[GitController::class,'pull']);
 Route::middleware('auth')->group(function () {
     Route::resource('dashboard', DashboardController::class);

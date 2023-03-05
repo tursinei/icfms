@@ -30,6 +30,8 @@
 			</table>
 			Feel free to contact us for more information.<br />
 			See you soon at IcAUMS {{ date('Y') }} conference in Bali, Indonesia.<br />
+            <br/>
+            If you have any queries, please do not hestitate to contact the secretariat email at <strong>icaums.ims@gmail.com</strong> <br/>
 			<br />
 			Best Regards,<br />
 			IcAUMS {{ date('Y') }} Committee<br />
