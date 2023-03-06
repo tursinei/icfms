@@ -45,7 +45,7 @@ class AbstractService
         ->join('users_details','users_details.user_id','users.id')
         ->orderBy('created_at', 'DESC')
         ->get(['abstract_id','is_presentation','users.name as fullname' ,'m_topic.name as topic', 'abstract_file.created_at',
-                'presentation', 'authors', 'abstract_title', 'users_details.title','users.email', 'title','affiliation','country']);
+                'abstract_file.presentation', 'authors', 'abstract_title', 'users_details.title','users.email', 'title','affiliation','country']);
     }
 
     public function listAbstracts()
