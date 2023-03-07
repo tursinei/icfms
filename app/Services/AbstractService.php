@@ -24,7 +24,7 @@ class AbstractService
     {
         $data = AbstractFile::join('m_topic', 'm_topic.topic_id', 'abstract_file.topic_id')->where('user_id', $iduser)
             ->orderBy('created_at', 'DESC')
-            ->get(['abstract_id', 'name as topic', 'created_at', 'presentation', 'authors', 'abstract_title']);
+            ->get(['abstract_id', 'name as topic', 'created_at', 'presentation', 'authors', 'abstract_title', 'is_presentation']);
         return DataTables::of($data)->addColumn('action', function ($row) {
             return '<a class="btn btn-success btn-xs" href="'.route('abstract.show',['abstract' => $row->abstract_id]).'"
                 title="Download Abstract File" target="_blank"><i class="fa fa-download"></i></a>&nbsp;
@@ -34,7 +34,7 @@ class AbstractService
         })->addColumn('date_upload', function ($row) {
             return $row->created_at->format('d-m-Y');
         })->addColumn('remarks',function($row){
-            return $row->is_presentation ? 'Abstract with Presentation Only' : 'Abstract with Full Paper Submission';
+            return $row->is_presentation ? 'Abstract with Presentation Only': 'Abstract with Full Paper Submission';
         })->rawColumns(['action', 'date_upload'])->make(true);
     }
 
