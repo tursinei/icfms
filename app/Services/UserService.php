@@ -109,17 +109,16 @@ class UserService
         $styleHeader->setShouldWrapText(false);
         $styleHeader->setFontSize(12);
         $writer->openToBrowser('list-participants.xlsx');
-        $writer->setColumnWidth(10, 1);
-        $writer->setColumnWidth(40, 2);
-        $writer->setColumnWidth(50, 3);
-        $writer->setColumnWidth(20, 4);
-        $writer->setColumnWidth(25, 5);
-        $writer->setColumnWidth(25, 6);
-        $writer->setColumnWidth(20, 7);
-        $writer->setColumnWidth(20, 8);
-        $writer->setColumnWidth(20, 9);
+        $writer->setColumnWidth(10, 1); // title
+        $writer->setColumnWidth(40, 2); // Name
+        $writer->setColumnWidth(50, 3); // Address
+        $writer->setColumnWidth(20, 4); // country
+        $writer->setColumnWidth(25, 5); // Email
+        $writer->setColumnWidth(25, 6); // Affiliation
+        $writer->setColumnWidth(20, 7); // Mobile Number
+        $writer->setColumnWidth(20, 8); // Phone Number
 
-        $title1 = WriterEntityFactory::createCell('List Abstracts', $styleHeader);
+        $title1 = WriterEntityFactory::createCell('List Participants', $styleHeader);
         $singleRow = WriterEntityFactory::createRow([$title1]);
         $writer->addRow($singleRow);
 
@@ -133,7 +132,7 @@ class UserService
         $styleHeader->setBorder($border);
         $styleHeader->setBackgroundColor(Color::rgb(218, 227, 243));
 
-        $namaKolom = ['Title', 'Name', 'Address', 'Country', 'Main Email', 'Second Email', 'Affiliation',
+        $namaKolom = ['Title', 'Name', 'Address', 'Country', 'Email', 'Affiliation',
                         'Mobile Number', 'Phone Number'];
         $header = WriterEntityFactory::createRowFromArray($namaKolom, $styleHeader);
         $writer->addRow($header);
@@ -148,7 +147,6 @@ class UserService
                 WriterEntityFactory::createCell($row->address, $styleLeft),
                 WriterEntityFactory::createCell($row->country, $styleLeft),
                 WriterEntityFactory::createCell($row->email, $styleLeft),
-                WriterEntityFactory::createCell($row->secondemail, $styleLeft),
                 WriterEntityFactory::createCell($row->affiliation, $styleCenter),
                 WriterEntityFactory::createCell($row->mobilenumber, $styleCenter),
                 WriterEntityFactory::createCell($row->phonenumber, $styleCenter),

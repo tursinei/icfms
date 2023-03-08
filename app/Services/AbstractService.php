@@ -20,6 +20,11 @@ class AbstractService
 {
     const ROLES = ['oral', 'poster', 'audience', 'keynote speaker', 'Invited Speaker'];
 
+    public static function remarksColumn($isPresentation){
+        return $isPresentation ? 'Abstract with Presentation Only' :
+                                    'Abstract with Full Paper Submission';
+    }
+
     public function listTable($iduser)
     {
         $data = AbstractFile::join('m_topic', 'm_topic.topic_id', 'abstract_file.topic_id')->where('user_id', $iduser)
@@ -34,7 +39,7 @@ class AbstractService
         })->addColumn('date_upload', function ($row) {
             return $row->created_at->format('d-m-Y');
         })->addColumn('remarks',function($row){
-            return $row->is_presentation ? 'Abstract with Presentation Only': 'Abstract with Full Paper Submission';
+            return self::remarksColumn($row->is_presentation);
         })->rawColumns(['action', 'date_upload'])->make(true);
     }
 
@@ -60,7 +65,7 @@ class AbstractService
         })->addColumn('date_upload', function ($row) {
             return $row->created_at->format('d-m-Y');
         })->addColumn('remarks', function ($row) {
-            return $row->is_presentation ? 'Abstract with Presentation Only' : 'Abstract with Full Paper Submission';
+            return self::remarksColumn($row->is_presentation);
         })->rawColumns(['remarks','action', 'date_upload'])->make(true);
     }
 

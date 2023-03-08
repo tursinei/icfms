@@ -38,8 +38,11 @@ class FullpaperService
         return FullPaper::join('abstract_file AS a', 'a.abstract_id', 'full_paper.abstract_id')
             ->join('m_topic AS t', 't.topic_id', 'a.topic_id')
             ->join('users AS u', 'u.id', 'full_paper.user_id')
+            ->join('users_details AS ud', 'u.id', 'ud.user_id')
             ->orderBy('full_paper.created_at', 'DESC')
-            ->get(['paper_id', 'u.name as fullname' ,'t.name as topic','full_paper.created_at','presenter','presentation', 'authors', 'a.paper_title as title']);
+            ->get(['paper_id','u.email','ud.title as prefix','ud.affiliation','ud.country',
+                    'u.name as fullname' ,'t.name as topic','full_paper.created_at',
+                    'presenter','a.presentation', 'authors', 'a.paper_title as title' ]);
     }
     //full paper tanpa user
     public function listFullpaper()
@@ -84,13 +87,17 @@ class FullpaperService
         $styleHeader->setShouldWrapText(false);
         $styleHeader->setFontSize(12);
         $writer->openToBrowser('list-fullpaper.xlsx');
-        $writer->setColumnWidth(20, 1);
-        $writer->setColumnWidth(40, 2);
-        $writer->setColumnWidth(20, 3);
-        $writer->setColumnWidth(30, 4);
-        $writer->setColumnWidth(50, 5);
-        $writer->setColumnWidth(50, 6);
-        $writer->setColumnWidth(50, 7);
+        $writer->setColumnWidth(20, 1); //date
+        $writer->setColumnWidth(40, 2); // email
+        $writer->setColumnWidth(20, 3); // title
+        $writer->setColumnWidth(40, 4); // name
+        $writer->setColumnWidth(35, 5); // Affiliation
+        $writer->setColumnWidth(20, 6); // Country
+        $writer->setColumnWidth(37, 7); // Presentation
+        $writer->setColumnWidth(37, 8); // Presentter Name
+        $writer->setColumnWidth(20, 9); // Topic
+        $writer->setColumnWidth(20, 10); // Authors
+        $writer->setColumnWidth(100, 11); // Paper title
 
         $title1 = WriterEntityFactory::createCell('List FullPaper', $styleHeader);
         $singleRow = WriterEntityFactory::createRow([$title1]);
@@ -105,7 +112,8 @@ class FullpaperService
         $styleHeader->setCellAlignment(CellAlignment::CENTER);
         $styleHeader->setBorder($border);
         $styleHeader->setBackgroundColor(Color::rgb(218, 227, 243));
-        $namaKolom = ['Date', 'Name', 'Presentation','Presenter Name','Topic', 'Authors', 'Paper Title'];
+        $namaKolom = ['Date','Email','Title' ,'Name', 'Affiliation','Country',
+                        'Presentation','Presenter Name','Topic', 'Authors', 'Paper Title'];
         $header = WriterEntityFactory::createRowFromArray($namaKolom, $styleHeader);
         $writer->addRow($header);
 
@@ -117,7 +125,11 @@ class FullpaperService
             $tgl = $row->created_at->format('d-m-Y');
             $baris = [
                     WriterEntityFactory::createCell($tgl, $styleCenter),
+                    WriterEntityFactory::createCell($row->email, $styleLeft),
+                    WriterEntityFactory::createCell($row->prefix, $styleCenter),
                     WriterEntityFactory::createCell($row->fullname, $styleLeft),
+                    WriterEntityFactory::createCell($row->affiliation, $styleLeft),
+                    WriterEntityFactory::createCell($row->country, $styleLeft),
                     WriterEntityFactory::createCell($row->presentation, $styleCenter),
                     WriterEntityFactory::createCell($row->presenter, $styleLeft),
                     WriterEntityFactory::createCell($row->topic, $styleLeft),

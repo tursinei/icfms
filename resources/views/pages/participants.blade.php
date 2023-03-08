@@ -17,13 +17,10 @@
                                 <thead>
                                     <tr>
                                         <th style="width: 5%" class="text-center">Title</th>
-                                        <th style="width: 10%" class="text-center">First Name</th>
-                                        <th style="width: 10%" class="text-center">Middle Name</th>
-                                        <th style="width: 10%" class="text-center">Last Name</th>
+                                        <th style="width: 20%" class="text-center">Name</th>
                                         <th style="width: 15%" class="text-center">Address</th>
                                         <th style="width: 10%" class="text-center">Country</th>
-                                        <th style="width: 15%" class="text-center">Main Email</th>
-                                        <th style="width: 15%" class="text-center">Second Email</th>
+                                        <th style="width: 15%" class="text-center">Email</th>
                                         <th style="width: 5%" class="text-center">Affiliation</th>
                                         <th style="width: 10%" class="text-center">Mobile Number</th>
                                         <th style="width: 10%" class="text-center">Phone Number</th>
@@ -48,13 +45,10 @@
             let url = '{{ route('user.index') }}';
             let cols = [
                 { data : 'title', name: 'title', className:'text-center'},
-                { data : 'firstname', name: 'firstname'},
-                { data : 'midlename', name: 'midlename'},
-                { data : 'lastname', name: 'lastname'},
+                { data : 'name', name: 'name'},
                 { data : 'address', name: 'address'},
                 { data : 'country', name: 'country'},
                 { data : 'email', name: 'email'},
-                { data : 'secondemail', name: 'secondemail'},
                 { data : 'affiliation', name: 'affiliation'},
                 { data : 'mobilenumber', name: 'mobilenumber'},
                 { data : 'phonenumber', name: 'phonenumber'},

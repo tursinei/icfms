@@ -71,13 +71,13 @@
                                         value="{{ Auth::user()->email }}">
                                 </div> --}}
                             </div>
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <label class="control-label col-sm-3">2<sup>nd</sup> Email (Optional)</label>
                                 <div class="col-sm-6">
                                     <input type="email" name="secondemail" class="form-control"
                                         value="{{ $user->secondemail??'' }}">
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="form-group">
                                 <label class="control-label col-sm-3">Contact Number</label>
                                 <div class="col-sm-3">
@@ -103,16 +103,3 @@
         </div>
     </div>
 @endsection
-@push('js')
-    <script type="text/javascript">
-        $(document).on('change', 'select[name="affiliation"]', function(params) {
-            let c = $(this),
-                anotherInput = c.siblings('input[name="another_affiliation"]');
-            if (c.val() == 'Another') {
-                anotherInput.removeClass('hidden');
-            } else {
-                anotherInput.addClass('hidden');
-            }
-        });
-    </script>
-@endpush

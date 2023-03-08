@@ -17,14 +17,18 @@
                                 id="tbl-paper">
                                 <thead>
                                     <tr>
-                                        <th style="width: 10%" class="text-center">Date</th>
+                                        <th style="width: 5%" class="text-center">Date</th>
+                                        <th style="width: 10%" class="text-center">Email</th>
+                                        <th style="width: 5%" class="text-center">Title</th>
                                         <th style="width: 10%" class="text-center">Name</th>
-                                        <th style="width: 20%" class="text-center">Presentation</th>
-                                        <th style="width: 20%" class="text-center">Presenter Name</th>
-                                        <th style="width: 20%" class="text-center">Topic</th>
-                                        <th style="width: 20%" class="text-center">Authors</th>
-                                        <th style="width: 10%" class="text-center">Paper Title</th>
-                                        <th style="width: 10%" class="text-center">&nbsp;</th>
+                                        <th style="width: 7%" class="text-center">Affiliation</th>
+                                        <th style="width: 5%" class="text-center">Country</th>
+                                        <th style="width: 8%" class="text-center">Presentation</th>
+                                        <th style="width: 8%" class="text-center">Presenter Name</th>
+                                        <th style="width: 10%" class="text-center">Topic</th>
+                                        <th style="width: 10%" class="text-center">Authors</th>
+                                        <th style="width: 15%" class="text-center">Paper Title</th>
+                                        <th style="width: 7%" class="text-center">&nbsp;</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -49,12 +53,30 @@
                     className: 'text-center'
                 },
                 {
+                    data: 'email',
+                    name: 'email'
+                },
+                {
+                    data: 'prefix',
+                    name: 'prefix',
+                    className: 'text-center'
+                },
+                {
                     data: 'fullname',
                     name: 'fullname'
                 },
                 {
+                    data: 'affiliation',
+                    name: 'affiliation'
+                },
+                {
+                    data: 'country',
+                    name: 'country'
+                },
+                {
                     data: 'presentation',
-                    name: 'presentation'
+                    name: 'presentation',
+                    className: 'text-center'
                 },
                 {
                     data: 'presenter',
