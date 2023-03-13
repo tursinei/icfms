@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreAbstractFileRequest;
 use App\Models\AbstractFile;
 use App\Models\Mtopic;
+use App\Models\Sysinfo;
 use App\Services\AbstractService;
 use Exception;
 use Illuminate\Http\Request;
@@ -25,7 +26,8 @@ class AbstractFileController extends Controller
             $abstract = new AbstractService();
             return $abstract->listTable(Auth::user()->id);
         }
-        return view('pages.abstract');
+        $setting = Sysinfo::where('tipe','batas')->pluck('value','key');
+        return view('pages.abstract', compact('setting'));
     }
 
     /**

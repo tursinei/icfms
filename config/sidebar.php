@@ -54,6 +54,11 @@ return [
             'title' => 'Payment',
             'url'   => 'payment',
             'akses' => [IS_MEMBER, IS_ADMIN]
+        ], [
+            'icon'  => 'fa-cogs',
+            'title' => 'Setting',
+            'url'   => 'setting',
+            'akses' => [IS_ADMIN]
         ]
     ]
 ];

@@ -4,6 +4,9 @@
 @section('title2', 'Full Paper Submission')
 
 @section('content')
+    @php
+        $isMaxUpload = strtotime($setting['tgl_bts_paper']) >= strtotime('now');
+    @endphp
     <div class="row">
         <div class="panel">
             <div class="panel-body">
@@ -19,11 +22,14 @@
                                     <strong>[ <a href="#" id="resend-verification">Resend Verification </a>]</strong>
                                 </form>
                             </div>
-                        @else
+                        @elseif($isMaxUpload)
                             <button class="btn btn-sm btn-primary mb-sm" id="btn-addForm"><i class="fa fa-plus"></i> Add
                                 Paper</button>
                         @endif
-                        <div class="table-responsive">
+                        <span class="text-success text-small pull-right mb-10">
+                            <strong>{{ $setting['msg_bts_paper']??'' }}</strong>
+                        </span><br>
+                        <div class="table-responsive" style="margin-top:10px">
                             <table class="table table-sm table-striped table-bordered table-fixed table-condensed"
                                 id="tbl-paper">
                                 <thead>

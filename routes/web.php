@@ -11,6 +11,7 @@ use App\Http\Controllers\FullPaperController;
 use App\Http\Controllers\GitController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PersonalController;
+use App\Http\Controllers\SysinfoController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -50,6 +51,7 @@ Route::middleware('auth')->group(function () {
     Route::get('payment/{payment}/{action}',[PaymentController::class,'show'])->name('payment.show');
     Route::post('email/resend-verification', [EmailVerificationNotificationController::class, 'resendEmail'])
                 ->name('verification.resend');
+    Route::resource('setting',SysinfoController::class)->only(['index','store']);
 });
 
 require __DIR__ . '/auth.php';

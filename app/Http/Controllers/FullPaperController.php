@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\FullPaper;
 use App\Http\Requests\StorefullPaperRequest;
 use App\Models\AbstractFile;
+use App\Models\Sysinfo;
 use App\Services\FullpaperService;
 use Exception;
 use Illuminate\Http\Request;
@@ -24,7 +25,8 @@ class FullPaperController extends Controller
             $service = new FullpaperService();
             return $service->listTable(Auth::user()->id);
         }
-        return view('pages.fullpaper');
+        $setting = Sysinfo::where('tipe','batas')->pluck('value','key');
+        return view('pages.fullpaper', compact('setting'));
     }
 
     /**
