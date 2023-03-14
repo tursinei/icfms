@@ -6,6 +6,9 @@
 @section('content')
     @php
         $isMaxUpload = strtotime($setting['tgl_bts_paper']) >= strtotime('now');
+        if(empty($setting['tgl_bts_abstract'])){
+            $isMaxUpload = true;
+        }
     @endphp
     <div class="row">
         <div class="panel">
