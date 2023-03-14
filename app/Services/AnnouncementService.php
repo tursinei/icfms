@@ -108,11 +108,10 @@ class AnnouncementService
 
     public function emails($target)
     {
-        $presentations = [$target];//explode(',', $target);
+        $presentations = $target;//explode(',', $target);
         return User::select('users.email', DB::raw("CONCAT(users_details.firstname,'#',users.name,'#',users_details.affiliation) AS nama"))
-            ->join('abstract_file', 'users.id', 'abstract_file.user_id')
             ->join('users_details', 'users.id', 'users_details.user_id')
-            ->whereIn('presentation', $presentations)->distinct()->pluck('nama', 'email')->toArray();
+            ->where('presentation', $presentations)->distinct()->pluck('nama', 'email')->toArray();
     }
 
     public function getFile($id)
