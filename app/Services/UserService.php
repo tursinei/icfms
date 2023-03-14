@@ -17,6 +17,7 @@ use OpenSpout\Common\Entity\Style\Style;
 use OpenSpout\Writer\Common\Creator\Style\BorderBuilder;
 use OpenSpout\Writer\Common\Creator\Style\StyleBuilder;
 use OpenSpout\Writer\Common\Creator\WriterEntityFactory;
+use Symfony\Component\CssSelector\Node\FunctionNode;
 use Yajra\DataTables\Facades\DataTables;
 
 use function PHPUnit\Framework\isNull;
@@ -48,14 +49,23 @@ class UserService
         }
     }
 
-    private function getUsers($tipeUser = 1)
+    private function getUsers($tipeUser = 1, $search = '')
     {
         $isAdmin = $tipeUser == 1;
-        $select = ['users.name','users.email', 'users.id','a.*'];
+        $select = ['users.name','users.email', 'email_verified_at','users.id','a.*'];
         if($isAdmin){
-            $select = ['users.name','email', 'id', 'a.*'];
+            $select = ['users.name','email','email_verified_at' ,'id', 'a.*'];
         }
         return User::join('users_details AS a', 'id', 'a.user_id')->where('users.is_admin',$tipeUser)
+                ->when($isAdmin, function($query) use ($search){
+                    if ($search == 'verified' || $search == 'unverified') {
+                        if ($search == 'verified') {
+                            $query->whereNotNull('email_verified_at');
+                        } else {
+                            $query->whereNull('email_verified_at');
+                        }
+                    }
+                })
                 ->orderBy('users.name')->get($select);
     }
 
@@ -69,7 +79,9 @@ class UserService
             $titleDel = $isAdmin ? 'Delete User' : 'Delete Participants';
             return $btnEditOrDel.'&nbsp;<button data-id="' . $row->id . '" class="btn btn-danger btn-xs btn-hapus"
                 title="'.$titleDel.'"><i class="fa fa-trash-o"></i></button>';
-        })->rawColumns(['action'])->make(true);
+        })->addColumn('verified_at',function($row){
+            return empty($row->email_verified_at) ? 'Unverified' : 'Verified';
+        })->rawColumns(['action','verified_at'])->make(true);
     }
 
     public function simpanAdmin(StoreUserRequest $request)
@@ -112,11 +124,13 @@ class UserService
         $writer->setColumnWidth(10, 1); // title
         $writer->setColumnWidth(40, 2); // Name
         $writer->setColumnWidth(50, 3); // Address
-        $writer->setColumnWidth(20, 4); // country
-        $writer->setColumnWidth(25, 5); // Email
-        $writer->setColumnWidth(25, 6); // Affiliation
-        $writer->setColumnWidth(20, 7); // Mobile Number
-        $writer->setColumnWidth(20, 8); // Phone Number
+        $writer->setColumnWidth(20, 4); // Presentation Role
+        $writer->setColumnWidth(20, 5); // country
+        $writer->setColumnWidth(25, 6); // Email
+        $writer->setColumnWidth(25, 7); // Status Email
+        $writer->setColumnWidth(25, 8); // Affiliation
+        $writer->setColumnWidth(20, 9); // Mobile Number
+        $writer->setColumnWidth(20, 10); // Phone Number
 
         $title1 = WriterEntityFactory::createCell('List Participants', $styleHeader);
         $singleRow = WriterEntityFactory::createRow([$title1]);
@@ -132,7 +146,7 @@ class UserService
         $styleHeader->setBorder($border);
         $styleHeader->setBackgroundColor(Color::rgb(218, 227, 243));
 
-        $namaKolom = ['Title', 'Name', 'Address', 'Country', 'Email', 'Affiliation',
+        $namaKolom = ['Title', 'Name', 'Address', 'Presentation Role','Country', 'Email', 'Status Email','Affiliation',
                         'Mobile Number', 'Phone Number'];
         $header = WriterEntityFactory::createRowFromArray($namaKolom, $styleHeader);
         $writer->addRow($header);
@@ -141,12 +155,15 @@ class UserService
         $styleLeft = (new StyleBuilder())->setBorder($border)->setCellAlignment(CellAlignment::LEFT)->build();
 
         foreach ($participantsData as $row) {
+            $verifiedText = empty($row->email_verified_at)? 'Unverified' : 'Verified';
             $perBaris = [
                 WriterEntityFactory::createCell($row->title, $styleCenter),
                 WriterEntityFactory::createCell($row->name, $styleLeft),
                 WriterEntityFactory::createCell($row->address, $styleLeft),
+                WriterEntityFactory::createCell($row->presentation, $styleCenter),
                 WriterEntityFactory::createCell($row->country, $styleLeft),
                 WriterEntityFactory::createCell($row->email, $styleLeft),
+                WriterEntityFactory::createCell($verifiedText, $styleCenter),
                 WriterEntityFactory::createCell($row->affiliation, $styleCenter),
                 WriterEntityFactory::createCell($row->mobilenumber, $styleCenter),
                 WriterEntityFactory::createCell($row->phonenumber, $styleCenter),

@@ -21,7 +21,9 @@
                                         <th style="width: 15%" class="text-center">Address</th>
                                         <th style="width: 10%" class="text-center">Country</th>
                                         <th style="width: 15%" class="text-center">Email</th>
+                                        <th style="width: 10%" class="text-center">Presentation Role</th>
                                         <th style="width: 5%" class="text-center">Affiliation</th>
+                                        <th style="width: 10%" class="text-center">Is Verified</th>
                                         <th style="width: 10%" class="text-center">Mobile Number</th>
                                         <th style="width: 10%" class="text-center">Phone Number</th>
                                         <th style="width: 5%" class="text-center">&nbsp;</th>
@@ -49,7 +51,9 @@
                 { data : 'address', name: 'address'},
                 { data : 'country', name: 'country'},
                 { data : 'email', name: 'email'},
+                { data : 'presentation', name: 'presentation',className:'text-center'},
                 { data : 'affiliation', name: 'affiliation'},
+                { data : 'verified_at', name: 'verified_at',className:'text-center'},
                 { data : 'mobilenumber', name: 'mobilenumber'},
                 { data : 'phonenumber', name: 'phonenumber'},
                 { data: 'action', name: 'action',className:'text-center'}
