@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\IndexController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FullPaperController;
 use App\Http\Controllers\GitController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PersonalController;
 use App\Http\Controllers\SysinfoController;
@@ -52,6 +53,8 @@ Route::middleware('auth')->group(function () {
     Route::post('email/resend-verification', [EmailVerificationNotificationController::class, 'resendEmail'])
                 ->name('verification.resend');
     Route::resource('setting',SysinfoController::class)->only(['index','store']);
+    Route::resource('invoice-notification',InvoiceController::class);
+    Route::get('invoice-download/{invoiceId}', [InvoiceController::class,'downloadInvoice'])->name('invoice.file');
 });
 
 require __DIR__ . '/auth.php';

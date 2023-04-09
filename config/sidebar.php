@@ -55,6 +55,16 @@ return [
             'url'   => 'payment',
             'akses' => [IS_MEMBER, IS_ADMIN]
         ], [
+            'icon'  => 'fa-comments-o',
+            'title' => 'Invoice Notification',
+            'url'   => 'invoice-notification',
+            'akses' => [IS_ADMIN]
+        ], [
+            'icon'  => 'fa-credit-card',
+            'title' => 'Payment Notification',
+            'url'   => 'payment-notification',
+            'akses' => [IS_ADMIN, IS_MEMBER]
+        ], [
             'icon'  => 'fa-cogs',
             'title' => 'Setting',
             'url'   => 'setting',
