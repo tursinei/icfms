@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class InvoiceNotif extends Model
+class Invoice extends Model
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'invoice_notif';
+    protected $table = 'invoice';
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -41,15 +41,17 @@ class InvoiceNotif extends Model
      *
      * @var array
      */
-    protected $fillable = ['attribut', 'invoice_number','nominal','role',
-                'abstract_title','user_id', 'tgl_invoice'];
+    protected $fillable = ['attribut', 'invoice_number','currency','nominal','role',
+                'abstract_title','user_id', 'tgl_invoice','payment_tgl', 'payment_fee',
+                'status',
+                'payment_method'];
 
     /**
      * The attributes that should be mutated to dates.
      *
      * @var array
      */
-    protected $dates = ['tgl_invoice'];
+    protected $dates = ['tgl_invoice', 'payment_tgl'];
 
     /**
      * The attributes that should be cast to native types.
@@ -59,10 +61,20 @@ class InvoiceNotif extends Model
     protected $casts = [
         'attribut'          => 'json',
         'invoice_number'    => 'string',
+        'currency'          => 'string',
         'nominal'           => 'double',
         'role'              => 'json',
         'abastract_title'   => 'json',
         'tgl_invoice'       => 'date:d-m-Y',
         'user_id'           => 'integer',
+        'payment_tgl'       => 'date:d-m-Y',
+        'payment_fee'       => 'double',
+        'payment_method'    => 'string',
+        'status'            => 'integer',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class,'user_id','user_id');
+    }
 }
