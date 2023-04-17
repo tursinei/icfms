@@ -3,30 +3,33 @@
 namespace App\Services;
 
 use App\Http\Requests\StoreinvoiceRequest;
+use App\Http\Requests\StorePaymentNotifRequest;
 use App\Mail\InvoiceNotificationMail;
 use App\Models\AbstractFile;
-use App\Models\Invoice;
+use App\Models\InvoiceNotif;
+use App\Models\PaymentNotif;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
-use Midtrans\Config;
-use Midtrans\Snap;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\Settings;
 use PhpOffice\PhpWord\TemplateProcessor;
 use Yajra\DataTables\Facades\DataTables;
 
-class InvoiceService
+class PaymentNotifService
 {
-    public function listInvoice(){
-        $data = Invoice::join('users AS u','u.id', 'user_id')
+    public function listPayment(){
+        $data = PaymentNotif::join('invoice_notif AS i', 'i.invoice_id', 'payment_notif.invoice_id')
+            ->join('users AS u', 'u.id', 'i.user_id')
             ->orderBy('created_at', 'DESC')
-            ->get(['invoice.*','u.email','u.name']);
+            ->get(['payment_notif.*','u.email','u.name','i.invoice_number']);
         return DataTables::of($data)->addColumn('actions', function($row){
-            return '<a class="btn btn-success btn-xs" href="' . route('invoice.file',['invoiceId' => $row->invoice_id]) . '"
+            return '<a class="btn btn-success btn-xs" href="' . route('invoice.file',['invoiceId' => $row->paymentnotif_id]) . '"
                 title="Download Invoice" target="_blank" ><i class="fa fa-download"></i></a>&nbsp;
-                <button data-href="' . route('invoice-notification.destroy', ['invoice_notification' => $row->invoice_id]) . '"
-                data-id="' . $row->invoice_id . '" class="btn btn-danger btn-xs btn-hapus"
+                <button data-href="' . route('invoice-notification.destroy', ['invoice_notification' => $row->paymentnotif_id]) . '"
+                data-id="' . $row->paymentnotif_id . '" class="btn btn-danger btn-xs btn-hapus"
                 title="Delete Paper "><i class="fa fa-trash-o"></i></button>';
+        })->addColumn('tanggal', function($row){
+            return date('d-m-Y', strtotime($row->created_at));
         })->addColumn('title', function($row){
             return  $row->attribut['title'];
         })->addColumn('fullname', function($row){
@@ -53,50 +56,25 @@ class InvoiceService
         return ['user' => $user, 'roles' => $roles, 'titles' => $titles];
     }
 
-    public function getInvoiceByUser($idUser)
+    public function getInvoices()
     {
-        return Invoice::with(['user','userDetail'])->where('user_id',$idUser)->first();
+        return InvoiceNotif::all()->pluck('invoice_number', 'invoice_id');
     }
 
-    public function getSnapData($idUser)
+    public function getPaymentInvoice($paymentId)
     {
-        $data = $this->getInvoiceByUser($idUser);
-        Config::$serverKey = 'SB-Mid-server-6y8YQlyCuGBRRYpNZIhoOMJB';
-        Config::$clientKey = 'SB-Mid-client-9-i_cwbk3EUIzNdc';
-
-        $transaction_details = [
-            'order_id' => $data->invoice_id . '-' . rand(),
-            'gross_amount' => $data->nominal
-        ];
-        $transaction = [
-            'enabled_payments' => ['credit_card', 'bank_transfer'],
-        ];
-        $fee = 5000;
-        if ($data->currency == 'USD') {
-            $transaction['enabled_payments'] = ['credit_card'];
-            $fee = ($data->nominal * 2.9 / 100) + 2000; // fee untuk credit cards
-        }
-        $data->fee = $fee;
-        $transaction_details['gross_amount'] = $data->nominal + $fee;
-        $transaction['transaction_details'] = $transaction_details;
-        $data->snap_token = '';
-        try {
-            $data->snap_token = Snap::getSnapToken($transaction);
-        } catch (\Throwable $th) {
-            abort(501, $th->getMessage());
-        }
-        $data->total = $transaction_details['gross_amount'];
-        return $data;
+        return PaymentNotif::with('invoice')->find($paymentId);
     }
 
-    public function store(StoreinvoiceRequest $request)
+    public function store(StorePaymentNotifRequest $request)
     {
         $data = $request->validated();
         $data['nominal'] = str_replace('.','',$data['nominal']);
-        $data['role'] = json_encode([$data['role']]);
-        $data['abstract_title'] = json_encode([$data['abstract_title']]);
-        Invoice::updateOrCreate(['invoice_id' => $data['invoice_id']], $data);
-        $this->sendEmail($data['user_id']);
+        // $data['role'] = json_encode([$data['role']]);
+        // $data['abstract_title'] = json_encode([$data['abstract_title']]);
+        PaymentNotif::updateOrCreate(['paymentnotif_id' => $data['paymentnotif_id']], $data);
+        // $invoice = InvoiceNotif::find('invoice_id');
+        // $this->sendEmail($invoice->user_id);
     }
 
     private function sendEmail($idUser)

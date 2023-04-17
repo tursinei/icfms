@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
-@section('title', 'Invoice')
-@section('title2', 'Invoice')
+@section('title', 'Payments')
+@section('title2', 'Payments')
 
 @section('content')
     <div class="row">
@@ -9,9 +9,9 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <button class="btn btn-sm btn-primary mb-sm"  data-id="0" id="btn-addForm"><i class="fa fa-plus"></i> Add Invoice</button>
+                        <button class="btn btn-sm btn-primary mb-sm"  data-id="0" id="btn-addForm"><i class="fa fa-plus"></i> Add Payment</button>
                         <div class="table-responsive">
-                            <table class="table table-sm table-striped table-bordered table-fixed table-condensed" id="tbl-invoice">
+                            <table class="table table-sm table-striped table-bordered table-fixed table-condensed" id="tbl-payments">
                                 <thead>
                                     <tr>
                                         <th style="width: 10%" class="text-center">Date</th>
@@ -22,6 +22,7 @@
                                         <th style="width: 10%" class="text-center">Affiliation</th>
                                         <th style="width: 10%" class="text-center">Country</th>
                                         <th style="width: 10%" class="text-center">Nominal</th>
+                                        <th style="width: 10%" class="text-center">Payment Date</th>
                                         <th style="width: 10%" class="text-center">&nbsp;</th>
                                     </tr>
                                 </thead>
@@ -34,26 +35,30 @@
         </div>
     </div>
 @endsection
-
+@push('css')
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+@endpush
 @push('js')
     <script src="{{ asset('js/jquery.maskMoney.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script type="text/javascript">
        $(document).ready(function(evt) {
-            let url = '{{ route('invoice-notification.index') }}';
+            let url = '{{ route('payment-notification.index') }}';
             let cols = [
-                { data : 'tgl_invoice', name: 'tgl_invoice',className:'text-center'},
+                { data : 'tanggal', name: 'tanggal'},
                 { data : 'invoice_number', name: 'invoice_number'},
                 { data : 'email', name: 'email'},
-                { data : 'title', name: 'title',className:'text-center'},
+                { data : 'title', name: 'title'},
                 { data : 'fullname', name: 'fullname'},
                 { data : 'affiliation', name: 'affiliation'},
                 { data : 'country', name: 'country'},
                 { data : 'prefnominal', name: 'prefnominal'},
+                { data : 'tgl_payment', name: 'tgl_payment'},
                 { data : 'actions', name: 'actions',className:'text-center'}
             ];
-            refreshTableServerOn('#tbl-invoice', url, cols);
+            refreshTableServerOn('#tbl-payments', url, cols);
         }).on('click', '#btn-addForm, .btn-edit',function (e) {
-            let b = $(this), url = '{{ route('invoice-notification.create') }}';
+            let b = $(this), url = '{{ route('payment-notification.create') }}';
             vAjax(b.find('i'), {
                 url : url,
                 done : function (res) {
@@ -62,15 +67,14 @@
                             'precision' : 0,
                             thousands : '.'
                         });
+                        $(e.target).find('#invoice_id').select2();
                     });
 
                 }
             });
-        }).on('blur', 'input[name="user_email"]', function(e){
+        }).on('change', 'select[name="user_id"]', function(e){
             let b = $(this), url = '{{ route('invoice-notification.edit',['invoice_notification' => ':iduser']) }}';
-            let id = $('datalist#emails > option[name="'+b.val()+'"]').attr('data-id');
-            $('input[name="user_id"]').val(id);
-            url = url.replace(':iduser', id);
+            url = url.replace(':iduser', b.val());
             vAjax('', {
                 url : url,
                 dataType : 'JSON',

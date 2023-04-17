@@ -75,6 +75,11 @@ class Invoice extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class,'user_id','user_id');
+        return $this->belongsTo(User::class,'user_id','id');
+    }
+
+    public function userDetail()
+    {
+        return $this->belongsTo(UserDetail::class,'user_id','user_id');
     }
 }

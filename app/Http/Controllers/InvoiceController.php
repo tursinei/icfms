@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Http\Requests\StoreinvoiceRequest;
 use App\Http\Requests\UpdateinvoiceRequest;
-use App\Models\InvoiceNotif;
 use App\Models\User;
 use App\Services\InvoiceService;
 use Illuminate\Http\Request;
@@ -108,7 +107,7 @@ class InvoiceController extends Controller
      */
     public function destroy($invoice_notification)
     {
-        $isSuccess = InvoiceNotif::find($invoice_notification)->delete();
+        $isSuccess = Invoice::find($invoice_notification)->delete();
         return response()->json([
             'status' => $isSuccess,
             'message' => [

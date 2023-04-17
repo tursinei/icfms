@@ -63,7 +63,12 @@ return [
             'icon'  => 'fa-credit-card',
             'title' => 'Payment Notification',
             'url'   => 'payment-notification',
-            'akses' => [IS_ADMIN, IS_MEMBER]
+            'akses' => [IS_ADMIN]
+        ], [
+            'icon'  => 'fa-credit-card',
+            'title' => 'Payment Notification',
+            'url'   => 'invoice',
+            'akses' => [IS_MEMBER]
         ], [
             'icon'  => 'fa-cogs',
             'title' => 'Setting',

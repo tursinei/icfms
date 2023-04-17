@@ -9,11 +9,12 @@
         {!! Form::hidden('invoice_id', $invoice->invoice_id ?? '') !!}
         <label class="col-sm-4 control-label">Email</label>
         <div class="col-sm-8">
-            {!! Form::text('user_id', '', $options) !!}
+            {!! Form::hidden('user_id', '') !!}
+            {!! Form::text('user_email', '', $options) !!}
             {{-- {!! Form::select('user_id', $listEmail, '', $options) !!} --}}
             <datalist id="emails">
-                @foreach ($listEmail as $email)
-                    <option value="{{ $email }}" />
+                @foreach ($listEmail as $key => $email)
+                    <option name="{{ $email }}" data-id="{{ $key }}" value="{{ $email }}" />
                 @endforeach
             </datalist>
         </div>
@@ -24,6 +25,7 @@
             @php
                 unset($options['list']);
                 $options['placeholder'] = 'Title';
+                $options['readonly'] = 'readonly';
             @endphp
             {!! Form::text('attribut[title]', $invoice->attribut->title ?? '', $options) !!}
         </div>
@@ -49,6 +51,9 @@
             {!! Form::text('attribut[country]', $invoice->attribut->country ?? '', $options) !!}
         </div>
     </div>
+    @php
+        unset($options['readonly']);
+    @endphp
     <div class="form-group">
         <label class="col-md-4 control-label">Role</label>
         <div class="col-md-8">
@@ -62,7 +67,7 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="col-md-4 control-label">Date Invoice</label>
+        <label class="col-md-4 control-label">Invoice Date</label>
         <div class="col-md-8">
             {!! Form::date('tgl_invoice', $invoice->tgl_invoice ?? date('Y-m-d'), $options) !!}
         </div>
