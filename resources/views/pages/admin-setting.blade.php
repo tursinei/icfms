@@ -30,6 +30,9 @@
                     <div class="form-group">
                         <label class="col-md-3 control-label">Batas Tanggal Upload Full Paper</label>
                         <div class="col-md-5 ">
+                            @php
+                                $options['placeholder'] = 'Message info batas maksimal Full Paper';
+                            @endphp
                             {!! Form::date("setting[tgl_bts_paper]", $data['tgl_bts_paper'] ?? '', $options) !!}
                         </div>
                     </div>

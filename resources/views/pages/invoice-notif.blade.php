@@ -71,6 +71,10 @@
             let id = $('datalist#emails > option[name="'+b.val()+'"]').attr('data-id');
             $('input[name="user_id"]').val(id);
             url = url.replace(':iduser', id);
+            console.log(id);
+            if(typeof id == 'undefined' ){
+                return false;
+            }
             vAjax('', {
                 url : url,
                 dataType : 'JSON',
