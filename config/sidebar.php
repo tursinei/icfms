@@ -54,22 +54,25 @@ return [
             'title' => 'Payment',
             'url'   => 'payment',
             'akses' => [IS_MEMBER, IS_ADMIN]
-        ], [
-            'icon'  => 'fa-comments-o',
-            'title' => 'Invoice Notification',
-            'url'   => 'invoice-notification',
-            'akses' => [IS_ADMIN]
-        ], [
-            'icon'  => 'fa-credit-card',
-            'title' => 'Payment Notification',
-            'url'   => 'payment-notification',
-            'akses' => [IS_ADMIN]
-        ], [
-            'icon'  => 'fa-credit-card',
-            'title' => 'Payment Notification',
-            'url'   => 'invoice',
-            'akses' => [IS_MEMBER]
-        ], [
+        ],
+        // [
+        //     'icon'  => 'fa-comments-o',
+        //     'title' => 'Invoice Notification',
+        //     'url'   => 'invoice-notification',
+        //     'akses' => [IS_ADMIN]
+        // ], [
+        //     'icon'  => 'fa-credit-card',
+        //     'title' => 'Payment Notification',
+        //     'url'   => 'payment-notification',
+        //     'akses' => [IS_ADMIN]
+        // ],
+        // [
+        //     'icon'  => 'fa-credit-card',
+        //     'title' => 'Payment Notification',
+        //     'url'   => 'invoice',
+        //     'akses' => [IS_MEMBER]
+        // ],
+        [
             'icon'  => 'fa-cogs',
             'title' => 'Setting',
             'url'   => 'setting',

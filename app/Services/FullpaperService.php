@@ -42,7 +42,7 @@ class FullpaperService
             ->orderBy('full_paper.created_at', 'DESC')
             ->get(['paper_id','u.email','ud.title as prefix','ud.affiliation','ud.country',
                     'u.name as fullname' ,'t.name as topic','full_paper.created_at',
-                    'presenter','a.presentation', 'authors', 'a.paper_title as title' ]);
+                    'presenter','a.presentation', 'authors', 'a.paper_title as title' ,'a.is_presentation']);
     }
     //full paper tanpa user
     public function listFullpaper()
@@ -56,6 +56,8 @@ class FullpaperService
                 title="Delete Paper "><i class="fa fa-trash-o"></i></button>';
         })->addColumn('date_upload', function ($row) {
             return $row->created_at->format('d-m-Y');
+        })->addColumn('remarks', function ($row) {
+            return AbstractService::remarksColumn($row->is_presentation);
         })->rawColumns(['action', 'date_upload'])->make(true);
     }
 
@@ -98,6 +100,7 @@ class FullpaperService
         $writer->setColumnWidth(20, 9); // Topic
         $writer->setColumnWidth(20, 10); // Authors
         $writer->setColumnWidth(100, 11); // Paper title
+        $writer->setColumnWidth(40, 12); // Remarks
 
         $title1 = WriterEntityFactory::createCell('List FullPaper', $styleHeader);
         $singleRow = WriterEntityFactory::createRow([$title1]);
@@ -113,7 +116,7 @@ class FullpaperService
         $styleHeader->setBorder($border);
         $styleHeader->setBackgroundColor(Color::rgb(218, 227, 243));
         $namaKolom = ['Date','Email','Title' ,'Name', 'Affiliation','Country',
-                        'Presentation','Presenter Name','Topic', 'Authors', 'Paper Title'];
+                        'Presentation','Presenter Name','Topic', 'Authors', 'Paper Title', 'Remarks'];
         $header = WriterEntityFactory::createRowFromArray($namaKolom, $styleHeader);
         $writer->addRow($header);
 
@@ -134,7 +137,8 @@ class FullpaperService
                     WriterEntityFactory::createCell($row->presenter, $styleLeft),
                     WriterEntityFactory::createCell($row->topic, $styleLeft),
                     WriterEntityFactory::createCell($row->authors, $styleLeft),
-                    WriterEntityFactory::createCell($row->title, $styleLeft)];
+                    WriterEntityFactory::createCell($row->title, $styleLeft),
+                    WriterEntityFactory::createCell(AbstractService::remarksColumn($row->is_presentation), $styleLeft)];
             $writer->addRow(WriterEntityFactory::createRow($baris));
         }
         $writer->close();
