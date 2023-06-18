@@ -7,44 +7,106 @@ use App\Mail\InvoiceNotificationMail;
 use App\Models\AbstractFile;
 use App\Models\Invoice;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 use Midtrans\Config;
 use Midtrans\Snap;
-use PhpOffice\PhpWord\IOFactory;
-use PhpOffice\PhpWord\Settings;
-use PhpOffice\PhpWord\TemplateProcessor;
+use OpenSpout\Common\Entity\Style\Border;
+use OpenSpout\Common\Entity\Style\CellAlignment;
+use OpenSpout\Common\Entity\Style\Color;
+use OpenSpout\Common\Entity\Style\Style;
+use OpenSpout\Writer\Common\Creator\Style\BorderBuilder;
+use OpenSpout\Writer\Common\Creator\Style\StyleBuilder;
+use OpenSpout\Writer\Common\Creator\WriterEntityFactory;
 use Yajra\DataTables\Facades\DataTables;
 
 class InvoiceService
 {
-    public function listInvoice(){
-        $data = Invoice::join('users AS u','u.id', 'user_id')
-            ->orderBy('created_at', 'DESC')
-            ->get(['invoice.*','u.email','u.name']);
-        return DataTables::of($data)->addColumn('actions', function($row){
-            return '<a class="btn btn-success btn-xs" href="' . route('invoice.file',['invoiceId' => $row->invoice_id]) . '"
-                title="Download Invoice" target="_blank" ><i class="fa fa-download"></i></a>&nbsp;
-                <button data-href="' . route('invoice-notification.destroy', ['invoice_notification' => $row->invoice_id]) . '"
+    private function getInvoice()
+    {
+        $isMember = (Session::get('icfms_tipe_login') == IS_MEMBER);
+        $iduser = Auth::user()->id;
+        return Invoice::join('users AS u', 'u.id', 'user_id')
+            ->orderBy('created_at', 'DESC')->select(['invoice.*', 'u.email', 'u.name'])
+            ->when($isMember, function ($query) use ($iduser) {
+                $query->where("user_id", $iduser);
+            })->get();
+    }
+
+    public function listInvoiceUser()
+    {
+        $data = $this->getInvoice();
+        return DataTables::of($data)->addColumn('actions',function ($row) {
+            return '<button class="btn btn-success btn-xs btn-payment" data-id="'.$row->invoice_id.'"
+                title="Detail Payment" ><i class="fa fa-arrow-right"></i></button>';
+        })->addColumn('description', function($row){
+            return 'Registration Fee as '.implode(', ', json_decode($row->role, true)).'<br/>Paper title : '
+                . implode(', ', json_decode($row->abstract_title, true));
+        })->addColumn('status', function ($row) {
+            $return = 'Paid';
+            $class  = 'label-success';
+            if($row->status == 1){
+                $return = 'Process Payment';
+                $class = 'label-info';
+            }
+            if($row->status == 2){
+                $return = 'Waiting Payment';
+                $class = 'label-warning';
+            }
+            if($row->status == 4){
+                $return = 'Payment Failed';
+                $class = 'label-danger';
+            }
+            if($row->status == 0){
+                $return = 'Invoice Crreatd';
+                $class = 'label-primary';
+            }
+            return '<span class="label '.$class.'">'.$return.'</span>';
+        })->addColumn('terbilang', function ($row) {
+            return  $row->currency . ' ' . $row->nominal;
+        })->rawColumns(['actions','description','terbilang', 'status'])->make(true);
+    }
+
+    public function listInvoice()
+    {
+        $data = $this->getInvoice();
+        return DataTables::of($data)->addColumn('actions', function ($row) {
+            $delBtn = '';
+            if (Session::get('icfms_tipe_login' == IS_ADMIN)) {
+                $delBtn = ' <button data-href="' . route('invoice-notification.destroy', ['invoice_notification' => $row->invoice_id]) . '"
                 data-id="' . $row->invoice_id . '" class="btn btn-danger btn-xs btn-hapus"
                 title="Delete Paper "><i class="fa fa-trash-o"></i></button>';
-        })->addColumn('title', function($row){
+            }
+            return '<a class="btn btn-success btn-xs" href="' . route('invoice.file', ['invoiceId' => $row->invoice_id]) . '"
+                title="Download Invoice" target="_blank" ><i class="fa fa-download"></i></a>&nbsp;' . $delBtn;
+        })->addColumn('title', function ($row) {
             return  $row->attribut['title'];
-        })->addColumn('fullname', function($row){
+        })->addColumn('fullname', function ($row) {
             return  $row->attribut['fullname'];
-        })->addColumn('affiliation', function($row){
+        })->addColumn('affiliation', function ($row) {
             return  $row->attribut['affiliation'];
-        })->addColumn('country', function($row){
+        })->addColumn('country', function ($row) {
             return  $row->attribut['country'];
-        })->addColumn('prefnominal', function($row){
-            return  $row->currency.' '.$row->nominal;
-        })->rawColumns(['actions','title','fullname','affiliation','country', 'prefnominal'])->make(true);
+        })->addColumn('prefnominal', function ($row) {
+            return  $row->currency . ' ' . $row->nominal;
+        })->addColumn('abstract', function ($row) {
+            return implode(', ', json_decode($row->abstract_title, true));
+        })->addColumn('role', function ($row) {
+            return implode(', ', json_decode($row->role, true));
+        })->rawColumns([
+            'actions', 'title', 'fullname',
+            'affiliation', 'country', 'prefnominal', 'abstract', 'role'
+        ])->make(true);
     }
 
     public function userById($id)
     {
         $user = User::join('users_details as ud', 'users.id', 'ud.user_id')->where('id', $id)
-                    ->get(['title','name','affiliation','country'])->first();
-        $abstract = AbstractFile::where('user_id', $user->user_id)->get(['presentation','abstract_title']);
+            ->get(['title', 'name', 'affiliation', 'country'])->first();
+        $abstract = AbstractFile::where('user_id', $user->user_id)->get(['presentation', 'abstract_title']);
         $roles = $titles = [];
         foreach ($abstract as $value) {
             $roles[] = $value->presentation;
@@ -55,79 +117,205 @@ class InvoiceService
 
     public function getInvoiceByUser($idUser)
     {
-        return Invoice::with(['user','userDetail'])->where('user_id',$idUser)->first();
+        return Invoice::with(['user', 'userDetail'])->where('user_id', $idUser)->first();
     }
 
-    public function getSnapData($idUser)
+    public function getInvoiceById($id)
     {
-        $data = $this->getInvoiceByUser($idUser);
+        return Invoice::with(['user', 'userDetail'])->where('invoice_id', $id)->first();
+    }
+
+    public function getSnapData($idInvoice)
+    {
+        $dataInvoice = $this->getInvoiceById($idInvoice);
         Config::$serverKey = 'SB-Mid-server-6y8YQlyCuGBRRYpNZIhoOMJB';
         Config::$clientKey = 'SB-Mid-client-9-i_cwbk3EUIzNdc';
 
         $transaction_details = [
-            'order_id' => $data->invoice_id . '-' . rand(),
-            'gross_amount' => $data->nominal
+            'order_id' => $dataInvoice->invoice_id. '-' . rand(),
+            'gross_amount' => $dataInvoice->nominal
         ];
         $transaction = [
-            'enabled_payments' => ['credit_card', 'bank_transfer'],
+            'enabled_payments' => ['bank_transfer'],
         ];
-        $fee = 5000;
-        if ($data->currency == 'USD') {
+        $fee = 5000; // fee untuk bank transfer
+        $nominal = $dataInvoice->nominal;
+        $total = $nominal + $fee;
+        if ($dataInvoice->currency == 'USD') {
             $transaction['enabled_payments'] = ['credit_card'];
-            $fee = ($data->nominal * 2.9 / 100) + 2000; // fee untuk credit cards
+            $konversi = self::konversiDollar($dataInvoice->nominal);
+            $nominal = $konversi['converted'];
+            if($nominal == 0){
+                abort(501, 'Dollar Convertion was failed');
+            }
+            $fee = round($nominal * 2.9 / 100,0) + 2000; // fee untuk credit cards
+            $total = $nominal + $fee;
         }
-        $data->fee = $fee;
-        $transaction_details['gross_amount'] = $data->nominal + $fee;
+        $transaction_details['gross_amount'] = $total;
         $transaction['transaction_details'] = $transaction_details;
-        $data->snap_token = '';
+
         try {
-            $data->snap_token = Snap::getSnapToken($transaction);
+            $dataInvoice->snap_token = Snap::getSnapToken($transaction);
+            $dataInvoice->nominal_rupiah = $total;
+            $dataInvoice->payment_fee = $fee;
+            $dataInvoice->order_id = $transaction_details['order_id'];
+            $dataInvoice->status = 1;
+            $dataInvoice->save();
         } catch (\Throwable $th) {
             abort(501, $th->getMessage());
         }
-        $data->total = $transaction_details['gross_amount'];
-        return $data;
+        if($dataInvoice->currency == 'USD'){
+            $dataInvoice->inRupiah = $nominal; // tidak ada kolom inRupiah di table invoice
+        }
+        $dataInvoice->fee = $fee;
+        $dataInvoice->total = $transaction_details['gross_amount'];
+        return $dataInvoice;
     }
 
     public function store(StoreinvoiceRequest $request)
     {
         $data = $request->validated();
-        $data['nominal'] = str_replace('.','',$data['nominal']);
+        $data['nominal'] = str_replace('.', '', $data['nominal']);
         $data['role'] = json_encode([$data['role']]);
         $data['abstract_title'] = json_encode([$data['abstract_title']]);
-        Invoice::updateOrCreate(['invoice_id' => $data['invoice_id']], $data);
-        $this->sendEmail($data['user_id']);
+        $invoice = Invoice::updateOrCreate(['invoice_id' => $data['invoice_id']], $data);
+        $this->sendEmail($data['user_id'], $invoice->invoice_id);
     }
 
-    private function sendEmail($idUser)
+    private function sendEmail($idUser, $invoiceId)
     {
+        $path = $this->generateTemplate($invoiceId);
         $user = User::with(['userDetails'])->find($idUser);
-        Mail::to($user->email)->send(new InvoiceNotificationMail($user->userDetails));
+        Mail::to($user->email)->send(new InvoiceNotificationMail($user->userDetails, $path));
+        unlink($path);
     }
 
-    public function generateTemplate($invoiceId)
+    public function generateTemplate($invoiceId, $download = false)
     {
-        $invoice = InvoiceNotif::find($invoiceId);
-        $attribut = $invoice->atribut;
-        $template = new TemplateProcessor(resource_path('template/invoice_template.docx'));
-        $template->setValue('{{invoice_number}}', $invoice->invoice_number);
-        // $template->setValue('{{invoice_number}}', $invoice->invoice_number);
-        // $template->setValue('{{invoice_number}}', $invoice->invoice_number);
-        // $template->setValue('{{invoice_number}}', $invoice->invoice_number);
-        // $template->setValue('{{invoice_number}}', $invoice->invoice_number);
+        $invoice = Invoice::find($invoiceId);
+        $attribut = $invoice->attribut;
 
-        $domPdfPath = base_path('vendor/dompdf/dompdf');
-        Settings::setPdfRendererPath($domPdfPath);
-        Settings::setPdfRendererName('DomPDF');
-        $path = public_path('invoice-'.microtime(true));
-        $pathDocx = $path.'.docx';
-        $pathPdf = $path.'.pdf';
-        $template->saveAs($pathDocx);
+        $cur = $invoice->currency == 'USD' ? '$' : 'Rp';
+        $data = [
+            'invoice_number'   => $invoice->invoice_number,
+            'title'            => $attribut['title'],
+            'role'             => implode(',', json_decode($invoice->role)),
+            'country'          => $attribut['country'],
+            'nominal'          => $cur . ' ' . number_format($invoice->nominal),
+            'fullname'         => $attribut['fullname'],
+            'affiliation'      => $attribut['affiliation'],
+            'abstract_title'   => implode('<br/>', json_decode($invoice->abstract_title)),
+        ];
 
-        $phpWord = IOFactory::load($pathDocx);
-        $xmlWriter = IOFactory::createWriter($phpWord,'PDF');
-        $xmlWriter->save($pathPdf);
-        unlink($pathDocx);
-        return $pathPdf;
+        // return view('template.invoice_template', $data);
+        $path = public_path('invoice-' . microtime(true) . '.pdf');
+        $pdf = Pdf::loadView('template.invoice_template', $data);
+        if ($download) {
+            return $pdf->download('invoice-' . str_replace(' ', '', $attribut['fullname'] . '.pdf'));
+        }
+        $pdf->save($path);
+        return $path;
+    }
+
+    public function excelFile()
+    {
+        $writer = WriterEntityFactory::createXLSXWriter();
+        $defaultStyle = (new StyleBuilder)->setFontName('Arial')->setFontSize(11)->build();
+        $writer->setDefaultRowStyle($defaultStyle);
+
+        $styleHeader = new Style();
+        $styleHeader->setFontBold();
+        $styleHeader->setFontName('Arial Narrow');
+        $styleHeader->setShouldWrapText(false);
+        $styleHeader->setFontSize(12);
+
+        $getInvoices = $this->getInvoice();
+
+        $writer->openToBrowser('list-invoice.xlsx');
+
+        $writer->setColumnWidth(10, 1); // Date
+        $writer->setColumnWidth(40, 2); // Invoice
+        $writer->setColumnWidth(25, 3); // Email
+        $writer->setColumnWidth(10, 4); // Title
+        $writer->setColumnWidth(40, 5); // Fullname
+        $writer->setColumnWidth(25, 6); // Affiliation
+        $writer->setColumnWidth(20, 7); // Country
+        $writer->setColumnWidth(20, 8); // Nominal
+
+        $title1 = WriterEntityFactory::createCell('List Payments Invoice', $styleHeader);
+        $singleRow = WriterEntityFactory::createRow([$title1]);
+        $writer->addRow($singleRow);
+
+        $writer->addRow(WriterEntityFactory::createRow());
+        $border = (new BorderBuilder)->setBorderBottom(Color::BLACK, Border::WIDTH_THIN, Border::STYLE_SOLID)
+            ->setBorderLeft(Color::BLACK, Border::WIDTH_THIN, Border::STYLE_SOLID)
+            ->setBorderRight(Color::BLACK, Border::WIDTH_THIN, Border::STYLE_SOLID)
+            ->setBorderTop(Color::BLACK, Border::WIDTH_THIN, Border::STYLE_SOLID)->build();
+        $styleHeader->setBorder($border);
+        $styleHeader->setCellAlignment(CellAlignment::CENTER);
+        $styleHeader->setBorder($border);
+        $styleHeader->setBackgroundColor(Color::rgb(218, 227, 243));
+
+        $namaKolom = [
+            'Date', 'Invoice', 'Email', 'Title', 'Fullname', 'Affiliation', 'Country', 'Nominal'
+        ];
+        $header = WriterEntityFactory::createRowFromArray($namaKolom, $styleHeader);
+        $writer->addRow($header);
+        $styleCenter = (new StyleBuilder())->setBorder($border)->setCellAlignment(CellAlignment::CENTER)->build();
+        $styleLeft = (new StyleBuilder())->setBorder($border)->setCellAlignment(CellAlignment::LEFT)->build();
+
+        foreach ($getInvoices as $row) {
+            $date = date('d/m/Y', strtotime($row->tgl_invoice));
+            $perBaris = [
+                WriterEntityFactory::createCell($date, $styleCenter),
+                WriterEntityFactory::createCell($row->invoice_number, $styleLeft),
+                WriterEntityFactory::createCell($row->email, $styleLeft),
+                WriterEntityFactory::createCell($row->attribut['title'], $styleCenter),
+                WriterEntityFactory::createCell($row->attribut['fullname'], $styleLeft),
+                WriterEntityFactory::createCell($row->attribut['affiliation'], $styleCenter),
+                WriterEntityFactory::createCell($row->attribut['country'], $styleCenter),
+                WriterEntityFactory::createCell($row->currency . ' ' . $row->nominal, $styleLeft),
+            ];
+            $writer->addRow(WriterEntityFactory::createRow($perBaris));
+        }
+        $writer->close();
+    }
+    /**
+     * return array [converted, rate]
+     */
+    public static function konversiDollar($priceInUsd)
+    {
+        try {
+            $ch = curl_init();
+            if($ch == false){
+                abort(501, 'Curl init failed');
+            }
+            curl_setopt($ch, CURLOPT_URL, "https://v6.exchangerate-api.com/v6/21619cb7e5ecf68b90c8982d/latest/IDR");
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            $output = curl_exec($ch);
+            $return = [
+                'converted' => 0,
+                'rate'      => 0
+            ];
+            if (false !== $output) {
+                try {
+                    $response_curl = json_decode($output);
+                    return [
+                        'converted' => round($priceInUsd / $response_curl->conversion_rates->USD, 0),
+                        'rate'      => $response_curl->conversion_rates->USD,
+                    ];
+                } catch (Exception $e) {
+                    abort(501, $e->getMessage());
+                }
+            }else {
+                throw new Exception(curl_error($ch), curl_errno($ch));
+            }
+        } catch (\Throwable $th) {
+            abort(501, 'CURL throw ::  '.$th->getMessage());
+        } finally{
+            if(is_resource($ch)){
+                curl_close($ch);
+            }
+        }
     }
 }

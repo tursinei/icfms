@@ -42,9 +42,10 @@ class Invoice extends Model
      * @var array
      */
     protected $fillable = ['attribut', 'invoice_number','currency','nominal','role',
-                'abstract_title','user_id', 'tgl_invoice','payment_tgl', 'payment_fee',
-                'status',
-                'payment_method'];
+                'abstract_title','user_id', 'tgl_invoice','payment_tgl',
+                'status', 'nominal_rupiah', 'payment_fee',
+                'payment_method', 'order_id','snap_token','status','keterangan'
+                ];
 
     /**
      * The attributes that should be mutated to dates.

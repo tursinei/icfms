@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\InvoiceService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Midtrans\Config;
 use Midtrans\Snap;
@@ -16,11 +17,18 @@ class InvoiceUserController extends Controller
         $this->service = $serviceParam;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $data = $this->service->getSnapData(Auth::user()->id);
-        return view('pages.invoice-user', compact('data'));
+        if($request->ajax()){
+            return $this->service->listInvoiceUser();
+        }
+        $setInvoice = $request->get('id') ?? false;
+        return view('pages.invoices-list', compact('setInvoice'));
     }
 
-
+    public function formInvoice($invoiceId)
+    {
+        $data = $this->service->getSnapData($invoiceId);
+        return view('pages.invoice-user', compact('data'))->render();
+    }
 }

@@ -28,6 +28,7 @@
                                         <th style="width: 10%" class="text-center">Topic</th>
                                         <th style="width: 10%" class="text-center">Authors</th>
                                         <th style="width: 15%" class="text-center">Paper Title</th>
+                                        <th style="width: 15%" class="text-center">Remarks</th>
                                         <th style="width: 7%" class="text-center">&nbsp;</th>
                                     </tr>
                                 </thead>
@@ -93,6 +94,10 @@
                 {
                     data: 'title',
                     name: 'title'
+                },
+                {
+                    data: 'remarks',
+                    name: 'remarks'
                 },
                 {
                     data: 'action',

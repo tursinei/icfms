@@ -1,22 +1,15 @@
-@extends('layouts.modal', ['modalTitle' => $title, 'idForm' => 'fo-user', 'isLarge' => false])
+@extends('layouts.modal', ['modalTitle' => 'Form Invoice', 'idForm' => 'fo-user', 'isLarge' => false])
 
 @section('modalBody')
     @php
-        $options = ['class' => 'form-control input-sm', 'placeholder' => 'Ketik Email / Tombol Arah Bawah untuk meilhat daftar email',
+        $options = ['class' => 'form-control input-sm', 'placeholder' => '--Pilih Email--',
                     'list' => 'emails'];
     @endphp
     <div class="form-group">
         {!! Form::hidden('invoice_id', $invoice->invoice_id ?? '') !!}
         <label class="col-sm-4 control-label">Email</label>
         <div class="col-sm-8">
-            {!! Form::hidden('user_id', '') !!}
-            {!! Form::text('user_email', '', $options) !!}
-            {{-- {!! Form::select('user_id', $listEmail, '', $options) !!} --}}
-            <datalist id="emails">
-                @foreach ($listEmail as $key => $email)
-                    <option name="{{ $email }}" data-id="{{ $key }}" value="{{ $email }}" />
-                @endforeach
-            </datalist>
+            {!! Form::select('user_id', $listEmail, '', $options) !!}
         </div>
     </div>
     <div class="form-group">

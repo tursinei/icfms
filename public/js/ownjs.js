@@ -51,6 +51,10 @@
         error: function (e,status) {
             let er = e.responseJSON, msg = '', res = '';
             console.error('Ownjs {'+status+'} :: '+e.statusText);
+            if (typeof er == "undefined") {
+                msgAlert(e.statusText);
+                return false;
+            }
             if(typeof er.errors !== 'undefined'){
                 let firstkey = Object.keys(er.errors)[0];
                 msg = er.errors[firstkey][0];;

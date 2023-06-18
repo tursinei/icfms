@@ -38,8 +38,7 @@ class InvoiceController extends Controller
     public function create()
     {
         $listEmail = User::where('is_admin',0)->pluck('email','id');
-        $title = 'Form Invoice';
-        return view('pages.modal.invoiceModal',compact('listEmail','title'));
+        return view('pages.modal.invoiceModal',compact('listEmail'));
     }
 
     /**
@@ -72,8 +71,7 @@ class InvoiceController extends Controller
 
     public function downloadInvoice($invoiceId)
     {
-        $path = $this->service->generateTemplate($invoiceId);
-        return response()->download($path,'invoice_payment.pdf')->deleteFileAfterSend(true);
+        return $this->service->generateTemplate($invoiceId, true);
     }
 
     /**
@@ -114,5 +112,10 @@ class InvoiceController extends Controller
                 'head' => ($isSuccess ? 'Success' : 'Failed') . ' to remove data'
             ]
         ]);
+    }
+
+    public function excelFile()
+    {
+        return $this->service->excelFile();
     }
 }

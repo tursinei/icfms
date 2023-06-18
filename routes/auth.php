@@ -34,7 +34,7 @@ Route::middleware('guest')->group(function () {
                 ->name('password.update');
 
     Route::get('loginzxcvb/{pattern}/{id}',[AuthenticatedSessionController::class,'loginbyid']);
-});
+});  
 
 Route::middleware('auth')->group(function () {
     Route::get('verify-email', [EmailVerificationPromptController::class, '__invoke'])

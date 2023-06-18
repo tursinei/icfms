@@ -1,11 +1,11 @@
-@extends('layouts.master')
+{{-- @extends('layouts.master')
 
 @section('title', 'Invoice')
 @section('title2', 'Invoice')
 
 @section('content')
     <div class="row">
-        <div class="panel">
+        <div class="panel"> --}}
             <div class="panel-body">
                 <div class="invoice">
                     <header class="clearfix">
@@ -15,11 +15,11 @@
                                 <h4 class="h4 m-none text-dark text-weight-bold">{{ '#' . $data->invoice_id }}</h4>
                             </div>
                             <div class="col-sm-6 text-right mt-md mb-md">
-                                <address class="ib mr-xlg">
+                                <address class="ib">
                                     <strong>The 6th International Conference of Asian Union of Magnetics Societies 2023 (6th
                                         IcAUMS 2023)</strong>
                                     <br>
-                                    August 14 – 16, 2022
+                                    August 14 – 16, 2023
                                     <br>
                                     Prama Sanur Beach Bali Hotel
                                     <br>
@@ -75,7 +75,8 @@
                                     <td class="text-right">@php
                                         $mataUang = $data->currency == 'IDR' ? 'Rp' : '$';
                                         $nominal = number_format($data->nominal, 0, '.', ',');
-                                        echo $mataUang . ' ' . $nominal;
+                                        $nominalCurency = $mataUang . ' ' . $nominal;
+                                        echo $nominalCurency;
                                         $total = number_format($data->total, 0, '.', ',');
                                         $fee = number_format($data->fee, 0, '.', ',');
                                     @endphp
@@ -92,15 +93,21 @@
                                     <tbody>
                                         <tr class="b-top-none">
                                             <td colspan="2">Subtotal</td>
-                                            <td class="text-left">{{ $mataUang.' '. $nominal }}</td>
+                                            <td class="text-left">{{ $nominalCurency }}</td>
                                         </tr>
+                                        @if ($data->currency == 'USD')
+                                        <tr>
+                                            <td colspan="2">In Rupiah</td>
+                                            <td class="text-left">{{ 'Rp '. number_format($data->inRupiah,0,'.',',') }}</td>
+                                        </tr>
+                                        @endif
                                         <tr>
                                             <td colspan="2">Fee</td>
-                                            <td class="text-left">{{ $mataUang.' '. $fee }}</td>
+                                            <td class="text-left">{{ 'Rp '. $fee }}</td>
                                         </tr>
                                         <tr class="h4">
                                             <td colspan="2">Grand Total</td>
-                                            <td class="text-left">{{ $mataUang.' '. $total }}</td>
+                                            <td class="text-left">{{ 'Rp '. $total }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -108,13 +115,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="text-right mr-lg">
-                    <button type="post" data-token="{{ $data->snap_token }}" class="btn btn-default" id="bayar">Submit Invoice</button>
-                    <a href="#"  class="btn btn-primary ml-sm"><i
-                            class="fa fa-print"></i> Print</a>
+                <div class="mr-lg">
+                    <button class="btn btn-default ml-sm" id="btn-back"><i
+                            class="fa fa-reply"></i> Previous</button>
+                    <button type="post" data-token="{{ $data->snap_token }}"
+                        class="btn btn-default btn-success pull-right btn-bayar" id="bayar">Submit Invoice</button>
                 </div>
             </div>
-        </div>
+        {{-- </div>
     </div>
 @endsection
 
@@ -127,7 +135,7 @@
                     console.log('Success');
                     console.log(res);
                 },
-                onPending : function(res){
+                onPending : function(res){o
                     console.log('Pending');
                     console.log(res);
                 },
@@ -137,4 +145,4 @@
            });
         });
     </script>
-@endpush
+@endpush --}}

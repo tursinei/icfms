@@ -2,7 +2,7 @@
 
 @section('modalBody')
     @php
-        $options = ['class' => 'form-control input-sm', 'placeholder' => '--Pilih Invoice--',
+        $options = ['class' => 'form-control input-sm', 'placeholder' => '-- Pilih Invoice --',
                     'list' => 'invoices', 'id' => 'invoice_id'];
     @endphp
     <div class="form-group">
@@ -10,6 +10,12 @@
         <label class="col-sm-4 control-label">Invoice No.</label>
         <div class="col-sm-8">
             {!! Form::select('invoice_id', $invoices, $payment->invoice_id??'', $options) !!}
+            {{-- {!! Form::text('invoice_id', '', $options) !!}
+            <datalist id="invoices">
+                @foreach ($invoices as $key => $in)
+                    <option name="{{ $in }}" data-id="{{ $key }}" value="{{ $in }}" />
+                @endforeach
+            </datalist> --}}
         </div>
     </div>
     <div class="form-group">
@@ -18,6 +24,7 @@
             @php
                 unset($options['id'],$options['list']);
                 $options['placeholder'] = 'Title';
+                $options['readonly'] = 'readonly';
             @endphp
             {!! Form::text('attribut[title]', $payment->attribut->title ?? '', $options) !!}
         </div>
@@ -70,13 +77,17 @@
                 'class' => 'form-control input-sm',
                 'id' => 'nominal',
                 'placeholder' => '0,-',
+                'readonly'=> 'readonly'
             ]) !!}
         </div>
     </div>
     <div class="form-group">
         <label class="col-md-4 control-label">Payment Date</label>
         <div class="col-md-8">
-            {!! Form::date('tgl_invoice', $payment->tgl_payment ?? date('Y-m-d'), $options) !!}
+            @php
+                unset($options['readonly']);
+            @endphp
+            {!! Form::date('payment_tgl', $payment->payment_tgl ?? date('Y-m-d'), $options) !!}
         </div>
     </div>
 @endsection

@@ -57,10 +57,15 @@ Route::middleware('auth')->group(function () {
     Route::resource('setting',SysinfoController::class)->only(['index','store']);
     Route::resource('invoice-notification',InvoiceController::class);
     Route::get('invoice-download/{invoiceId}', [InvoiceController::class,'downloadInvoice'])->name('invoice.file');
+    Route::get('invoice-excel', [InvoiceController::class,'excelFile'])->name('invoice.excel');
+    Route::get('payment-download/{invoiceId}', [PaymentNotifController::class, 'downloadReceipt'])->name('payment.file');
+    Route::get('payment-excel', [PaymentNotifController::class, 'excelFile'])->name('payment-receipt.excel');
     Route::resource('payment-notification', PaymentNotifController::class);
+    Route::post('payment-notification/paid', [PaymentNotifController::class, 'storePayment'])->name('payment-notification.paid');
 
     // user
-    Route::get('invoice',[InvoiceUserController::class, 'index'])->name('invoice.index');
+    Route::get('invoice',[InvoiceUserController::class, 'index'])->name('invoice-user.index');
+    Route::get('invoice/form/{invoiceId}',[InvoiceUserController::class, 'formInvoice'])->name('invoice-user.form');
 });
 
 require __DIR__ . '/auth.php';
