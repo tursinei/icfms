@@ -75,7 +75,7 @@ class InvoiceService
         $data = $this->getInvoice();
         return DataTables::of($data)->addColumn('actions', function ($row) {
             $delBtn = '';
-            if (Session::get('icfms_tipe_login' == IS_ADMIN)) {
+            if (Session::get('icfms_tipe_login') == IS_ADMIN) {
                 $delBtn = ' <button data-href="' . route('invoice-notification.destroy', ['invoice_notification' => $row->invoice_id]) . '"
                 data-id="' . $row->invoice_id . '" class="btn btn-danger btn-xs btn-hapus"
                 title="Delete Paper "><i class="fa fa-trash-o"></i></button>';
@@ -105,14 +105,14 @@ class InvoiceService
     public function userById($id)
     {
         $user = User::join('users_details as ud', 'users.id', 'ud.user_id')->where('id', $id)
-            ->get(['title', 'name', 'affiliation', 'country'])->first();
+            ->get(['title', 'name', 'affiliation', 'country','user_id'])->first();
         $abstract = AbstractFile::where('user_id', $user->user_id)->get(['presentation', 'abstract_title']);
         $roles = $titles = [];
         foreach ($abstract as $value) {
             $roles[] = $value->presentation;
             $titles[] = $value->abstract_title;
         }
-        return ['user' => $user, 'roles' => $roles, 'titles' => $titles];
+        return ['user' => $user, 'roles' => array_unique($roles), 'titles' => $titles];
     }
 
     public function getInvoiceByUser($idUser)
@@ -176,8 +176,8 @@ class InvoiceService
     {
         $data = $request->validated();
         $data['nominal'] = str_replace('.', '', $data['nominal']);
-        $data['role'] = json_encode([$data['role']]);
-        $data['abstract_title'] = json_encode([$data['abstract_title']]);
+        $data['role'] = $data['role'];
+        $data['abstract_title'] = $data['abstract_title'];
         $invoice = Invoice::updateOrCreate(['invoice_id' => $data['invoice_id']], $data);
         $this->sendEmail($data['user_id'], $invoice->invoice_id);
     }
@@ -199,12 +199,12 @@ class InvoiceService
         $data = [
             'invoice_number'   => $invoice->invoice_number,
             'title'            => $attribut['title'],
-            'role'             => implode(',', json_decode($invoice->role)),
+            'role'             => $invoice->role,
             'country'          => $attribut['country'],
             'nominal'          => $cur . ' ' . number_format($invoice->nominal),
             'fullname'         => $attribut['fullname'],
             'affiliation'      => $attribut['affiliation'],
-            'abstract_title'   => implode('<br/>', json_decode($invoice->abstract_title)),
+            'abstract_title'   => $invoice->abstract_title,
         ];
 
         // return view('template.invoice_template', $data);

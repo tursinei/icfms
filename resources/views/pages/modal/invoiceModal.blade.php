@@ -50,13 +50,21 @@
     <div class="form-group">
         <label class="col-md-4 control-label">Role</label>
         <div class="col-md-8">
-            {!! Form::text('role', $invoice->role ?? '', $options) !!}
+            @php
+                $options['placeholder'] = '--Choose Role--';
+            @endphp
+            {!! Form::select('role', [], [], $options) !!}
+            {{-- {!! Form::text('role', $invoice->role ?? '', $options) !!} --}}
         </div>
     </div>
     <div class="form-group">
         <label class="col-md-4 control-label">Abstract Title</label>
         <div class="col-md-8">
-            {!! Form::text('abstract_title', $invoice->abstract_title ?? '', $options) !!}
+            @php
+                $options['placeholder'] = '--Choose Abstrac Title--';
+            @endphp
+            {!! Form::select('abstract_title', [], [], $options) !!}
+            {{-- {!! Form::text('abstract_title', $invoice->abstract_title ?? '', $options) !!} --}}
         </div>
     </div>
     <div class="form-group">
