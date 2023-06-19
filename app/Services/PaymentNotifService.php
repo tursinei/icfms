@@ -43,7 +43,7 @@ class PaymentNotifService
         $data = $this->getInvoiceUser();
         return DataTables::of($data)->addColumn('actions', function ($row) {
             $delBtn = '';
-            if(Session::get('icfms_tipe_login' == IS_ADMIN)){
+            if(Session::get('icfms_tipe_login') == IS_ADMIN){
                 $delBtn = '<button data-href="' . route('payment-notification.destroy', ['payment_notification' => $row->invoice_id]) . '"
                 data-id="' . $row->invoice_id . '" class="btn btn-danger btn-xs btn-hapus"
                 title="Delete Paper "><i class="fa fa-trash-o"></i></button>';
