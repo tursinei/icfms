@@ -117,15 +117,8 @@
                     $("input[name='attribut[affiliation]']").val(res.user.affiliation);
                     $("input[name='attribut[country]']").val(res.user.country);
                     $("input[name='attribut[fullname]']").val(res.user.name);
-                    let f = $('select[name=role] > option:first')[0];
-                    $('select[name=role]').html('');
-                    $('select[name=role]').append(f);
-                    res.roles.forEach(v => {
-                        f += '<option value="'+v+'">'+v+'</option>';
-                        console.log(f);
-                    });
-                    $('select[name=role]').append(f);
-                    f = $('select[name=abstract_title] > option:first')[0];
+                    $('select[name=role]').val(res.user.role);
+                    let f = $('select[name=abstract_title] > option:first')[0];
                     $('select[name=abstract_title]').html('');
                     $('select[name=abstract_title]').append(f);
                     res.titles.forEach(v => {

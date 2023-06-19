@@ -25,6 +25,9 @@ use Yajra\DataTables\Facades\DataTables;
 
 class InvoiceService
 {
+    const status = ['Invoice Created','Process Payment', 'Waiting Payment', 'Paid','Payment Failed'];
+    const statusLabel = ['label-primary','label-info','label-warning','label-success','label-danger'];
+
     private function getInvoice()
     {
         $isMember = (Session::get('icfms_tipe_login') == IS_MEMBER);
@@ -43,27 +46,10 @@ class InvoiceService
             return '<button class="btn btn-success btn-xs btn-payment" data-id="'.$row->invoice_id.'"
                 title="Detail Payment" ><i class="fa fa-arrow-right"></i></button>';
         })->addColumn('description', function($row){
-            return 'Registration Fee as '.implode(', ', json_decode($row->role, true)).'<br/>Paper title : '
-                . implode(', ', json_decode($row->abstract_title, true));
+            return 'Registration Fee as '.$row->role.'<br/>Paper title : '. $row->abstract_title;
         })->addColumn('status', function ($row) {
-            $return = 'Paid';
-            $class  = 'label-success';
-            if($row->status == 1){
-                $return = 'Process Payment';
-                $class = 'label-info';
-            }
-            if($row->status == 2){
-                $return = 'Waiting Payment';
-                $class = 'label-warning';
-            }
-            if($row->status == 4){
-                $return = 'Payment Failed';
-                $class = 'label-danger';
-            }
-            if($row->status == 0){
-                $return = 'Invoice Crreatd';
-                $class = 'label-primary';
-            }
+            $return = self::status[$row->status];
+            $class  = self::statusLabel[$row->status];
             return '<span class="label '.$class.'">'.$return.'</span>';
         })->addColumn('terbilang', function ($row) {
             return  $row->currency . ' ' . $row->nominal;
@@ -91,11 +77,11 @@ class InvoiceService
         })->addColumn('country', function ($row) {
             return  $row->attribut['country'];
         })->addColumn('prefnominal', function ($row) {
-            return  $row->currency . ' ' . $row->nominal;
+            return  $row->currency . ' ' . number_format($row->nominal);
         })->addColumn('abstract', function ($row) {
-            return implode(', ', json_decode($row->abstract_title, true));
+            return $row->abstract_title;
         })->addColumn('role', function ($row) {
-            return implode(', ', json_decode($row->role, true));
+            return ucfirst($row->role);
         })->rawColumns([
             'actions', 'title', 'fullname',
             'affiliation', 'country', 'prefnominal', 'abstract', 'role'
@@ -105,14 +91,13 @@ class InvoiceService
     public function userById($id)
     {
         $user = User::join('users_details as ud', 'users.id', 'ud.user_id')->where('id', $id)
-            ->get(['title', 'name', 'affiliation', 'country','user_id'])->first();
+            ->get(['title', 'name', 'affiliation', 'country','user_id','presentation as role'])->first();
         $abstract = AbstractFile::where('user_id', $user->user_id)->get(['presentation', 'abstract_title']);
-        $roles = $titles = [];
+        $titles = [];
         foreach ($abstract as $value) {
-            $roles[] = $value->presentation;
             $titles[] = $value->abstract_title;
         }
-        return ['user' => $user, 'roles' => array_unique($roles), 'titles' => $titles];
+        return ['user' => $user, 'titles' => $titles];
     }
 
     public function getInvoiceByUser($idUser)
@@ -159,7 +144,9 @@ class InvoiceService
             $dataInvoice->nominal_rupiah = $total;
             $dataInvoice->payment_fee = $fee;
             $dataInvoice->order_id = $transaction_details['order_id'];
-            $dataInvoice->status = 1;
+            if($dataInvoice->status < 1){
+                $dataInvoice->status = 1;
+            }
             $dataInvoice->save();
         } catch (\Throwable $th) {
             abort(501, $th->getMessage());

@@ -29,6 +29,8 @@ class InvoiceUserController extends Controller
     public function formInvoice($invoiceId)
     {
         $data = $this->service->getSnapData($invoiceId);
-        return view('pages.invoice-user', compact('data'))->render();
+        $status = $this->service::status[$data->status];
+        $statusLabel = $this->service::statusLabel[$data->status];
+        return view('pages.invoice-user', compact('data','status','statusLabel'))->render();
     }
 }

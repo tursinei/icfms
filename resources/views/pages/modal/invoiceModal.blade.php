@@ -53,8 +53,7 @@
             @php
                 $options['placeholder'] = '--Choose Role--';
             @endphp
-            {!! Form::select('role', [], [], $options) !!}
-            {{-- {!! Form::text('role', $invoice->role ?? '', $options) !!} --}}
+            {!! Form::select('role', $roles, '', $options) !!}
         </div>
     </div>
     <div class="form-group">

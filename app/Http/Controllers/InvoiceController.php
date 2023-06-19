@@ -6,6 +6,7 @@ use App\Models\Invoice;
 use App\Http\Requests\StoreinvoiceRequest;
 use App\Http\Requests\UpdateinvoiceRequest;
 use App\Models\User;
+use App\Services\AbstractService;
 use App\Services\InvoiceService;
 use Illuminate\Http\Request;
 
@@ -38,7 +39,11 @@ class InvoiceController extends Controller
     public function create()
     {
         $listEmail = User::where('is_admin',0)->pluck('email','id');
-        return view('pages.modal.invoiceModal',compact('listEmail'));
+        $roles  = array_combine(AbstractService::ROLES, AbstractService::ROLES);
+        $roles  = array_map(function (string $value) {
+            return ucfirst($value);
+        }, $roles);
+        return view('pages.modal.invoiceModal',compact('listEmail', 'roles'));
     }
 
     /**

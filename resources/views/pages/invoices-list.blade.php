@@ -65,9 +65,6 @@
                 }
             ];
             refreshTableServerOn('#tbl-invoices', url, cols);
-            @if ($setInvoice)
-                $('button.btn-payment[data-id={{ $setInvoice }}]').trigger('click');
-            @endif
         }).on('click', '.btn-payment', function(e) {
             let b = $(this), url = '{{ route('invoice-user.form', ['invoiceId' => ':id']) }}';
             url = url.replace(':id', b.attr('data-id'));
