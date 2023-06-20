@@ -28,7 +28,7 @@ class StoreinvoiceRequest extends FormRequest
             'attribut'      =>  ['array'],
             'role'          =>  ['string','nullable'],
             'abstract_title'=>  ['nullable','string'],
-            'invoice_number'=>  ['string'],
+            'invoice_number'=>  ['required'],
             'currency'      =>  ['required', 'string'],
             'nominal'       =>  ['required'],
             'user_id'       =>  ['required', 'integer'],

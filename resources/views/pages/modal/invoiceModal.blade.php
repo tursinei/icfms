@@ -61,8 +61,9 @@
         <div class="col-md-8">
             @php
                 $options['placeholder'] = '--Choose Abstrac Title--';
+                echo Form::select('abstract_title', [], [], $options);
+                unset($options['placeholder']);
             @endphp
-            {!! Form::select('abstract_title', [], [], $options) !!}
             {{-- {!! Form::text('abstract_title', $invoice->abstract_title ?? '', $options) !!} --}}
         </div>
     </div>
