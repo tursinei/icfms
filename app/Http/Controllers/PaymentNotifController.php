@@ -134,4 +134,9 @@ class PaymentNotifController extends Controller
             ]
         ]);
     }
+
+    public function handlePaymentMidtrans(Request $request)
+    {
+
+    }
 }

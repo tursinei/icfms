@@ -64,7 +64,6 @@
                 echo Form::select('abstract_title', [], [], $options);
                 unset($options['placeholder']);
             @endphp
-            {{-- {!! Form::text('abstract_title', $invoice->abstract_title ?? '', $options) !!} --}}
         </div>
     </div>
     <div class="form-group">

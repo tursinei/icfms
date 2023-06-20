@@ -68,4 +68,6 @@ Route::middleware('auth')->group(function () {
     Route::get('invoice/form/{invoiceId}',[InvoiceUserController::class, 'formInvoice'])->name('invoice-user.form');
 });
 
+Route::post('payment-notification-handling', [PaymentNotifController::class, 'storePayment']);
+
 require __DIR__ . '/auth.php';

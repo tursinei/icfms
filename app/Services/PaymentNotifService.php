@@ -99,6 +99,7 @@ class PaymentNotifService
         $invoice->payment_tgl = null;
         return $invoice->save();
     }
+
     private function sendEmail($idUser, $invoiceId)
     {
         $path = $this->generateTemplate($invoiceId);
@@ -211,4 +212,5 @@ class PaymentNotifService
         $invoice->feedback = json_encode($data);
         return $invoice->save();
     }
+ 
 }
