@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StorePaymentNotifRequest;
 use App\Models\Invoice;
-use App\Models\PaymentNotif;
 use App\Services\PaymentNotifService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -130,13 +128,19 @@ class PaymentNotifController extends Controller
         return response()->json([
             'status' => $isSuccess,
             'message' => [
-                'head' => ($isSuccess ? 'Success' : 'Failed') . ' transaction'
+                'head' => ($isSuccess ? 'Success' : 'Failed') . ' saved data'
             ]
         ]);
     }
 
-    public function handlePaymentMidtrans(Request $request)
+    public function confirmPayment(Request $request)
     {
-
+        $isSuccess = $this->service->storeKonfirmasi($request);
+        return response()->json([
+           'status' => $isSuccess,
+           'message' => [
+                'head' => ($isSuccess? 'Success' : 'Failed').' saved data'
+            ]
+        ]);
     }
 }

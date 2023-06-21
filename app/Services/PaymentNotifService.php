@@ -34,7 +34,8 @@ class PaymentNotifService
         return Invoice::join('users AS u', 'u.id', 'user_id')
         ->whereNotNull('payment_tgl')
         ->when($isMember, function ($query) use ($iduser) {
-            $query->where('user_id', $iduser);
+            $query->where('user_id', $iduser)->where('is_payment_confirm',true);
+
         })->orderBy('created_at', 'DESC')
             ->get(['invoice.*', 'u.email', 'u.name']);
     }
@@ -50,6 +51,12 @@ class PaymentNotifService
             }
             return '<a class="btn btn-success btn-xs" href="' . route('payment.file', ['invoiceId' => $row->invoice_id]) . '"
                 title="Download Payment Receipt" target="_blank" ><i class="fa fa-download"></i></a>&nbsp;'.$delBtn;
+        })->addColumn('detail', function ($row) {
+            return  $row->attribut['title'].' '. $row->attribut['fullname'].'<br/>'
+                    . $row->attribut['affiliation'].'<br/>'. $row->attribut['country'];
+        })->addColumn('konfirmasi', function ($row) {
+            $cheked = $row->is_payment_confirm ?'checked="checked"':'';
+            return '<input '.$cheked.' class="cek-konfirm" type="checkbox" value="'.$row->invoice_id.'" />';
         })->addColumn('title', function ($row) {
             return  $row->attribut['title'];
         })->addColumn('fullname', function ($row) {
@@ -59,13 +66,12 @@ class PaymentNotifService
         })->addColumn('country', function ($row) {
             return  $row->attribut['country'];
         })->addColumn('abstract', function ($row) {
-            return implode(', ', json_decode($row->abstract_title, true));
+            return $row->abstract_title;
         })->addColumn('role', function ($row) {
-            return implode(', ', json_decode($row->role, true));
+            return $row->role;
         })->addColumn('prefnominal', function ($row) {
             return  $row->currency . ' ' . $row->nominal;
-        })->rawColumns(['actions', 'title', 'fullname', 'affiliation',
-                        'country', 'prefnominal','abstract', 'role'])->make(true);
+        })->rawColumns(['actions', 'detail', 'prefnominal','konfirmasi','abstract', 'role'])->make(true);
     }
 
     public function userById($id)
@@ -90,7 +96,21 @@ class PaymentNotifService
     {
         $data = $request->all();
         $data['nominal'] = str_replace('.','',$data['nominal']);
-        return Invoice::where(['invoice_id' => $data['invoice_id']])->update(['payment_tgl' => $data['payment_tgl']]);
+        $invoice = Invoice::find($data['invoice_id']);
+        $invoice->payment_tgl = $data['payment_tgl'];
+        $invoice->is_payment_confirm = true;
+        $invoice->status   = 2 ; //success
+        $invoice->keterangan = "Konfirmasi manual";
+        $this->sendEmail($invoice->user_id, $invoice->invoice_id);
+        return $invoice->save();
+    }
+
+    function storeKonfirmasi(Request $request)
+    {
+        $data = $request->all();
+        $invoice = Invoice::find($data['invoice_id']);
+        $invoice->is_payment_confirm = $data['is_confirm'];
+        return $invoice->save();
     }
 
     public function delete($invoice)
@@ -104,7 +124,7 @@ class PaymentNotifService
     {
         $path = $this->generateTemplate($invoiceId);
         $user = User::with(['userDetails'])->find($idUser);
-        Mail::to($user->email)->send(new ReceiptNotificationMail($user->userDetails, $invoiceId));
+        Mail::to($user->email)->send(new ReceiptNotificationMail($user->userDetails, $path));
         unlink($path);
     }
 
@@ -117,13 +137,13 @@ class PaymentNotifService
         $data = [
             'invoice_number'   => $invoice->invoice_number,
             'title'            => $attribut['title'],
-            'role'             => implode(',', json_decode($invoice->role)),
+            'role'             => $invoice->role,
             'country'          => $attribut['country'],
             'nominal'          => $cur . ' ' . number_format($invoice->nominal),
             'fullname'         => $attribut['fullname'],
             'affiliation'      => $attribut['affiliation'],
             'date'             => date('d F Y', strtotime($invoice->payment_tgl)),
-            'abstract_title'   => implode('<br/>', json_decode($invoice->abstract_title)),
+            'abstract_title'   => $invoice->abstract_title,
         ];
 
         // return view('template.receipt_template', $data);
@@ -206,11 +226,11 @@ class PaymentNotifService
     {
         $data = $request->all();
         $invoice = Invoice::where('order_id', $data['order_id'])->first();
-        $invoice->status = ($data['status_code'] == 201 ? 2 : ($data['status_code'] == 200 ? 3 : 4));
+        $invoice->status = ($data['status_code'] == 201 ? 1 : ($data['status_code'] == 200 ? 2 : 3));
         $invoice->keterangan = $data['status_message'];
         $invoice->payment_method = $data['payment_type'];
         $invoice->feedback = json_encode($data);
         return $invoice->save();
     }
- 
+
 }

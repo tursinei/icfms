@@ -152,20 +152,18 @@
                                 <span style="-aw-import: ignore;">&#xa0;</span>
                             </p>
                         </td>
-                        <td style="/*width: 289.15pt;*/ padding-right: 10px;padding-top:10px;  vertical-align: top; -aw-padding-left: -0.25pt;">
-                            <p style="margin-left: 2.85pt; margin-bottom: 0pt; font-size: 11pt;">
-                                <span style="font-family: Arial; font-size: 10pt; font-weight: bold; color: #1f497d;">The 6</span>
-                                <span style="font-family: Arial; font-size: 6.67pt; font-weight: bold; vertical-align: super; color: #1f497d;">th</span>
-                                <span style="font-family: Arial; font-size: 10pt; font-weight: bold; color: #1f497d;"> International Conference of Asian Union of Magnetics Societies 2023 (6</span>
-                                <span style="font-family: Arial; font-size: 6.67pt; font-weight: bold; vertical-align: super; color: #1f497d;">th</span>
-                                <span style="font-family: Arial; font-size: 10pt; font-weight: bold; color: #1f497d;"> IcAUMS 2023)</span><span style="font-family: Arial; font-weight: bold; color: #00b0f0;"> </span>
+                        <td style="padding-right: 10px;padding-top:10px;  vertical-align: top; -aw-padding-left: -0.25pt;">
+                            <p style="text-align:center; margin-bottom: 0pt; font-size: 11pt;">
+                                <span style="font-family: Arial; font-weight: bold; color: #1f497d;">6</span>
+                                <span style="font-family: Arial; font-weight: bold; vertical-align: super; color: #1f497d;">th</span>
+                                <span style="font-family: Arial; font-weight: bold; color: #1f497d;"> International Conference of Asian Union of Magnetics Societies</span>
                             </p>
-                            <p style="margin-left: 2.85pt; margin-bottom: 0pt; font-size: 10pt;"><span>August 14 – 16, 2022</span></p>
-                            <p style="margin-left: 2.85pt; margin-bottom: 0pt; font-size: 10pt;"><span>Prama Sanur Beach Bali Hotel </span><span style="width: 18.62pt; display: inline-block;">&#xa0;</span></p>
-                            <p style="margin-left: 2.85pt; margin-bottom: 0pt; font-size: 10pt;"><span>Bali, Indonesia</span></p>
+                            <p style="text-align:center; margin-bottom: 0pt; font-size: 11pt;"><span>Indonesian Magnetic Society: Universitas Sebelas Maret, Ir. Sutam</span></p>
+                            <p style="text-align:center; margin-bottom: 0pt; font-size: 11pt;"><span>36A, Kentingan, Surakarta, 57126, INDONESIA</span></p>
+                            <p style="text-align:center; margin-bottom: 0pt; font-size: 10pt;"><a href="https://icaums2023.org">https://icaums2023.org</a></p>
                         </td>
                         <td style="width: 90.35pt; padding-right: 0.15pt; vertical-align: top; -aw-padding-left: -0.25pt;">
-                            <img src="E:\ZCODESPACE\drajat\drajat_icfms\public\css/assetinvtemplate/logo-ims.jpeg" alt=""
+                            <img src="{{ public_path('css/assetinvtemplate/logo-ims.png') }}" alt=""
                             style="margin-top: 4.1pt; margin-left: 11.3pt; -aw-left-pos: 11.1pt;position: absolute;"  height="87">
                         </td>
                     </tr>

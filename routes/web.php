@@ -54,18 +54,21 @@ Route::middleware('auth')->group(function () {
     Route::get('payment/{payment}/{action}',[PaymentController::class,'show'])->name('payment.show');
     Route::post('email/resend-verification', [EmailVerificationNotificationController::class, 'resendEmail'])
                 ->name('verification.resend');
-    Route::resource('setting',SysinfoController::class)->only(['index','store']);
-    Route::resource('invoice-notification',InvoiceController::class);
     Route::get('invoice-download/{invoiceId}', [InvoiceController::class,'downloadInvoice'])->name('invoice.file');
     Route::get('invoice-excel', [InvoiceController::class,'excelFile'])->name('invoice.excel');
     Route::get('payment-download/{invoiceId}', [PaymentNotifController::class, 'downloadReceipt'])->name('payment.file');
     Route::get('payment-excel', [PaymentNotifController::class, 'excelFile'])->name('payment-receipt.excel');
     Route::resource('payment-notification', PaymentNotifController::class);
     Route::post('payment-notification/paid', [PaymentNotifController::class, 'storePayment'])->name('payment-notification.paid');
-
+    Route::resource('invoice-notification', InvoiceController::class);
     // user
     Route::get('invoice',[InvoiceUserController::class, 'index'])->name('invoice-user.index');
     Route::get('invoice/form/{invoiceId}',[InvoiceUserController::class, 'formInvoice'])->name('invoice-user.form');
+});
+
+Route::middleware(['auth','role:'.IS_ADMIN])->group(function () {
+    Route::resource('setting',SysinfoController::class)->only(['index','store']);
+    Route::post('konfirm-payment',[PaymentNotifController::class, 'confirmPayment'])->name('konfirm-payment');
 });
 
 Route::post('payment-notification-handling', [PaymentNotifController::class, 'storePayment']);

@@ -17,13 +17,11 @@
                                     <tr>
                                         <th style="width: 10%" class="text-center">Date</th>
                                         <th style="width: 15%" class="text-center">Invoice</th>
-                                        <th style="width: 20%" class="text-center">Email</th>
-                                        <th style="width: 5%" class="text-center">Title</th>
-                                        <th style="width: 20%" class="text-center">Full Name</th>
-                                        <th style="width: 10%" class="text-center">Affiliation</th>
-                                        <th style="width: 10%" class="text-center">Country</th>
+                                        <th style="width: 15%" class="text-center">Email</th>
+                                        <th style="width: 25%" class="text-center">Detail Personal</th>
                                         <th style="width: 10%" class="text-center">Nominal</th>
-                                        <th style="width: 10%" class="text-center">Payment Date</th>
+                                        <th style="width: 15%" class="text-center">Payment Date</th>
+                                        <th style="width: 10%" class="text-center">Konfirmasi</th>
                                         <th style="width: 10%" class="text-center">&nbsp;</th>
                                     </tr>
                                 </thead>
@@ -49,12 +47,10 @@
                 { data : 'tgl_invoice', name: 'tgl_invoice'},
                 { data : 'invoice_number', name: 'invoice_number'},
                 { data : 'email', name: 'email'},
-                { data : 'title', name: 'title'},
-                { data : 'fullname', name: 'fullname'},
-                { data : 'affiliation', name: 'affiliation'},
-                { data : 'country', name: 'country'},
+                { data : 'detail', name: 'detail'},
                 { data : 'prefnominal', name: 'prefnominal'},
-                { data : 'payment_tgl', name: 'payment_tgl'},
+                { data : 'payment_tgl', name: 'payment_tgl', className: 'text-center'},
+                { data : 'konfirmasi', name: 'konfirmasi', className:'text-center'},
                 { data : 'actions', name: 'actions',className:'text-center'}
             ];
             refreshTableServerOn('#tbl-payments', url, cols);
@@ -75,6 +71,18 @@
 
                 }
             });
+        }).on('click', '.cek-konfirm', function(e) {
+            let b = $(this), url = '{{ route('konfirm-payment') }}';
+            let isCek = b.is(':checked');
+            vAjax('', {
+                url : url,
+                type : 'POST',
+                data : {'is_confirm' : isCek?1:0, 'invoice_id' : b.val()},
+                dataType : 'JSON',
+                done : function(res){
+                    msgSuccess(res.head.message);
+                }
+            });
         }).on('change', '#invoice_id', function(e) {
             let b = $(this), url = '{{ route('payment-notification.edit',['payment_notification' => ':id']) }}';
             url = url.replace(':id', b.val());
@@ -86,12 +94,10 @@
                     $("input[name='attribut[fullname]']").val(res.attribut.name);
                     $("input[name='attribut[affiliation]']").val(res.attribut.affiliation);
                     $("input[name='attribut[country]']").val(res.attribut.country);
-                    let role = JSON.parse(res.role);
-                    let abstract = JSON.parse(res.abstract_title);
-                    $("input[name='attribut[role]']").val(role.join());
+                    $("input[name='attribut[role]']").val(res.role);
                     $("select[name='attribut[currency]']").val(res.currency);
                     $("input[name=nominal]").val(res.nominal);
-                    $("input[name='attribut[abstract_title]']").val(abstract.join());
+                    $("input[name='attribut[abstract_title]']").val(res.abstract_title);
                 }
             });
         }).on('submit', '#fo-payment', function(e){

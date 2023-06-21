@@ -25,8 +25,8 @@ use Yajra\DataTables\Facades\DataTables;
 
 class InvoiceService
 {
-    const status = ['Invoice Created','Process Payment', 'Waiting Payment', 'Paid','Payment Failed'];
-    const statusLabel = ['label-primary','label-info','label-warning','label-success','label-danger'];
+    const status = ['Invoice Created','Process Payment', 'Waiting Payment Confirmation', 'Paid Successfully','Payment Failed'];
+    const statusLabel = ['label-primary','label-warning','label-info','label-success','label-danger'];
 
     private function getInvoice()
     {
@@ -140,14 +140,13 @@ class InvoiceService
         $transaction['transaction_details'] = $transaction_details;
 
         try {
-            $dataInvoice->snap_token = Snap::getSnapToken($transaction);
-            $dataInvoice->nominal_rupiah = $total;
-            $dataInvoice->payment_fee = $fee;
-            $dataInvoice->order_id = $transaction_details['order_id'];
-            if($dataInvoice->status < 1){
-                $dataInvoice->status = 1;
+            if($dataInvoice->status == 0){
+                $dataInvoice->snap_token = Snap::getSnapToken($transaction);
+                $dataInvoice->nominal_rupiah = $total;
+                $dataInvoice->payment_fee = $fee;
+                $dataInvoice->order_id = $transaction_details['order_id'];
+                $dataInvoice->save();
             }
-            $dataInvoice->save();
         } catch (\Throwable $th) {
             abort(501, $th->getMessage());
         }
