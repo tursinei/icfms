@@ -336,7 +336,7 @@
                     "
                 >
                     <span style="width: 11.65pt; font: 7pt 'Times New Roman'; display: inline-block; -aw-import: ignore;">&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0; </span>
-                    <span style="line-height: 125%; font-family: Arial; font-size: 11pt;">Account Name : </span><span style="line-height: 125%; font-family: Arial; font-size: 11pt; font-weight: bold;">Lusi Safriani</span>
+                    <span style="line-height: 125%; font-family: Arial; font-size: 11pt;">Account Name : </span><span style="line-height: 125%; font-family: Arial; font-size: 11pt; font-weight: bold;">INDONESIA MAGNETICS SOCIETY</span>
                 </li>
                 <li
                     style="
@@ -353,7 +353,7 @@
                     "
                 >
                     <span style="width: 11.65pt; font: 7pt 'Times New Roman'; display: inline-block; -aw-import: ignore;">&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0; </span>
-                    <span style="line-height: 125%; font-family: Arial; font-size: 11pt;">Account Number : </span><span style="line-height: 125%; font-family: Arial; font-size: 11pt; font-weight: bold;">0022950297</span>
+                    <span style="line-height: 125%; font-family: Arial; font-size: 11pt;">Account Number : </span><span style="line-height: 125%; font-family: Arial; font-size: 11pt; font-weight: bold;">009401001459560</span>
                 </li>
                 <li
                     style="
