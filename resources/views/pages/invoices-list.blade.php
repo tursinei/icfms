@@ -18,7 +18,7 @@
                                     <th style="width: 40%" class="text-center">Description</th>
                                     <th style="width: 15%" class="text-center">Nominal</th>
                                     <th style="width: 10%" class="text-center">Status</th>
-                                    <th style="width: 5%" class="text-center">&nbsp;</th>
+                                    <th style="width: 5%" class="text-center">Payment</th>
                                 </tr>
                             </thead>
                             <tbody>

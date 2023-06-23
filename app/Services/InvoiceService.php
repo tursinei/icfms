@@ -43,8 +43,8 @@ class InvoiceService
     {
         $data = $this->getInvoice();
         return DataTables::of($data)->addColumn('actions',function ($row) {
-            return '<button class="btn btn-success btn-xs btn-payment" data-id="'.$row->invoice_id.'"
-                title="Detail Payment" ><i class="fa fa-arrow-right"></i></button>';
+            return '<button class="btn btn-success btn-xs btn-payment" data-id="'.$row->invoice_id. '"
+                title="Credit Card Payment" ><i class="fa fa-arrow-right"></i></button>';
         })->addColumn('description', function($row){
             return 'Registration Fee as '.$row->role.'<br/>Paper title : '. $row->abstract_title;
         })->addColumn('status', function ($row) {
@@ -112,6 +112,10 @@ class InvoiceService
 
     public function getSnapData($idInvoice)
     {
+        // drajat(sandbox)
+        // serverKey : SB-Mid-server-6y8YQlyCuGBRRYpNZIhoOMJB
+        // client : SB-Mid-client-9-i_cwbk3EUIzNdc
+
         $dataInvoice = $this->getInvoiceById($idInvoice);
         Config::$serverKey = 'SB-Mid-server-n2FUn5y--Fmg2WkP9l-BZmtv';
         Config::$clientKey = 'SB-Mid-client-SIzs-pxWedZWMT_G';

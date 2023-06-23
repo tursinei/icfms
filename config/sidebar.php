@@ -51,8 +51,8 @@ return [
             'akses' => [IS_MEMBER],
         ], [
             'icon'  => 'fa-cc-mastercard',
-            'title' => 'Payment',
-            'url'   => 'payment',
+            'title' => 'Payment via Bank Transfer',
+            'url'   => 'Payment via Bank Transfer',
             'akses' => [IS_MEMBER, IS_ADMIN]
         ],
         [

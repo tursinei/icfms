@@ -234,6 +234,7 @@ class PaymentNotifService
         $invoice->status = ($data['status_code'] == 201 ? 1 : ($data['status_code'] == 200 ? 2 : 4));
         $invoice->keterangan = $data['status_message'];
         $invoice->payment_method = $data['payment_type'];
+        $invoice->payment_tgl = date('Y-m-d');
         $invoice->feedback = json_encode($data);
         return $invoice->save();
     }

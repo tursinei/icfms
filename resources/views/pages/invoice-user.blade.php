@@ -108,7 +108,7 @@
         </div>
     </div>
     <div class="mr-lg">
-        <button class="btn btn-default ml-sm" id="btn-back"><i class="fa fa-reply"></i> Previous</button>
+        <button class="btn btn-default ml-sm" id="btn-back"><i class="fa fa-arrow-left"></i> Back</button>
         @if ($data->status == 2 || $data->status == 3)
             <label style="font-size: large;" class="label {{ $statusLabel }} label-lg font-lg pull-right">
                 {{ $status }}
