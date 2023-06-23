@@ -113,8 +113,8 @@ class InvoiceService
     public function getSnapData($idInvoice)
     {
         $dataInvoice = $this->getInvoiceById($idInvoice);
-        Config::$serverKey = 'SB-Mid-server-6y8YQlyCuGBRRYpNZIhoOMJB';
-        Config::$clientKey = 'SB-Mid-client-9-i_cwbk3EUIzNdc';
+        Config::$serverKey = 'SB-Mid-server-n2FUn5y--Fmg2WkP9l-BZmtv';
+        Config::$clientKey = 'SB-Mid-client-SIzs-pxWedZWMT_G';
 
         $transaction_details = [
             'order_id' => $dataInvoice->invoice_id. '-' . rand(),
