@@ -370,7 +370,7 @@
                     "
                 >
                     <span style="width: 11.65pt; font: 7pt 'Times New Roman'; display: inline-block; -aw-import: ignore;">&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0; </span>
-                    <span style="line-height: 125%; font-family: Arial; font-size: 11pt;">Swift code : </span><span style="line-height: 125%; font-family: Arial; font-size: 11pt; font-weight: bold;">BNINIDJA</span>
+                    <span style="line-height: 125%; font-family: Arial; font-size: 11pt;">Swift code : </span><span style="line-height: 125%; font-family: Arial; font-size: 11pt; font-weight: bold;">BRINIDJA</span>
                 </li>
                 <li
                     style="
@@ -387,7 +387,7 @@
                     "
                 >
                     <span style="width: 11.65pt; font: 7pt 'Times New Roman'; display: inline-block; -aw-import: ignore;">&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0; </span>
-                    <span style="line-height: 125%; font-family: Arial; font-size: 11pt;">Bank Name : </span><span style="line-height: 125%; font-family: Arial; font-size: 11pt; font-weight: bold;">BNI UNPAD BANDUNG</span>
+                    <span style="line-height: 125%; font-family: Arial; font-size: 11pt;">Bank Name : </span><span style="line-height: 125%; font-family: Arial; font-size: 11pt; font-weight: bold;">BRI 94 KC SUMEDANG</span>
                 </li>
             </ul>
             <p style="margin-bottom: 0pt; line-height: 125%;">
