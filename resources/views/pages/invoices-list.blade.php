@@ -36,6 +36,7 @@
     {{-- data-client-key="{{ $data->snap_token }}" --}}
     <script src="https://app.sandbox.midtrans.com/snap/snap.js" ></script>
     <script type="text/javascript">
+        let table;
         $(document).ready(function(evt) {
             let url = '{{ route('invoice-user.index') }}';
             let cols = [{
@@ -64,7 +65,7 @@
                     className: 'text-center'
                 }
             ];
-            refreshTableServerOn('#tbl-invoices', url, cols);
+            table = refreshTableServerOn('#tbl-invoices', url, cols);
         }).on('click', '.btn-payment', function(e) {
             let b = $(this), url = '{{ route('invoice-user.form', ['invoiceId' => ':id']) }}';
             url = url.replace(':id', b.attr('data-id'));
@@ -81,6 +82,7 @@
         }).on('click', '#btn-back', function(e) {
             $('#div-invoice').toggle('fast',function(){
                 $('#tbl-invoice').toggle('slow');
+                table.ajax.reload();
             });
         }).on('click', '.btn-bayar', function(e) {
             let stoken = $(this).attr('data-token');
@@ -89,19 +91,21 @@
                     console.log('Success');
                     console.log(res);
                     storePayment(res, function(respon) {
-                        msgSuccess(respon.message);
+                        let resJson = JSON.parse(respon)
+                        msgSuccess(resJson.message.head);
                     });
                 },
                 onPending : function(res){o
                     console.log('Pending');
                     console.log(res);
                     storePayment(res, function(respon) {
-                        msgSuccess(respon.message);
+                        let resJson = JSON.parse(respon)
+                        msgSuccess(resJson.message.head);
                     });
                 },
                 onError : function(res){
-                    msgAlert('Internal Server Error');
-                    console.error(res.message)
+                    msgAlert('Failed payment : '.res.status_message);
+                    console.error(res.status_message);
                 }
            });
         });
@@ -115,6 +119,7 @@
                     if(typeof doneFunction == 'function'){
                         doneFunction(r);
                     }
+                    $('#btn-back').trigger('click');
                 }
             });
         };

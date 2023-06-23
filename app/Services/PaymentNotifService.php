@@ -7,6 +7,7 @@ use App\Mail\ReceiptNotificationMail;
 use App\Models\AbstractFile;
 use App\Models\Invoice;
 use App\Models\InvoiceNotif;
+use App\Models\LogNotifPayment;
 use App\Models\PaymentNotif;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -110,6 +111,10 @@ class PaymentNotifService
         $data = $request->all();
         $invoice = Invoice::find($data['invoice_id']);
         $invoice->is_payment_confirm = $data['is_confirm'];
+        $invoice->status = $data['is_confirm'] ? 3 : 2;
+        if($data['is_confirm']){
+            $this->sendEmail($invoice->user_id, $invoice->invoice_id);
+        }
         return $invoice->save();
     }
 
@@ -226,11 +231,21 @@ class PaymentNotifService
     {
         $data = $request->all();
         $invoice = Invoice::where('order_id', $data['order_id'])->first();
-        $invoice->status = ($data['status_code'] == 201 ? 1 : ($data['status_code'] == 200 ? 2 : 3));
+        $invoice->status = ($data['status_code'] == 201 ? 1 : ($data['status_code'] == 200 ? 2 : 4));
         $invoice->keterangan = $data['status_message'];
         $invoice->payment_method = $data['payment_type'];
         $invoice->feedback = json_encode($data);
         return $invoice->save();
     }
 
+    public function handleNotif(Request $request)
+    {
+        $invoice = $this->storePayment($request);
+
+        return LogNotifPayment::create([
+            'order_id' => $invoice->order_id,
+            'url_feedback'  => $request->url(),
+            'respon_body'   => json_encode($request->all())
+        ]);
+    }
 }

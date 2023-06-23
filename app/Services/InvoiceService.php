@@ -25,8 +25,8 @@ use Yajra\DataTables\Facades\DataTables;
 
 class InvoiceService
 {
-    const status = ['Invoice Created','Process Payment', 'Waiting Payment Confirmation', 'Paid Successfully','Payment Failed'];
-    const statusLabel = ['label-primary','label-warning','label-info','label-success','label-danger'];
+    const status = ['Invoice Created','Waiting Payment','Waiting Payment Confirmation', 'Paid Successfully','Payment Failed'];
+    const statusLabel = ['label-primary','label-info','label-warning','label-success','label-danger'];
 
     private function getInvoice()
     {
@@ -279,10 +279,6 @@ class InvoiceService
             curl_setopt($ch, CURLOPT_URL, "https://v6.exchangerate-api.com/v6/21619cb7e5ecf68b90c8982d/latest/IDR");
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             $output = curl_exec($ch);
-            $return = [
-                'converted' => 0,
-                'rate'      => 0
-            ];
             if (false !== $output) {
                 try {
                     $response_curl = json_decode($output);
