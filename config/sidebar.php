@@ -52,7 +52,7 @@ return [
         ], [
             'icon'  => 'fa-cc-mastercard',
             'title' => 'Payment via Bank Transfer',
-            'url'   => 'Payment via Bank Transfer',
+            'url'   => 'payment',
             'akses' => [IS_MEMBER, IS_ADMIN]
         ],
         [
