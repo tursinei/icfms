@@ -389,6 +389,23 @@
                     <span style="width: 11.65pt; font: 7pt 'Times New Roman'; display: inline-block; -aw-import: ignore;">&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0; </span>
                     <span style="line-height: 125%; font-family: Arial; font-size: 11pt;">Bank Name : </span><span style="line-height: 125%; font-family: Arial; font-size: 11pt; font-weight: bold;">BRI 94 KC SUMEDANG</span>
                 </li>
+                <li
+                    style="
+                        margin-left: 7.1pt;
+                        margin-bottom: 0pt;
+                        line-height: 125%;
+                        font-family: serif;
+                        font-size: 10pt;
+                        list-style-position: inside;
+                        -aw-font-family: 'Symbol';
+                        -aw-font-weight: normal;
+                        -aw-list-padding-sml: 11.65pt;
+                        -aw-number-format: '';
+                    "
+                >
+                    <span style="width: 11.65pt; font: 7pt 'Times New Roman'; display: inline-block; -aw-import: ignore;">&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0; </span>
+                    <span style="line-height: 125%; font-family: Arial; font-size: 11pt;">Address : </span><span style="line-height: 125%; font-family: Arial; font-size: 11pt; font-weight: bold;">Bank BRI KC Sumedang. Jl. Prabu Geusan Ulun No.10, Regol Wetan, Kec. Sumedang Sel., Kabupaten Sumedang, Jawa Barat 45311</span>
+                </li>
             </ul>
             <p style="margin-bottom: 0pt; line-height: 125%;">
                 <span style="font-family: Arial;">Please send a confirmation of payment (copy proof of payment) to </span>
