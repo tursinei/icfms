@@ -68,7 +68,7 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth','role:'.IS_ADMIN])->group(function () {
     Route::resource('setting',SysinfoController::class)->only(['index','store']);
-    Route::post('konfirm-payment',[PaymentNotifController::class, 'storePayment'])->name('konfirm-payment');
+    Route::post('konfirm-payment',[PaymentNotifController::class, 'konfirmPayment'])->name('konfirm-payment');
 });
 
 Route::post('payment-notification-handling', [PaymentNotifController::class, 'handleNotifPayment']);
