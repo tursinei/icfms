@@ -80,7 +80,7 @@
                 data : {'is_confirm' : isCek?1:0, 'invoice_id' : b.val()},
                 dataType : 'JSON',
                 done : function(res){
-                    msgSuccess(res.head.message);
+                    msgSuccess(res.message.head);
                 }
             });
         }).on('change', '#invoice_id', function(e) {
