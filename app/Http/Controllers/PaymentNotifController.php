@@ -136,10 +136,11 @@ class PaymentNotifController extends Controller
     public function konfirmPayment(Request $request)
     {
         $isSuccess = $this->service->storeKonfirmasi($request);
+        $msg = $request->input('is_confirm') ? 'Payment Confirmed' : 'Payment Rejected';
         return response()->json([
             'status' => $isSuccess,
             'message' => [
-                'head' => ($isSuccess ? 'Success' : 'Failed') . ' Payment Confirmed'
+                'head' => ($isSuccess ? 'Success' : 'Failed') . ' '.$msg
             ]
         ]);
     }
