@@ -250,6 +250,6 @@ class PaymentNotifService
             $request->merge(['status_code' => 203]);
             $request->merge(['status_message' => ($data['status_message']??'Tidak ada status message') ]);
         }
-        $invoice = $this->storePayment($request);
+        return $this->storePayment($request);
     }
 }
