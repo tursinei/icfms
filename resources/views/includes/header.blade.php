@@ -16,9 +16,9 @@
 
     <div id="userbox" class="userbox">
         <a href="#" data-toggle="dropdown">
-            <figure class="profile-picture">
+            {{-- <figure class="profile-picture">
                 <img src="asset/images/!logged-user.jpg" alt="Joseph Doe" class="img-circle" data-lock-picture="asset/images/!logged-user.jpg" />
-            </figure>
+            </figure> --}}
             <div class="profile-info">
                 <span class="name">{{ Auth::user()->name }}</span>
                 <span class="role">{{ (session('icfms_tipe_login') == 1 ? 'Administrator' : 'Member') }}</span>
