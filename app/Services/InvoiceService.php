@@ -133,7 +133,7 @@ class InvoiceService
             if($nominal == 0){
                 abort(501, 'Dollar Convertion was failed');
             }
-            $fee = round($nominal * 2.9 / 100,0) + 2000; // fee untuk credit cards
+            $fee = round($nominal * 2.5 / 100,0) + 2000; // fee untuk credit cards
             $total = $nominal + $fee;
         }
         $transaction_details['gross_amount'] = $total;
