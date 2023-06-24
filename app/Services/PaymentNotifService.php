@@ -241,12 +241,14 @@ class PaymentNotifService
 
     public function handleNotif(Request $request)
     {
-        $invoice = $this->storePayment($request);
-
-        return LogNotifPayment::create([
-            'order_id' => $invoice->order_id,
+        LogNotifPayment::create([
+            'order_id' => $request->input('order_id','-'),
             'url_feedback'  => $request->url(),
             'respon_body'   => json_encode($request->all())
         ]);
-    }
+        if(!$request->has('status_code')){
+            $request->merge(['status_code' => 203]);
+            $request->merge(['status_message' => ($data['status_message']??'Tidak ada status message') ]);
+        }
+        $invoice = $this->storePayment($request);
 }
