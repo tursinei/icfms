@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-sm-6 mt-md">
                     <h2 class="h2 mt-none mb-sm text-dark text-weight-bold">INVOICE</h2>
-                    <h4 class="h4 m-none text-dark text-weight-bold">{{ '#' . $data->order_id }}</h4>
+                    <h4 id="title-order-id" class="h4 m-none text-dark text-weight-bold" data-id="{{ $data->order_id  }}">{{ '#' . $data->order_id }}</h4>
                 </div>
                 <div class="col-sm-6 text-right mt-md mb-md">
                     <address class="ib">
@@ -119,3 +119,4 @@
         @endif
     </div>
 </div>
+<script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ $data->snap_token }}"></script>

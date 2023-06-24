@@ -34,7 +34,7 @@
 
 @push('js')
     {{-- data-client-key="{{ $data->snap_token }}" --}}
-    <script src="https://app.sandbox.midtrans.com/snap/snap.js" ></script>
+    {{-- <script src="https://app.sandbox.midtrans.com/snap/snap.js" ></script> --}}
     <script type="text/javascript">
         let table;
         $(document).ready(function(evt) {
@@ -77,6 +77,41 @@
                     $('#tbl-invoice').toggle('fast',function(){
                         $('#div-invoice').toggle('slow');
                     });
+                    $('#div-invoice').find('.btn-bayar').click(function(e) {
+                        let stoken = $(this).attr('data-token');
+                        snap.pay(stoken,{
+                            onSuccess : function(res){
+                                console.log('Success');
+                                console.log(res);
+                                storePayment(res, function(respon) {
+                                    let resJson = JSON.parse(respon);
+                                    msgSuccess(resJson.message.head);
+                                });
+                            },
+                            onPending : function(res){
+                                console.log('Pending');
+                                console.log(res);
+                                if(typeof res.order_id == 'undefined'){
+                                    res.order_id = $('#title-order-id').attr('data-id');
+                                    console.log('adding key order');
+                                    console.log(res);
+                                }
+                                storePayment(res, function(respon) {
+                                    let resJson = JSON.parse(respon);
+                                    msgSuccess(resJson.message.head);
+                                });
+                            },
+                            onError : function(res){
+                                console.log('error');
+                                msgAlert('Failed payment : '.res.status_message);
+                                console.error(res.status_message);
+                            },
+                            onClose : function(res) {
+                                console.log('close');
+                                console.log(res);
+                            }
+                        });
+                    });
                 }
             });
         }).on('click', '#btn-back', function(e) {
@@ -84,31 +119,32 @@
                 $('#tbl-invoice').toggle('slow');
                 table.ajax.reload();
             });
-        }).on('click', '.btn-bayar', function(e) {
-            let stoken = $(this).attr('data-token');
-            snap.pay(stoken,{
-                onSuccess : function(res){
-                    console.log('Success');
-                    console.log(res);
-                    storePayment(res, function(respon) {
-                        let resJson = JSON.parse(respon)
-                        msgSuccess(resJson.message.head);
-                    });
-                },
-                onPending : function(res){o
-                    console.log('Pending');
-                    console.log(res);
-                    storePayment(res, function(respon) {
-                        let resJson = JSON.parse(respon)
-                        msgSuccess(resJson.message.head);
-                    });
-                },
-                onError : function(res){
-                    msgAlert('Failed payment : '.res.status_message);
-                    console.error(res.status_message);
-                }
-           });
         });
+        // .on('click', '.btn-bayar', function(e) {
+        //     let stoken = $(this).attr('data-token');
+        //     snap.pay(stoken,{
+        //         onSuccess : function(res){
+        //             console.log('Success');
+        //             console.log(res);
+        //             storePayment(res, function(respon) {
+        //                 let resJson = JSON.parse(respon)
+        //                 msgSuccess(resJson.message.head);
+        //             });
+        //         },
+        //         onPending : function(res){o
+        //             console.log('Pending');
+        //             console.log(res);
+        //             storePayment(res, function(respon) {
+        //                 let resJson = JSON.parse(respon)
+        //                 msgSuccess(resJson.message.head);
+        //             });
+        //         },
+        //         onError : function(res){
+        //             msgAlert('Failed payment : '.res.status_message);
+        //             console.error(res.status_message);
+        //         }
+        //    });
+        // });
 
         let storePayment = function(res, doneFunction) {
             vAjax('',{

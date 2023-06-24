@@ -72,5 +72,6 @@ Route::middleware(['auth','role:'.IS_ADMIN])->group(function () {
 });
 
 Route::post('payment-notification-handling', [PaymentNotifController::class, 'handleNotifPayment']);
+Route::get('payment-notification-handling', [PaymentNotifController::class, 'handleNotifPayment']);
 
 require __DIR__ . '/auth.php';
