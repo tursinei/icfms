@@ -34,7 +34,7 @@
 
 @push('js')
     {{-- data-client-key="{{ $data->snap_token }}" --}}
-    {{-- <script src="https://app.sandbox.midtrans.com/snap/snap.js" ></script> --}}
+    
     <script type="text/javascript">
         let table;
         $(document).ready(function(evt) {

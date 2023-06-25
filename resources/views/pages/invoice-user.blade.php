@@ -119,4 +119,6 @@
         @endif
     </div>
 </div>
-<script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ $data->snap_token }}"></script>
+{{-- <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ $data->snap_token }}"></script> --}}
+{{-- <script src="https://app.midtrans.com/snap/snap.js" data-client-key="{{ $data->snap_token }}"></script> --}}
+<script src="{{ $data->urlSnapJs }}" data-client-key="{{ $data->snap_token }}"></script>

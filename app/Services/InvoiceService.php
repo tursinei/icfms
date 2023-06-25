@@ -7,6 +7,7 @@ use App\Mail\InvoiceNotificationMail;
 use App\Models\AbstractFile;
 use App\Models\Invoice;
 use App\Models\User;
+use App\Models\UserDetail;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Exception;
 use Illuminate\Support\Facades\Auth;
@@ -116,19 +117,21 @@ class InvoiceService
         Config::$clientKey = config('midtrans.client_key');
         Config::$serverKey = config('midtrans.server_key');
         Config::$isProduction = config('midtrans.is_production');
+        Config::$isSanitized = config('midtrans.is_sanitized');
+        Config::$is3ds = config('midtrans.is_3ds');
 
         $transaction_details = [
             'order_id' => $dataInvoice->invoice_id. '-' . rand(),
             'gross_amount' => $dataInvoice->nominal
         ];
         $transaction = [
-            'enabled_payments' => ['bank_transfer'],
+            // 'enabled_payments' => ['bank_transfer'],
         ];
         $fee = 5000; // fee untuk bank transfer
         $nominal = $dataInvoice->nominal;
         $total = $nominal + $fee;
         if ($dataInvoice->currency == 'USD') {
-            $transaction['enabled_payments'] = ['credit_card'];
+          //  $transaction['enabled_payments'] = ['credit_card'];
             $konversi = self::konversiDollar($dataInvoice->nominal);
             $nominal = $konversi['converted'];
             if($nominal == 0){
@@ -139,7 +142,13 @@ class InvoiceService
         }
         $transaction_details['gross_amount'] = $total;
         $transaction['transaction_details'] = $transaction_details;
-
+        $userDetail = UserDetail::with('user')->find($dataInvoice->user_id);
+        $transaction['customer_details'] = [
+            'first_name' => ucfirst($userDetail->firstname),
+            'last_name' => ucfirst($userDetail->lastname),
+            'email' => $userDetail->user->email,
+            'phone' => $userDetail->mobilenumber,
+        ];
         try {
             if($dataInvoice->status == 0){
                 $dataInvoice->snap_token = Snap::getSnapToken($transaction);
@@ -156,6 +165,8 @@ class InvoiceService
         }
         $dataInvoice->fee = $fee;
         $dataInvoice->total = $transaction_details['gross_amount'];
+        $dataInvoice->urlSnapJs = Config::$isProduction ? 'https://app.midtrans.com/snap/snap.js' :
+        'https://app.sandbox.midtrans.com/snap/snap.js';
         return $dataInvoice;
     }
 
