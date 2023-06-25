@@ -113,8 +113,9 @@ class InvoiceService
     public function getSnapData($idInvoice)
     {
         $dataInvoice = $this->getInvoiceById($idInvoice);
-        Config::$serverKey = config('midtrans.server_key');
         Config::$clientKey = config('midtrans.client_key');
+        Config::$serverKey = config('midtrans.server_key');
+        Config::$isProduction = config('midtrans.is_production');
 
         $transaction_details = [
             'order_id' => $dataInvoice->invoice_id. '-' . rand(),
