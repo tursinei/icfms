@@ -125,13 +125,13 @@ class InvoiceService
             'gross_amount' => $dataInvoice->nominal
         ];
         $transaction = [
-            // 'enabled_payments' => ['bank_transfer'],
+            'enabled_payments' => ['bank_transfer'],
         ];
         $fee = 5000; // fee untuk bank transfer
         $nominal = $dataInvoice->nominal;
         $total = $nominal + $fee;
         if ($dataInvoice->currency == 'USD') {
-          //  $transaction['enabled_payments'] = ['credit_card'];
+            $transaction['enabled_payments'] = ['credit_card'];
             $konversi = self::konversiDollar($dataInvoice->nominal);
             $nominal = $konversi['converted'];
             if($nominal == 0){
