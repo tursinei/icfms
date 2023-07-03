@@ -132,6 +132,8 @@ class InvoiceService
         $total = $nominal + $fee;
         if ($dataInvoice->currency == 'USD') {
             $transaction['enabled_payments'] = ['credit_card'];
+            $transaction['credit_card'] = ["secure" => true];
+
             $konversi = self::konversiDollar($dataInvoice->nominal);
             $nominal = $konversi['converted'];
             if($nominal == 0){
