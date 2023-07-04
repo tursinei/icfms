@@ -113,4 +113,13 @@ class UserController extends Controller
             ]
         ], 200);
     }
+
+    public function cekSession()
+    {
+        $status = false;
+        if (Auth::check()) {
+            $status = true;
+        }
+        return Response::json(['status' => $status]);
+    }
 }

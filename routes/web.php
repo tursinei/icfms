@@ -36,6 +36,7 @@ if (env('APP_ENV') === 'production') {
 
 Route::get('/',  [IndexController::class,'index']);
 Route::get('git-pull',[GitController::class,'pull']);
+Route::get('is-in', [UserController::class, 'cekSession'])->name('user.isIn');
 Route::middleware('auth')->group(function () {
     Route::resource('dashboard', DashboardController::class);
     Route::get('/dashboard/abstract/{id}', [DashboardController::class, 'getAbstracts'])->name('dashboard.abstract');
