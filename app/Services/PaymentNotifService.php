@@ -66,13 +66,15 @@ class PaymentNotifService
             return  $row->attribut['affiliation'];
         })->addColumn('country', function ($row) {
             return  $row->attribut['country'];
+        })->addColumn('tgl_payment_orderid', function ($row) {
+            return $row->payment_tgl->format('d-m-Y'). '<br/><div class="bg-primary"><strong>' . $row->order_id.'</strong></div>';
         })->addColumn('abstract', function ($row) {
             return $row->abstract_title;
         })->addColumn('role', function ($row) {
             return $row->role;
         })->addColumn('prefnominal', function ($row) {
             return  $row->currency . ' ' . $row->nominal;
-        })->rawColumns(['actions', 'detail', 'prefnominal','konfirmasi','abstract', 'role'])->make(true);
+        })->rawColumns(['actions', 'detail', 'prefnominal','konfirmasi','abstract', 'role', 'tgl_payment_orderid'])->make(true);
     }
 
     public function userById($id)

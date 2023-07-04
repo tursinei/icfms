@@ -20,7 +20,7 @@
                                         <th style="width: 15%" class="text-center">Email</th>
                                         <th style="width: 25%" class="text-center">Detail Personal</th>
                                         <th style="width: 10%" class="text-center">Nominal</th>
-                                        <th style="width: 15%" class="text-center">Payment Date</th>
+                                        <th style="width: 15%" class="text-center">Payment Date & Order ID</th>
                                         <th style="width: 10%" class="text-center">Konfirmasi</th>
                                         <th style="width: 10%" class="text-center">&nbsp;</th>
                                     </tr>
@@ -49,7 +49,7 @@
                 { data : 'email', name: 'email'},
                 { data : 'detail', name: 'detail'},
                 { data : 'prefnominal', name: 'prefnominal'},
-                { data : 'payment_tgl', name: 'payment_tgl', className: 'text-center'},
+                { data : 'tgl_payment_orderid', name: 'tgl_payment_orderid', className: 'text-center'},
                 { data : 'konfirmasi', name: 'konfirmasi', className:'text-center'},
                 { data : 'actions', name: 'actions',className:'text-center'}
             ];
