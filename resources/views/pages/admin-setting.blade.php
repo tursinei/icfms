@@ -30,9 +30,6 @@
                     <div class="form-group">
                         <label class="col-md-3 control-label">Batas Tanggal Upload Full Paper</label>
                         <div class="col-md-5 ">
-                            @php
-                                $options['placeholder'] = 'Message info batas maksimal Full Paper';
-                            @endphp
                             {!! Form::date("setting[tgl_bts_paper]", $data['tgl_bts_paper'] ?? '', $options) !!}
                         </div>
                     </div>
@@ -40,7 +37,7 @@
                         <label class="col-md-3 control-label">Message Tanggal Upload Full Paper</label>
                         <div class="col-md-5 ">
                             @php
-                                $options['placeholder'] = 'Message info batas maksimal abstract';
+                                $options['placeholder'] = 'Message info batas maksimal Full Paper';
                                 $options['rows'] = '2';
                             @endphp
                             {!! Form::textarea("setting[msg_bts_paper]", $data['msg_bts_paper'] ?? '', $options) !!}
