@@ -246,7 +246,9 @@ class PaymentNotifService
         LogNotifPayment::create([
             'order_id' => $request->input('order_id','-'),
             'url_feedback'  => $request->url(),
-            'respon_body'   => json_encode($request->all())
+            'respon_body'   => json_encode($request->all()),
+            'status_code'   => json_encode($request->input('status_code','000')),
+            'status_message'   => json_encode($request->input('status_message','-no message-'))
         ]);
         if(!$request->has('status_code')){
             $request->merge(['status_code' => 203]);

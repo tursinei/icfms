@@ -40,7 +40,7 @@ class LogNotifPayment extends Model
      *
      * @var array
      */
-    protected $fillable = ['order_id','url_feedback','respon_body'];
+    protected $fillable = ['order_id','url_feedback','respon_body','status_code','status_message'];
 
     /**
      * The attributes that should be cast to native types.
