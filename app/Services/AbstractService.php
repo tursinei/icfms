@@ -18,7 +18,7 @@ use OpenSpout\Writer\Common\Creator\Style\BorderBuilder;
 use OpenSpout\Writer\Common\Creator\WriterEntityFactory;
 class AbstractService
 {
-    const ROLES = ['oral', 'poster', 'audience', 'keynote speaker', 'Invited Speaker'];
+    const ROLES = ['oral', 'poster', 'audience', 'keynote speaker', 'Invited Speaker', 'AUMS Council Member'];
 
     public static function remarksColumn($isPresentation){
         return $isPresentation ? 'Abstract with Presentation Only' :

@@ -289,7 +289,11 @@
                         </p>
                         <table>
                             <tr><td>Name</td><td>:</td><td><strong>{{ $title }} {{ $fullname }}</strong></td></tr>
-                            <tr><td>Paper Title</td><td>:</td><td><strong>{{ $abstract_title }}</strong></td></tr>
+                            @if ($role == 'AUMS Council Member')
+                                <tr><td>Affiliation</td><td>:</td><td><strong>{{ $affiliation }}</strong></td></tr>
+                            @else
+                                <tr><td>Paper Title</td><td>:</td><td><strong>{{ $abstract_title }}</strong></td></tr>
+                            @endif
                         </table>
                         <p style="margin-left: 65.55pt; margin-bottom: 0pt; text-indent: -64pt; line-height: 125%; font-size: 11pt;"><span style="font-family: Arial; font-weight: bold; -aw-import: ignore;">&#xa0;</span></p>
                     </td>
