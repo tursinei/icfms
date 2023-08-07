@@ -65,7 +65,7 @@
         <label class="col-md-4 control-label">Spent</label>
         <div class="col-md-8">
             <div class="input-group">
-                {!! Form::text('attribut[night]', $invoice->attribut->night ?? '', $options) !!}
+                {!! Form::text('attribut[night]', $invoice->attribut->night ?? 1, $options) !!}
                 <div class="input-group-addon">Nights</div>
             </div>
         </div>
