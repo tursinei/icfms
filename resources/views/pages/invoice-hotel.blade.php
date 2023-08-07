@@ -108,6 +108,20 @@
 
                 }
             });
+        }).on('change', 'input[name="attribut[arrival]"]', function(e) {
+            let a = $(this).val(), d = $('input[name="attribut[departure]"]').val();
+            let dayInMilisecond = 1000 * 60 * 60 * 24;
+            if(a != '' & d != ''){
+                let start = new Date(a);
+                let end = new Date(d);
+                start.setHours(0,0,0,0);
+                end.setHours(0,0,0,0);
+                let selisih = Math.abs(start - end);
+                let days = Math.round(selisih / dayInMilisecond);
+                $('input[name="attribut[night]"]').val(days);
+            }
+        }).on('change', 'input[name="attribut[departure]"]', function(e) {
+            $('input[name="attribut[arrival]"]').trigger('change');
         }).on('change', 'select[name=user_id]', function(e) {
             let b = $(this),
                 url = '{{ route('invoice-hotel.edit', ['invoice_hotel' => ':iduser']) }}';
