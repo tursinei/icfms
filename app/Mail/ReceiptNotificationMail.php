@@ -11,16 +11,16 @@ class ReceiptNotificationMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    protected $userDetail, $pathReceipt;
+    protected $user, $invoice;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($userDetail, $pathReceipt)
+    public function __construct($user, $invoice)
     {
-        $this->userDetail = $userDetail;
-        $this->pathReceipt = $pathReceipt;
+        $this->user = $user;
+        $this->invoice = $invoice;
     }
 
     /**
@@ -31,12 +31,13 @@ class ReceiptNotificationMail extends Mailable
     public function build()
     {
         $this->subject('Payment Receipt - IcAUMS ' . date('Y'));
-        $details = $this->userDetail;
+        $details = $this->user->userDetails;
         return $this->view('mail.receipt-payment')->with([
             'name'  => implode(' ', [$details->firstname, $details->midlename, $details->lastname]),
             'affiliation' => $details->affiliation,
             'country' => $details->country,
             'title' => $details->title,
-        ])->attach($this->pathReceipt);
+            'jenis' => $this->invoice->jenis,
+        ])->attach($this->invoice->path);
     }
 }

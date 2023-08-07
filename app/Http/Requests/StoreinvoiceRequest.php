@@ -32,7 +32,8 @@ class StoreinvoiceRequest extends FormRequest
             'currency'      =>  ['required', 'string'],
             'nominal'       =>  ['required'],
             'user_id'       =>  ['required', 'integer'],
-            'tgl_invoice'   =>  ['required', 'date']
+            'tgl_invoice'   =>  ['required', 'date'],
+            'jenis'         =>  ['nullable'],
         ];
     }
 }

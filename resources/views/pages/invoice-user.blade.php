@@ -60,9 +60,14 @@
                 <tbody>
                     <tr>
                         <td>{{ $data->invoice_number }}</td>
-                        <td>Registration Fee as <strong>{{ $data->role }}</strong>
+                        <td>@if ($data->jenis == 'hotel')
+                            Accomodation Fee
+                            <br/> Name &nbsp;&nbsp;: {{ $data->userDetail->title . ' ' . $data->user->name }}
+                        @else
+                            Registration Fee as <strong>{{ $data->role }}</strong>
                             <br /> Name &nbsp;&nbsp;: {{ $data->userDetail->title . ' ' . $data->user->name }}
                             <br /> Paper title : {{ $data->abstract_title }}
+                        @endif
                         </td>
                         <td class="text-right">@php
                             $mataUang = $data->currency == 'IDR' ? 'Rp' : '$';

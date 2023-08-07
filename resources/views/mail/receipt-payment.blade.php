@@ -9,7 +9,13 @@
         <span style="font-size:calc(var(--scale-factor)*13.92px)">&ldquo;</span>
         <span style="font-size:calc(var(--scale-factor)*13.92px)">The receipt of your</span>
         <span style="font-size:calc(var(--scale-factor)*13.92px)"> </span>
-        <span style="font-size:calc(var(--scale-factor)*13.92px)">registration</span>
+        <span style="font-size:calc(var(--scale-factor)*13.92px)">
+            @if ($jenis == 'hotel')
+                accomodation
+            @else
+                registration
+            @endif
+        </span>
         <span style="font-size:calc(var(--scale-factor)*13.92px)"> </span>
         <span style="font-size:calc(var(--scale-factor)*13.92px)">has been issued&quot;</span>
     </strong>

@@ -22,42 +22,40 @@ use OpenSpout\Common\Entity\Style\Style;
 use OpenSpout\Writer\Common\Creator\Style\BorderBuilder;
 use OpenSpout\Writer\Common\Creator\Style\StyleBuilder;
 use OpenSpout\Writer\Common\Creator\WriterEntityFactory;
-use PhpOffice\PhpWord\IOFactory;
-use PhpOffice\PhpWord\Settings;
-use PhpOffice\PhpWord\TemplateProcessor;
 use Yajra\DataTables\Facades\DataTables;
 
 class PaymentNotifService
 {
-    private function getInvoiceUser(){
+    private function getInvoiceUser()
+    {
         $isMember = (Session::get('icfms_tipe_login') == IS_MEMBER);
         $iduser = Auth::user()->id;
         return Invoice::join('users AS u', 'u.id', 'user_id')
-        ->whereNotNull('payment_tgl')
-        ->when($isMember, function ($query) use ($iduser) {
-            $query->where('user_id', $iduser)->where('is_payment_confirm',true);
-
-        })->orderBy('created_at', 'DESC')
+            ->whereNotNull('payment_tgl')
+            ->when($isMember, function ($query) use ($iduser) {
+                $query->where('user_id', $iduser)->where('is_payment_confirm', true);
+            })->orderBy('created_at', 'DESC')
             ->get(['invoice.*', 'u.email', 'u.name']);
     }
 
-    public function listPayment(){
+    public function listPayment()
+    {
         $data = $this->getInvoiceUser();
         return DataTables::of($data)->addColumn('actions', function ($row) {
             $delBtn = '';
-            if(Session::get('icfms_tipe_login') == IS_ADMIN){
+            if (Session::get('icfms_tipe_login') == IS_ADMIN) {
                 $delBtn = '<button data-href="' . route('payment-notification.destroy', ['payment_notification' => $row->invoice_id]) . '"
                 data-id="' . $row->invoice_id . '" class="btn btn-danger btn-xs btn-hapus"
                 title="Delete Paper "><i class="fa fa-trash-o"></i></button>';
             }
             return '<a class="btn btn-success btn-xs" href="' . route('payment.file', ['invoiceId' => $row->invoice_id]) . '"
-                title="Download Payment Receipt" target="_blank" ><i class="fa fa-download"></i></a>&nbsp;'.$delBtn;
+                title="Download Payment Receipt" target="_blank" ><i class="fa fa-download"></i></a>&nbsp;' . $delBtn;
         })->addColumn('detail', function ($row) {
-            return  $row->attribut['title'].' '. $row->attribut['fullname'].'<br/>'
-                    . $row->attribut['affiliation'].'<br/>'. $row->attribut['country'];
+            return  $row->attribut['title'] . ' ' . $row->attribut['fullname'] . '<br/>'
+                . $row->attribut['affiliation'] . '<br/>' . $row->attribut['country'];
         })->addColumn('konfirmasi', function ($row) {
-            $cheked = $row->is_payment_confirm ?'checked="checked"':'';
-            return '<input '.$cheked.' class="cek-konfirm" type="checkbox" value="'.$row->invoice_id.'" />';
+            $cheked = $row->is_payment_confirm ? 'checked="checked"' : '';
+            return '<input ' . $cheked . ' class="cek-konfirm" type="checkbox" value="' . $row->invoice_id . '" />';
         })->addColumn('title', function ($row) {
             return  $row->attribut['title'];
         })->addColumn('fullname', function ($row) {
@@ -67,21 +65,21 @@ class PaymentNotifService
         })->addColumn('country', function ($row) {
             return  $row->attribut['country'];
         })->addColumn('tgl_payment_orderid', function ($row) {
-            return $row->payment_tgl->format('d-m-Y'). '<br/><div class="bg-primary"><strong>' . $row->order_id.'</strong></div>';
+            return $row->payment_tgl->format('d-m-Y') . '<br/><div class="bg-primary"><strong>' . $row->order_id . '</strong></div>';
         })->addColumn('abstract', function ($row) {
             return $row->abstract_title;
         })->addColumn('role', function ($row) {
             return $row->role;
         })->addColumn('prefnominal', function ($row) {
             return  $row->currency . ' ' . $row->nominal;
-        })->rawColumns(['actions', 'detail', 'prefnominal','konfirmasi','abstract', 'role', 'tgl_payment_orderid'])->make(true);
+        })->rawColumns(['actions', 'detail', 'prefnominal', 'konfirmasi', 'abstract', 'role', 'tgl_payment_orderid'])->make(true);
     }
 
     public function userById($id)
     {
         $user = User::join('users_details as ud', 'users.id', 'ud.user_id')->where('id', $id)
-                    ->get(['title','name','affiliation','country'])->first();
-        $abstract = AbstractFile::where('user_id', $user->user_id)->get(['presentation','abstract_title']);
+            ->get(['title', 'name', 'affiliation', 'country'])->first();
+        $abstract = AbstractFile::where('user_id', $user->user_id)->get(['presentation', 'abstract_title']);
         $roles = $titles = [];
         foreach ($abstract as $value) {
             $roles[] = $value->presentation;
@@ -98,11 +96,11 @@ class PaymentNotifService
     public function store(Request $request)
     {
         $data = $request->all();
-        $data['nominal'] = str_replace('.','',$data['nominal']);
+        $data['nominal'] = str_replace('.', '', $data['nominal']);
         $invoice = Invoice::find($data['invoice_id']);
         $invoice->payment_tgl = $data['payment_tgl'];
         $invoice->is_payment_confirm = true;
-        $invoice->status   = 2 ; //success
+        $invoice->status   = 2; //success
         $invoice->keterangan = "Konfirmasi manual";
         $this->sendEmail($invoice->user_id, $invoice->invoice_id);
         return $invoice->save();
@@ -114,7 +112,7 @@ class PaymentNotifService
         $invoice = Invoice::find($data['invoice_id']);
         $invoice->is_payment_confirm = $data['is_confirm'];
         $invoice->status = $data['is_confirm'] ? 3 : 2;
-        if($data['is_confirm']){
+        if ($data['is_confirm']) {
             $this->sendEmail($invoice->user_id, $invoice->invoice_id);
         }
         return $invoice->save();
@@ -127,12 +125,15 @@ class PaymentNotifService
         return $invoice->save();
     }
 
-    private function sendEmail($idUser, $invoiceId)
+    public function sendEmail($idUser, $invoiceId, $debug = false)
     {
-        $path = $this->generateTemplate($invoiceId);
+        $invoice = $this->generateTemplate($invoiceId);
         $user = User::with(['userDetails'])->find($idUser);
-        Mail::to($user->email)->send(new ReceiptNotificationMail($user->userDetails, $path));
-        unlink($path);
+        if ($debug) {
+            return (new ReceiptNotificationMail($user, $invoice))->render();
+        }
+        Mail::to($user->email)->send(new ReceiptNotificationMail($user, $invoice));
+        unlink($invoice->path);
     }
 
     public function generateTemplate($invoiceId, $download = false)
@@ -151,16 +152,19 @@ class PaymentNotifService
             'affiliation'      => $attribut['affiliation'],
             'date'             => date('d F Y', strtotime($invoice->payment_tgl)),
             'abstract_title'   => $invoice->abstract_title,
+            'attribute'        => $attribut,
+            'currency'         => $invoice->currency,
         ];
-
-        // return view('template.receipt_template', $data);
+        $view = $invoice->jenis == 'hotel' ? 'template.receipthotel_template' : 'template.receipt_template';
+        // return view($view, $data);
         $path = public_path('payment-' . microtime(true) . '.pdf');
-        $pdf = Pdf::loadView('template.receipt_template', $data);
-        if($download){
-            return $pdf->download('payment_receipt-'.str_replace(' ','',$attribut['fullname']).'.pdf');
+        $pdf = Pdf::loadView($view, $data);
+        if ($download) {
+            return $pdf->download('payment_receipt-' . str_replace(' ', '', $attribut['fullname']) . '.pdf');
         }
         $pdf->save($path);
-        return $path;
+        $invoice->path = $path;
+        return $invoice;
     }
 
     public function excelFile()
@@ -234,8 +238,8 @@ class PaymentNotifService
         $data = $request->all();
         $invoice = Invoice::where('order_id', $data['order_id'])->first();
         $invoice->status = ($data['status_code'] == 201 ? 1 : ($data['status_code'] == 200 ? 2 : 4));
-        $invoice->keterangan = $data['status_message'] ?? 'Transaksi Sedang diproses ('.date('Hi').')';
-        $invoice->payment_method = $data['payment_type']??"";
+        $invoice->keterangan = $data['status_message'] ?? 'Transaksi Sedang diproses (' . date('Hi') . ')';
+        $invoice->payment_method = $data['payment_type'] ?? "";
         $invoice->payment_tgl = date('Y-m-d');
         $invoice->feedback = json_encode($data);
         return $invoice->save();
@@ -244,15 +248,15 @@ class PaymentNotifService
     public function handleNotif(Request $request)
     {
         LogNotifPayment::create([
-            'order_id' => $request->input('order_id','-'),
+            'order_id' => $request->input('order_id', '-'),
             'url_feedback'  => $request->url(),
             'respon_body'   => json_encode($request->all()),
-            'status_code'   => json_encode($request->input('status_code','000')),
-            'status_message'   => json_encode($request->input('status_message','-no message-'))
+            'status_code'   => json_encode($request->input('status_code', '000')),
+            'status_message'   => json_encode($request->input('status_message', '-no message-'))
         ]);
-        if(!$request->has('status_code')){
+        if (!$request->has('status_code')) {
             $request->merge(['status_code' => 203]);
-            $request->merge(['status_message' => ($data['status_message']??'Tidak ada status message') ]);
+            $request->merge(['status_message' => ($data['status_message'] ?? 'Tidak ada status message')]);
         }
         return $this->storePayment($request);
     }

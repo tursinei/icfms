@@ -43,7 +43,7 @@ class Invoice extends Model
      */
     protected $fillable = ['attribut', 'invoice_number','currency','nominal','role',
                 'abstract_title','user_id', 'tgl_invoice','payment_tgl',
-                'status', 'nominal_rupiah', 'payment_fee',
+                'status', 'nominal_rupiah', 'payment_fee', 'jenis',
                 'payment_method', 'order_id','snap_token','status','keterangan'
                 ];
 

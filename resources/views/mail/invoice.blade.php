@@ -4,7 +4,18 @@
 
 <p>&nbsp;</p>
 
-<h2><span style=""><span style="color:#3498db"><strong><span style="font-size:calc(var(--scale-factor)*13.92px)">&ldquo;</span><span style="font-size:calc(var(--scale-factor)*13.92px)">The invoice of your</span><span style="font-size:calc(var(--scale-factor)*13.92px)"> </span><span style="font-size:calc(var(--scale-factor)*13.92px)">registration</span><span style="font-size:calc(var(--scale-factor)*13.92px)"> </span><span style="font-size:calc(var(--scale-factor)*13.92px)">has been issued&quot;</span></strong></span></span></h2>
+<h2><span style=""><span style="color:#3498db">
+    <strong><span style="font-size:calc(var(--scale-factor)*13.92px)">&ldquo;</span>
+        <span style="font-size:calc(var(--scale-factor)*13.92px)">The invoice of your</span>
+        <span style="font-size:calc(var(--scale-factor)*13.92px)"> </span>
+        <span style="font-size:calc(var(--scale-factor)*13.92px)">
+            @if ($jenis == 'hotel')
+                accomodation
+            @else
+                registration
+            @endif
+        </span>
+        <span style="font-size:calc(var(--scale-factor)*13.92px)"> </span><span style="font-size:calc(var(--scale-factor)*13.92px)">has been issued&quot;</span></strong></span></span></h2>
 
 <h2>&nbsp;</h2>
 

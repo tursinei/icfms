@@ -11,16 +11,16 @@ class InvoiceNotificationMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    protected $userDetail, $pathInvoice;
+    protected $userDetail, $invoice;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($userDetail, $pathInvoice)
+    public function __construct($userDetail, $invoice)
     {
         $this->userDetail = $userDetail;
-        $this->pathInvoice = $pathInvoice;
+        $this->invoice = $invoice;
     }
 
     /**
@@ -37,6 +37,7 @@ class InvoiceNotificationMail extends Mailable
             'affiliation' => $details->affiliation,
             'country' => $details->country,
             'title' => $details->title,
-        ])->attach($this->pathInvoice);
+            'jenis' => $this->invoice->jenis,
+        ])->attach($this->invoice->path);
     }
 }

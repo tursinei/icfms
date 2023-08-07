@@ -1,9 +1,8 @@
-@extends('layouts.modal', ['modalTitle' => 'Form Invoice', 'idForm' => 'fo-user', 'isLarge' => false])
+@extends('layouts.modal', ['modalTitle' => 'Form Invoice Hotel', 'idForm' => 'fo-hotel', 'isLarge' => false])
 
 @section('modalBody')
     @php
-        $options = ['class' => 'form-control input-sm', 'placeholder' => '--Pilih Email--',
-                    'list' => 'emails'];
+        $options = ['class' => 'form-control input-sm', 'placeholder' => '--Pilih Email--', 'list' => 'emails'];
     @endphp
     <div class="form-group">
         {!! Form::hidden('invoice_id', $invoice->invoice_id ?? '') !!}
@@ -48,22 +47,27 @@
         unset($options['readonly']);
     @endphp
     <div class="form-group">
-        <label class="col-md-4 control-label">Role</label>
+        <label class="col-md-4 control-label">Arrival</label>
         <div class="col-md-8">
             @php
-                $options['placeholder'] = '--Choose Role--';
+                $options['placeholder'] = '';
             @endphp
-            {!! Form::select('role', $roles, '', $options) !!}
+            {!! Form::date('attribut[arrival]', $invoice->attribut->arrival ?? '', $options) !!}
         </div>
     </div>
     <div class="form-group">
-        <label class="col-md-4 control-label">Abstract Title</label>
+        <label class="col-md-4 control-label">Departure</label>
         <div class="col-md-8">
-            @php
-                $options['placeholder'] = '--Choose Abstrac Title--';
-                echo Form::select('abstract_title', [], [], $options);
-                unset($options['placeholder']);
-            @endphp
+            {!! Form::date('attribut[departure]', $invoice->attribut->departure ?? '', $options) !!}
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-4 control-label">Spent</label>
+        <div class="col-md-8">
+            <div class="input-group">
+                {!! Form::text('attribut[night]', $invoice->attribut->night ?? '', $options) !!}
+                <div class="input-group-addon">Nights</div>
+            </div>
         </div>
     </div>
     <div class="form-group">
@@ -94,7 +98,7 @@
                 'id' => 'nominal',
                 'placeholder' => '0,-',
             ]) !!}
-            {!! Form::hidden('jenis', 'registration') !!}
         </div>
+        {!! Form::hidden('jenis', 'hotel') !!}
     </div>
 @endsection

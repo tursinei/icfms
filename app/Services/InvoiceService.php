@@ -29,13 +29,15 @@ class InvoiceService
     const status = ['Invoice Created','Waiting Payment','Waiting Payment Confirmation', 'Paid Successfully','Payment Failed'];
     const statusLabel = ['label-primary','label-info','label-warning','label-success','label-danger'];
 
-    private function getInvoice()
+    private function getInvoice($jenis = 'registrasi')
     {
         $isMember = (Session::get('icfms_tipe_login') == IS_MEMBER);
         $iduser = Auth::user()->id;
         return Invoice::join('users AS u', 'u.id', 'user_id')
             ->orderBy('created_at', 'DESC')->select(['invoice.*', 'u.email', 'u.name'])
-            ->when($isMember, function ($query) use ($iduser) {
+            ->when(!$isMember, function ($query) use ($jenis) {
+                $query->where("jenis", $jenis);
+            })->when($isMember, function ($query) use ($iduser) {
                 $query->where("user_id", $iduser);
             })->get();
     }
@@ -47,7 +49,7 @@ class InvoiceService
             return '<button class="btn btn-success btn-xs btn-payment" data-id="'.$row->invoice_id. '"
                 title="Credit Card Payment" ><i class="fa fa-arrow-right"></i></button>';
         })->addColumn('description', function($row){
-            return 'Registration Fee as '.$row->role.'<br/>Paper title : '. $row->abstract_title;
+            return $row->jenis == 'hotel' ?'Accomodation Fee' : 'Registration Fee as '.$row->role.'<br/>Paper title : '. $row->abstract_title;
         })->addColumn('status', function ($row) {
             $return = self::status[$row->status];
             $class  = self::statusLabel[$row->status];
@@ -57,9 +59,9 @@ class InvoiceService
         })->rawColumns(['actions','description','terbilang', 'status'])->make(true);
     }
 
-    public function listInvoice()
+    public function listInvoice($jenis)
     {
-        $data = $this->getInvoice();
+        $data = $this->getInvoice($jenis);
         return DataTables::of($data)->addColumn('actions', function ($row) {
             $delBtn = '';
             if (Session::get('icfms_tipe_login') == IS_ADMIN) {
@@ -172,22 +174,27 @@ class InvoiceService
         return $dataInvoice;
     }
 
-    public function store(StoreinvoiceRequest $request)
+    public function store(array $data)
     {
-        $data = $request->validated();
         $data['nominal'] = str_replace('.', '', $data['nominal']);
-        $data['role'] = $data['role'];
-        $data['abstract_title'] = $data['abstract_title'];
+        if($data['jenis'] == 'registration'){
+            $data['role'] = $data['role'];
+            $data['abstract_title'] = $data['abstract_title'];
+        }
         $invoice = Invoice::updateOrCreate(['invoice_id' => $data['invoice_id']], $data);
         $this->sendEmail($data['user_id'], $invoice->invoice_id);
+        return $invoice;
     }
 
-    private function sendEmail($idUser, $invoiceId)
+    public function sendEmail($idUser, $invoiceId, $debug = false)
     {
-        $path = $this->generateTemplate($invoiceId);
+        $invoice = $this->generateTemplate($invoiceId);
         $user = User::with(['userDetails'])->find($idUser);
-        Mail::to($user->email)->send(new InvoiceNotificationMail($user->userDetails, $path));
-        unlink($path);
+        if($debug){
+            return (new InvoiceNotificationMail($user->userDetails, $invoice))->render();
+        }
+        Mail::to($user->email)->send(new InvoiceNotificationMail($user->userDetails, $invoice));
+        unlink($invoice->path);
     }
 
     public function generateTemplate($invoiceId, $download = false)
@@ -205,16 +212,20 @@ class InvoiceService
             'fullname'         => $attribut['fullname'],
             'affiliation'      => $attribut['affiliation'],
             'abstract_title'   => $invoice->abstract_title,
+            'attribut'         => $attribut,
+            'currency'         => $invoice->currency
         ];
 
-        // return view('template.invoice_template', $data);
+        $view = $invoice->jenis == 'hotel' ? 'template.invoicehotel_template' : 'template.invoice_template';
+        // return view($view, $data);
         $path = public_path('invoice-' . microtime(true) . '.pdf');
-        $pdf = Pdf::loadView('template.invoice_template', $data);
+        $pdf = Pdf::loadView($view, $data);
         if ($download) {
             return $pdf->download('invoice-' . str_replace(' ', '', $attribut['fullname'] . '.pdf'));
         }
         $pdf->save($path);
-        return $path;
+        $invoice->path = $path;
+        return $invoice;
     }
 
     public function excelFile()

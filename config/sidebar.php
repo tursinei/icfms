@@ -34,7 +34,7 @@ return [
             'title'    => 'Announcements',
             'url'      => 'announcement',
             'akses' => [IS_ADMIN],
-        ],[
+        ], [
             'icon'  => 'fa-user',
             'title' => 'Personal Details',
             'url'   => 'personal',
@@ -59,13 +59,27 @@ return [
             'icon'  => 'fa-credit-card',
             'title' => 'Invoices',
             'url'   => 'invoice',
-            'akses' => [IS_MEMBER]
+            'akses' => [IS_MEMBER],
         ],
         [
             'icon'  => 'fa-comments-o',
             'title' => 'Invoice Notification',
-            'url'   => 'invoice-notification',
-            'akses' => [IS_ADMIN]
+            'url'   => '#',
+            'akses' => [IS_ADMIN],
+            'sub_menu' => [
+                [
+                    'icon'  => 'fa-suitcase',
+                    'title' => 'Registration',
+                    'url'   => 'invoice-notification',
+                    'akses' => [IS_ADMIN]
+                ],
+                [
+                    'icon'  => 'fa-hotel',
+                    'title' => 'Hotel',
+                    'url'   => 'invoice-hotel',
+                    'akses' => [IS_ADMIN]
+                ],
+            ]
         ], [
             'icon'  => 'fa-credit-card',
             'title' => 'Payment Notification',

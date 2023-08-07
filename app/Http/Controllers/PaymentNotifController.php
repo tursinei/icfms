@@ -25,7 +25,7 @@ class PaymentNotifController extends Controller
         if($request->ajax()){
             return $this->service->listPayment();
         }
-
+ 
         if(Session::get('icfms_tipe_login') == IS_MEMBER){
             return view('pages.payment-notif-user');
         }

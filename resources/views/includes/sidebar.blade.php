@@ -9,6 +9,7 @@ function renderSubMenu($value, $currentUrl)
         $subSubMenu = '';
         $hasTitle = !empty($menu['title']) ? $menu['title'] : '';
         $hasSubTitle = !empty($menu['subTitle']) ? $menu['subTitle'] : '';
+        $hasIcon = !empty($menu['icon']) ? '<i class="fa '. $menu['icon'] .'"></i>' : '';
 
         $isActiveChildUrl = $currentUrl == $menu['url'];
         if ($isActiveChildUrl && !$isParentActive) {
@@ -18,7 +19,7 @@ function renderSubMenu($value, $currentUrl)
         $subMenu .=
             '<li class="nav-item '.$active.'">
             <a class="nav-link" href="' .$menu['url'] .'"
-                title="' .$hasSubTitle .'" >' .
+                title="' .$hasSubTitle .'" >' .$hasIcon.' '.
             $hasTitle .
             '</a></li>';
     }
