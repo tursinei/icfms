@@ -18,7 +18,7 @@
     <div class="form-group">
         <label class="col-sm-4 control-label">For Users</label>
         <div class="col-sm-8">
-            {!! Form::select('', $listEmail, '', ['id' => 'user-doc', 'class' => 'form-control input-sm', 'placeholder' => '--Pilih Email--',
+            {!! Form::select('', $listEmail, '', ['id' => 'user-doc', 'class' => 'form-control input-sm', 'placeholder' => '--Choose Email--',
                     'list' => 'emails']) !!}
         </div>
     </div>

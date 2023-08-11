@@ -2,7 +2,7 @@
 
 @section('modalBody')
     @php
-        $options = ['class' => 'form-control input-sm', 'placeholder' => '--Pilih Email--',
+        $options = ['class' => 'form-control input-sm', 'placeholder' => '--Choose Email--',
                     'list' => 'emails'];
     @endphp
     <div class="form-group">
