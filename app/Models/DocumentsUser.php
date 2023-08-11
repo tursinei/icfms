@@ -30,8 +30,12 @@ class DocumentsUser extends Model
 
     public function document()
     {
-        return $this->belongsTo(Documents::class,'document_id','id');;
+        return $this->belongsTo(Documents::class,'document_id','id');
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 
 }

@@ -58,7 +58,7 @@ class DocumentService
         return Documents::when($idUser, function ($query) use ($idUser) {
             return $query->join('document_user', 'document_user.document_id', 'documents.id')
             ->where('user_id', $idUser)->select('documents.*','user_id');
-        })->with(['documentUser'])->orderBy('documents.created_at', 'DESC')->get();
+        })->with(['documentUser','documentUser.user'])->orderBy('documents.created_at', 'DESC')->get();
     }
 
     public function listTable()
@@ -73,13 +73,20 @@ class DocumentService
         })->addColumn('btnView',function($row){
             return '<a class="btn btn-info btn-xs" href="' . route('documents.show', ['document' => $row->id]) . '?c=' . csrf_token() . '" target="_blank">View</a>';
         })->addColumn('users',function($row){
-            $idUser = array_map(function($i){
-                return $i['user_id'];
+            $emails = array_map(function($i){
+                return $i['user']['email'];
             }, $row->documentUser->toArray());
-
-            $emails = User::whereIn('id',$idUser)->pluck('email')->toArray();
-
-            return '<span title="'.implode(',',$emails).'">'.count($row->documentUser).'</span>';
+            // $emails = User::whereIn('id',$idUser)->pluck('email')->toArray();
+            if(count($emails) <= 1){
+                return $emails[0] ?? '';
+            }
+            $li = '<li>' . $emails[0] . '</li><li>' . $emails[1] . '</li>';
+            if(count($emails) == 2){
+                return '<ol>' . $li . '</ol>';
+            }
+            $li .= '<li class="text-blue"><a class="span-more" href="#">More...</a></li>';
+            $olMore = '<li>'.implode('</li><li>',$emails).'</li>';
+            return '<ol>'.$li.'</ol><ol class="hide">'.$olMore.'</ol>';
         })->rawColumns(['action', 'users', 'namaLink', 'btnView'])->make(true);
     }
 
