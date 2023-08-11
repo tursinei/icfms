@@ -2,10 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Mtopic extends Model
 {
+
+    use HasFactory;
+
     protected $table = 'm_topic';
 
     protected $primaryKey = 'topic_id';

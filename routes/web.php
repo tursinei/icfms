@@ -7,6 +7,7 @@ use App\Http\Controllers\AnnouncementsController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Auth\IndexController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DocumentsController;
 use App\Http\Controllers\FullPaperController;
 use App\Http\Controllers\GitController;
 use App\Http\Controllers\InvoiceController;
@@ -64,6 +65,7 @@ Route::middleware('auth')->group(function () {
     Route::post('payment-notification/paid', [PaymentNotifController::class, 'storePayment'])->name('payment-notification.paid');
     Route::resource('invoice-notification', InvoiceController::class);
     Route::resource('invoice-hotel', InvoiceHotelController::class);
+    Route::resource('documents', DocumentsController::class);
     // user
     Route::get('invoice',[InvoiceUserController::class, 'index'])->name('invoice-user.index');
     Route::get('invoice/form/{invoiceId}',[InvoiceUserController::class, 'formInvoice'])->name('invoice-user.form');

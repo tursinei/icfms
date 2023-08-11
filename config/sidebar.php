@@ -87,6 +87,12 @@ return [
             'akses' => [IS_ADMIN, IS_MEMBER]
         ],
         [
+            'icon'  => 'fa-file-text-o',
+            'title' => 'Documents',
+            'url'   => 'documents',
+            'akses' => [IS_ADMIN, IS_MEMBER]
+        ],
+        [
             'icon'  => 'fa-cogs',
             'title' => 'Setting',
             'url'   => 'setting',
