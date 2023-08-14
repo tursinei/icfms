@@ -73,7 +73,7 @@ class DocumentService
         })->addColumn('btnView',function($row){
             return '<a class="btn btn-info btn-xs" href="' . route('documents.show', ['document' => $row->id]) . '?c=' . csrf_token() . '" target="_blank">View</a>';
         })->addColumn('upload_at',function($row){
-            return date('Y-m-d H:i:s', strtotime($row->created_at.' +8 hours'));
+            return date('d-m-Y H:i:s', strtotime($row->created_at));
         })->addColumn('users',function($row){
             $emails = array_map(function($i){
                 return $i['user']['email'];
