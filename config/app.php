@@ -233,5 +233,8 @@ return [
         'Form' => Collective\Html\FormFacade::class,
         'PDF'  => \Barryvdh\DomPDF\Facade::class,
     ],
-
+    'roles'=> [
+        'admin'    => 1,
+        'member'   => 0
+    ],
 ];
