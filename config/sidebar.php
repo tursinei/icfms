@@ -1,7 +1,12 @@
 <?php
 
-define('IS_ADMIN', 1);
-define('IS_MEMBER', 0);
+if (!defined('IS_ADMIN')) {
+    define('IS_ADMIN', 1);
+}
+if (!defined('IS_MEMBER')) {
+    define('IS_MEMBER', 0);
+}
+
 
 return [
     'menu' => [
