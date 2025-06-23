@@ -71,7 +71,7 @@ Route::middleware('auth')->group(function () {
     Route::get('invoice/form/{invoiceId}',[InvoiceUserController::class, 'formInvoice'])->name('invoice-user.form');
 });
 
-Route::middleware(['auth','role:'.IS_ADMIN])->group(function () {
+Route::middleware(['auth','role:'.config('app.roles.admin')])->group(function () {
     Route::resource('setting',SysinfoController::class)->only(['index','store']);
     Route::post('konfirm-payment',[PaymentNotifController::class, 'konfirmPayment'])->name('konfirm-payment');
 });
