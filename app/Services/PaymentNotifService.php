@@ -28,7 +28,7 @@ class PaymentNotifService
 {
     private function getInvoiceUser()
     {
-        $isMember = (Session::get('icfms_tipe_login') == IS_MEMBER);
+        $isMember = (Session::get('icfms_tipe_login') == config('app.roles.member'));
         $iduser = Auth::user()->id;
         return Invoice::join('users AS u', 'u.id', 'user_id')
             ->whereNotNull('payment_tgl')
@@ -43,7 +43,7 @@ class PaymentNotifService
         $data = $this->getInvoiceUser();
         return DataTables::of($data)->addColumn('actions', function ($row) {
             $delBtn = '';
-            if (Session::get('icfms_tipe_login') == IS_ADMIN) {
+            if (Session::get('icfms_tipe_login') == config('app.roles.admin')) {
                 $delBtn = '<button data-href="' . route('payment-notification.destroy', ['payment_notification' => $row->invoice_id]) . '"
                 data-id="' . $row->invoice_id . '" class="btn btn-danger btn-xs btn-hapus"
                 title="Delete Paper "><i class="fa fa-trash-o"></i></button>';
