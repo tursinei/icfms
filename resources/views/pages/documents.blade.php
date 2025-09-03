@@ -46,8 +46,8 @@
                     name: 'namaLink',
                 },
                 {
-                    data: 'created_at',
-                    name: 'created_at',
+                    data: 'upload_at',
+                    name: 'upload_at',
                     className: 'text-center'
                 },
                 {

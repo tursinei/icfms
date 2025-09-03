@@ -1,4 +1,4 @@
-<title>@yield('title') | IcAUMS {{ date('Y') }}</title>
+<title>@yield('title') | ICFMS {{ date('Y') }}</title>
 <meta name="keywords" content="HTML5 Admin Template" />
 <meta name="description" content="Porto Admin">
 <meta name="author" content="Velly Coderz">
