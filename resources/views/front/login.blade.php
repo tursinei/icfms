@@ -5,7 +5,7 @@
 @section('content')
     <div class="center-sign">
         <h2 style="float: left;font-family: 'Noto Sans','Comic Sans MS';color: #0088CC;margin-top:30px;font-weight:bold">
-            <span class="alternative-fonts">IcAUMS</span>
+            <span class="alternative-fonts">ICFMS</span>
         </h2>
         <div class="panel panel-sign">
             <div class="panel-title-sign mt-xl text-right">
