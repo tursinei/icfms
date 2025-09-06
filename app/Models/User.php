@@ -52,8 +52,8 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(AbstractFile::class, 'user_id','id')->latestOfMany('created_at');
     }
 
-    public function scopePresentation()
+    public function setEmailAttribute($value)
     {
-
+        $this->attributes['email'] = strtolower($value);
     }
 }
