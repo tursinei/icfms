@@ -23,12 +23,12 @@
 
 <h2>&nbsp;</h2>
 
-<p><span style="font-size:14px"><span style="">Please kindly check it from your account at <a href="https://reg.icaums2023.org/">https://reg.icaums2023.org/</a><br />
-Thank you for your participation and contribution in IcAUMS 2023 held on August 14 &ndash; 16, 2023 in Bali, INDONESIA.</span></span></p>
+<p><span style="font-size:14px"><span style="">Please kindly check your ICFMS account at <a href="{{ url('/') }}">{{ url('/') }}</a><br />
+Thank you for your participation and contribution in the ICFMS this year.</span></span></p>
 <br/>
 
-<p>See you soon at the conference in BALI</p><br/>
+<p>See you soon at the conference.</p><br/>
 
 <p><br />
 <span style=""><span style="font-size:14px">Best regards,<br />
-IcAUMS Committee</span></span></p>
+ICFMS Committee</span></span></p>

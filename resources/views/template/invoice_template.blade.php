@@ -134,7 +134,7 @@
                             <p style="margin-bottom: 0pt; font-size: 11pt;">
                                 <span style="height: 0pt; display: block; position: absolute; z-index: -65535;">
                                     <img
-                                        src="{{ public_path('css/assetinvtemplate/logo-aums.jpeg') }}"
+                                        src="{{ public_path('css/assetinvtemplate/logo-left.png') }}"
                                         height="87"
                                         alt
                                         style="margin-top: 4.1pt; margin-left: 11.3pt;position: absolute;"
@@ -144,17 +144,20 @@
                             </p>
                         </td>
                         <td style="padding-right: 10px;padding-top:10px;  vertical-align: top; -aw-padding-left: -0.25pt;">
-                            <p style="text-align:center; margin-bottom: 0pt; font-size: 11pt;">
-                                <span style="font-family: Arial; font-weight: bold; color: #1f497d;">6</span>
+                            <p style="text-align:left; margin-bottom: 0pt; font-size: 11pt;">
+                                <span style="font-family: Arial; font-weight: bold; color: #1f497d;">7</span>
                                 <span style="font-family: Arial; font-weight: bold; vertical-align: super; color: #1f497d;">th</span>
-                                <span style="font-family: Arial; font-weight: bold; color: #1f497d;"> International Conference of Asian Union of Magnetics Societies</span>
+                                <span style="font-family: Arial; font-weight: bold; color: #1f497d;"> International Conference on Functional Materials Science {{ date('Y') }}</span>
                             </p>
-                            <p style="text-align:center; margin-bottom: 0pt; font-size: 11pt;"><span>Indonesian Magnetic Society: Universitas Sebelas Maret, Ir. Sutam</span></p>
-                            <p style="text-align:center; margin-bottom: 0pt; font-size: 11pt;"><span>36A, Kentingan, Surakarta, 57126, INDONESIA</span></p>
-                            <p style="text-align:center; margin-bottom: 0pt; font-size: 10pt;"><a href="https://icaums2023.org">https://icaums2023.org</a></p>
+                            <p style="text-align:center; margin-bottom: 0pt; font-size: 11pt;font-family: Arial;font-style: italic">Trends in Functional Materials: From Fundamental to Applications</p>
+                            <p style="font-family: Arial; font-weight: bold; color: #1f497d;">Core to Core Program and NEXUS Program</p>
+                            <p style="text-align:center; margin-bottom: 0pt; font-size: 11pt;font-family: Arial;font-style: italic">Inter Countries and Inter Institutions Network Conference on </p>
+                            <p style="text-align:center; margin-bottom: 0pt; font-size: 11pt;font-family: Arial;font-style: italic">Developments Functional Materials</p>
+                            <p style="text-align:center; margin-bottom: 0pt; font-size: 10pt;"><span>December 10-11, 2025 – Bali, Indonesia</span></p>
+                            <p style="text-align:center; margin-bottom: 0pt; font-size: 10pt;"><a href="https://fms-net.org/icfms-2025/">https://fms-net.org/icfms-2025/</a></p>
                         </td>
                         <td style="width: 90.35pt; padding-right: 0.15pt; vertical-align: top; -aw-padding-left: -0.25pt;">
-                            <img src="{{ public_path('css/assetinvtemplate/logo-ims.png') }}" alt=""
+                            <img src="{{ public_path('css/assetinvtemplate/logo-right.png') }}" alt=""
                             style="margin-top: 4.1pt; margin-left: 11.3pt; -aw-left-pos: 11.1pt;position: absolute;"  height="87">
                         </td>
                     </tr>
@@ -178,8 +181,8 @@
             <p style="margin-bottom: 0pt; text-align: center; line-height: normal; font-size: 14pt;"><span style="font-family: Arial; font-weight: bold; -aw-import: ignore;">&#xa0;</span></p>
             <p style="margin-bottom: 0pt; text-align: center; line-height: normal; font-size: 14pt;"><span style="font-family: Arial; font-weight: bold;">INVOICE</span></p>
             <p style="margin-bottom: 0pt; text-align: center; line-height: normal; font-size: 14pt;">
-                <span style="font-family: Arial; font-weight: bold;">6</span><span style="font-family: Arial; font-size: 9.33pt; font-weight: bold; vertical-align: super;">th</span>
-                <span style="font-family: Arial; font-weight: bold;"> International Conference of Asian Union of Magnetics Societies 2023</span>
+                <span style="font-family: Arial; font-weight: bold;">7</span><span style="font-family: Arial; font-size: 9.33pt; font-weight: bold; vertical-align: super;">th</span>
+                <span style="font-family: Arial; font-weight: bold;"> International Conference on Functional Materials Science {{ date('Y') }}</span>
             </p>
             <p style="margin-bottom: 0pt; line-height: normal;"><span style="font-family: Arial; -aw-import: ignore;">&#xa0;</span></p>
             <p style="margin-bottom: 0pt; line-height: normal;"><span style="font-family: Arial; -aw-import: ignore;">&#xa0;</span></p>
@@ -320,7 +323,7 @@
             <ol type="1" style="margin: 0pt; padding-left: 0pt;">
                 <li class="ListParagraph" style="margin-left: 14.17pt; margin-bottom: 0pt; line-height: 125%; padding-left: 3.83pt; font-family: Arial;">
                     <span>Credit Card, see the detail information on the IcAUMS website: </span>
-                    <a href="https://icaums2023.org/registration/" style="text-decoration: none;"><span class="Hyperlink">https://icaums2023.org/registration/</span></a><span> </span>
+                    <a href="{{ URL::to('register') }}" style="text-decoration: none;"><span class="Hyperlink">{{ URL::to('register') }}</span></a><span> </span>
                 </li>
                 <li class="ListParagraph" style="margin-left: 14.17pt; margin-bottom: 0pt; line-height: 125%; padding-left: 3.83pt; font-family: Arial;"><span>Payment can be made by Bank Transfer to the following bank account. </span></li>
             </ol>
@@ -418,7 +421,7 @@
             <p style="margin-bottom: 0pt; line-height: 125%;"><span style="font-family: Arial; font-weight: bold; -aw-import: ignore;">&#xa0;</span></p>
             <p style="margin-bottom: 0pt; line-height: normal;">
                 <img
-                    src="{{ public_path('css/assetinvtemplate/ttd.png') }}"
+                    src="{{ public_path('css/assetinvtemplate/ttdlogo.png') }}"
                     width="232"
                     height="91"
                     alt
@@ -437,14 +440,13 @@
                 <p style="margin-bottom: 0pt; line-height: 115%; font-size: 8pt;">
                      <hr style="border:1px solid black">
                 </p>
-                <p style="margin-bottom: 0pt; line-height: 115%; font-size: 7pt;"><span style="font-family: Arial;">Organized by The Asian Union of Magnetics Societies (AUMS)</span></p>
-                <p style="margin-bottom: 0pt; line-height: 115%; font-size: 7pt;"><span style="font-family: Arial;">Co-organized by The Indonesia Magnetic Society (IMS),</span></p>
+                <p style="margin-bottom: 0pt; line-height: 115%; font-size: 7pt;"><span style="font-family: Arial;">Organized by Institut Teknologi Sepuluh Nopember, Universitas Padjadjaran, Institut Teknologi Bandung, Universitas Indonesia, and RIKEN,</span></p>
                 <p style="margin-bottom: 0pt; line-height: 115%; font-size: 7pt;">
-                    <span style="font-family: Arial;">Contact: Physics Department FMIPA, Lab Material Gedung B, Jl. Ir. Sutami No.36A, Kentingan, Kec. Jebres, Kota Surakarta, Jawa Tengah 57126. INDONESIA. </span>
+                    <span style="font-family: Arial;">Contact: Department of Physics, Institut Teknologi Sepuluh Nopember, Kampus ITS, Sukolilo, Surabaya 60111, Indonesia, Telp/Fax: +62-31-5943351. </span>
                 </p>
                 <p style="margin-bottom: 0pt;">
                     <span style="line-height: 115%; font-family: Arial; font-size: 7pt;">Email: </span>
-                    <a href="mailto:icaums.ims@gmail.com" style="text-decoration: none;"><span class="Hyperlink" style="line-height: 115%; font-family: Arial; font-size: 7pt;">icaums.ims@gmail.com</span></a>
+                    <a href="mailto:icaums.ims@gmail.com" style="text-decoration: none;"><span class="Hyperlink" style="line-height: 115%; font-family: Arial; font-size: 7pt;">icfms.id@gmail.com</span></a>
                     <span style="line-height: 115%; font-family: Arial; font-size: 7pt;"> </span>
                 </p>
                 <p class="Footer"><span style="-aw-import: ignore;">&#xa0;</span></p>

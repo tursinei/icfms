@@ -10,12 +10,12 @@
             <h4>Dear <strong>{{ $title }}&nbsp;{{ $name }}</strong><br />
 			{{ $affiliation }}<br />
 			{{ $country }}</h4>
-			Thank you for your payment for participating in The 6<sup>th</sup> ICAUMS {{ date('Y') }}.<br/>
-            The committee will immediately confirm your payment and will send proof of receipt of payment.<br/>
+			Thank you for your payment for participating in The 7<sup>th</sup> ICFMS {{ date('Y') }}.<br/>
+            The committee will immediately confirm your payment and will send proof of receipt of payment.
             See you soon in Bali, Indonesia<br/>
 			<br />
 			Best Regards,<br />
-			IcAUMS {{ date('Y') }} Committee<br />
+			ICFMS {{ date('Y') }} Committee<br />
 		</tr>
 	</tbody>
 </table>
