@@ -122,59 +122,44 @@
             }
             .TableGrid {
             }
+            ul.norek {
+                padding-left: 15px;
+            }
+            ul.norek li
+            {
+                font-family: Arial;
+                font-size: 11pt;
+                margin-bottom: 5pt;
+            }
+
         </style>
     </head>
     <body>
         <div>
             <div style="-aw-headerfooter-type: header-primary; clear: both;">
                 <p style="margin-left: 70.9pt; margin-bottom: 0pt;"><span style="-aw-import: spaces;">&#xa0;</span></p>
-                <table cellspacing="0" cellpadding="0" class="TableGrid" style="width: 100%; margin-bottom: 0pt; -aw-border-insideh: 0.5pt single #000000; -aw-border-insidev: 0.5pt single #000000; border-collapse: collapse;">
-                    <tr style="height: 68.1pt;">
-                        <td style="width: 81.7pt; vertical-align: top; -aw-padding-right: -0.05pt;">
-                            <p style="margin-bottom: 0pt; font-size: 11pt;">
-                                <span style="height: 0pt; display: block; position: absolute; z-index: -65535;">
-                                    <img
-                                        src="{{ public_path('css/assetinvtemplate/logo-left.png') }}"
-                                        height="87"
-                                        alt
-                                        style="margin-top: 4.1pt; margin-left: 11.3pt;position: absolute;"
-                                    />
-                                </span>
-                                <span style="-aw-import: ignore;">&#xa0;</span>
-                            </p>
+                <table cellspacing="0" cellpadding="0" class="tblHeader" style="width: 100%; margin-bottom: 0pt;border-collapse: collapse;">
+                    <tbody><tr>
+                        <td style="width: 15%;">
+                            <img src="css/assetinvtemplate/logo-left.png" height="87" alt="" style="margin: 10px; ">
                         </td>
-                        <td style="padding-right: 10px;padding-top:10px;  vertical-align: top; -aw-padding-left: -0.25pt;">
-                            <p style="text-align:left; margin-bottom: 0pt; font-size: 11pt;">
-                                <span style="font-family: Arial; font-weight: bold; color: #1f497d;">7</span>
-                                <span style="font-family: Arial; font-weight: bold; vertical-align: super; color: #1f497d;">th</span>
-                                <span style="font-family: Arial; font-weight: bold; color: #1f497d;"> International Conference on Functional Materials Science {{ date('Y') }}</span>
+                        <td style="padding-top:10px;  vertical-align: top; text-align:left; font-family: Arial; font-size: 11pt;width: 65%;">
+                            <p style="color: #1f497d;font-weight: bold;margin-bottom: 0px;">
+                                7<sup></sup>th International Conference on Functional Materials Science {{ date('Y') }}
                             </p>
-                            <p style="text-align:center; margin-bottom: 0pt; font-size: 11pt;font-family: Arial;font-style: italic">Trends in Functional Materials: From Fundamental to Applications</p>
-                            <p style="font-family: Arial; font-weight: bold; color: #1f497d;">Core to Core Program and NEXUS Program</p>
-                            <p style="text-align:center; margin-bottom: 0pt; font-size: 11pt;font-family: Arial;font-style: italic">Inter Countries and Inter Institutions Network Conference on </p>
-                            <p style="text-align:center; margin-bottom: 0pt; font-size: 11pt;font-family: Arial;font-style: italic">Developments Functional Materials</p>
-                            <p style="text-align:center; margin-bottom: 0pt; font-size: 10pt;"><span>December 10-11, 2025 – Bali, Indonesia</span></p>
-                            <p style="text-align:center; margin-bottom: 0pt; font-size: 10pt;"><a href="https://fms-net.org/icfms-2025/">https://fms-net.org/icfms-2025/</a></p>
+                            Trends in Functional Materials: From Fundamental to Applications
+                            <p style="color: #1f497d;font-weight: bold;margin-bottom: 0px;">Core to Core Program and NEXUS Program</p>
+                            Inter Countries and Inter Institutions Network Conference on
+                            <p style="font-style:italic;margin-bottom: 0;">Developments Functional Materials</p>
+                            <p style=" margin-bottom: 0pt; font-size: 9pt;">December 10-11, 2025 – Bali, Indonesia</p>
+                            <p style="  font-size: 9pt;"><a href="https://fms-net.org/icfms-2025/">https://fms-net.org/icfms-2025/</a></p>
                         </td>
-                        <td style="width: 90.35pt; padding-right: 0.15pt; vertical-align: top; -aw-padding-left: -0.25pt;">
-                            <img src="{{ public_path('css/assetinvtemplate/logo-right.png') }}" alt=""
-                            style="margin-top: 4.1pt; margin-left: 11.3pt; -aw-left-pos: 11.1pt;position: absolute;"  height="87">
+                        <td style="  vertical-align: top; ">
+                            <img src="css/assetinvtemplate/logo-right.png" alt="" style="margin-top: 10px;  margin-left: 10px;" height="87">
                         </td>
                     </tr>
+                </tbody>
                 </table>
-                <p style="margin-left: 70.9pt; margin-bottom: 0pt; line-height: 115%; font-size: 10pt;"><span style="-aw-import: ignore;">&#xa0;</span></p>
-                {{-- <p class="Header">
-                    <span style="height: 0pt; display: block; position: absolute; z-index: -65536;">
-                        <img
-                            src="{{ public_path('css/assetinvtemplate/line-hr.png') }}"
-                            width="701"
-                            height="6"
-                            alt
-                            style="margin-top: -1.25pt; margin-left: -36.75pt; -aw-left-pos: -34.5pt; -aw-rel-hpos: column; -aw-rel-vpos: paragraph; -aw-top-pos: 1pt; -aw-wrap-type: none; position: absolute;"
-                        />
-                    </span>
-                    <span style="-aw-import: ignore;">&#xa0;</span>
-                </p> --}}
                 <hr style="border:1px solid black">
             </div>
             <p style="margin-bottom: 0pt; line-height: 150%; font-size: 10pt;"><span style="font-family: Arial;">No. {{ $invoice_number }}</span></p>
@@ -320,98 +305,19 @@
             </table>
             <p style="margin-bottom: 0pt; text-align: justify; line-height: 150%; font-size: 12pt;"><span style="font-family: Arial; -aw-import: ignore;">&#xa0;</span></p>
             <h3 style="margin-top: 0pt; line-height: 125%;"><span style="font-family: Arial;">Method of Payment</span></h3>
-            <ol type="1" style="margin: 0pt; padding-left: 0pt;">
-                <li class="ListParagraph" style="margin-left: 14.17pt; margin-bottom: 0pt; line-height: 125%; padding-left: 3.83pt; font-family: Arial;">
-                    <span>Credit Card, see the detail information on the IcAUMS website: </span>
-                    <a href="{{ URL::to('register') }}" style="text-decoration: none;"><span class="Hyperlink">{{ URL::to('register') }}</span></a><span> </span>
+            <p style="font-family: Arial;"><span>Payment can be made by Bank Transfer to the following bank account. </span></p>
+            <ul type="disc" class="norek">
+                <li>
+                    <span style="font-family: Arial; font-size: 11pt;">Account Name :  Lusi Safriani</span>
                 </li>
-                <li class="ListParagraph" style="margin-left: 14.17pt; margin-bottom: 0pt; line-height: 125%; padding-left: 3.83pt; font-family: Arial;"><span>Payment can be made by Bank Transfer to the following bank account. </span></li>
-            </ol>
-            <ul type="disc" style="margin: 0pt; padding-left: 10pt;">
-                <li
-                    style="
-                        margin-left: 7.1pt;
-                        margin-bottom: 0pt;
-                        line-height: 125%;
-                        font-family: serif;
-                        font-size: 10pt;
-                        list-style-position: inside;
-                        -aw-font-family: 'Symbol';
-                        -aw-font-weight: normal;
-                        -aw-list-padding-sml: 11.65pt;
-                        -aw-number-format: '';
-                    "
-                >
-                    <span style="width: 11.65pt; font: 7pt 'Times New Roman'; display: inline-block; -aw-import: ignore;">&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0; </span>
-                    <span style="line-height: 125%; font-family: Arial; font-size: 11pt;">Account Name : </span><span style="line-height: 125%; font-family: Arial; font-size: 11pt; font-weight: bold;">INDONESIA MAGNETICS SOCIETY</span>
+                <li>
+                    <span style="font-family: Arial; font-size: 11pt;">Account Number : 0022950297</span>
                 </li>
-                <li
-                    style="
-                        margin-left: 7.1pt;
-                        margin-bottom: 0pt;
-                        line-height: 125%;
-                        font-family: serif;
-                        font-size: 10pt;
-                        list-style-position: inside;
-                        -aw-font-family: 'Symbol';
-                        -aw-font-weight: normal;
-                        -aw-list-padding-sml: 11.65pt;
-                        -aw-number-format: '';
-                    "
-                >
-                    <span style="width: 11.65pt; font: 7pt 'Times New Roman'; display: inline-block; -aw-import: ignore;">&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0; </span>
-                    <span style="line-height: 125%; font-family: Arial; font-size: 11pt;">Account Number : </span><span style="line-height: 125%; font-family: Arial; font-size: 11pt; font-weight: bold;">009401001459560</span>
+                <li>
+                    <span style="font-family: Arial; font-size: 11pt;">Swift code : BNINIDJA</span>
                 </li>
-                <li
-                    style="
-                        margin-left: 7.1pt;
-                        margin-bottom: 0pt;
-                        line-height: 125%;
-                        font-family: serif;
-                        font-size: 10pt;
-                        list-style-position: inside;
-                        -aw-font-family: 'Symbol';
-                        -aw-font-weight: normal;
-                        -aw-list-padding-sml: 11.65pt;
-                        -aw-number-format: '';
-                    "
-                >
-                    <span style="width: 11.65pt; font: 7pt 'Times New Roman'; display: inline-block; -aw-import: ignore;">&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0; </span>
-                    <span style="line-height: 125%; font-family: Arial; font-size: 11pt;">Swift code : </span><span style="line-height: 125%; font-family: Arial; font-size: 11pt; font-weight: bold;">BRINIDJA</span>
-                </li>
-                <li
-                    style="
-                        margin-left: 7.1pt;
-                        margin-bottom: 0pt;
-                        line-height: 125%;
-                        font-family: serif;
-                        font-size: 10pt;
-                        list-style-position: inside;
-                        -aw-font-family: 'Symbol';
-                        -aw-font-weight: normal;
-                        -aw-list-padding-sml: 11.65pt;
-                        -aw-number-format: '';
-                    "
-                >
-                    <span style="width: 11.65pt; font: 7pt 'Times New Roman'; display: inline-block; -aw-import: ignore;">&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0; </span>
-                    <span style="line-height: 125%; font-family: Arial; font-size: 11pt;">Bank Name : </span><span style="line-height: 125%; font-family: Arial; font-size: 11pt; font-weight: bold;">BRI 94 KC SUMEDANG</span>
-                </li>
-                <li
-                    style="
-                        margin-left: 7.1pt;
-                        margin-bottom: 0pt;
-                        line-height: 125%;
-                        font-family: serif;
-                        font-size: 10pt;
-                        list-style-position: inside;
-                        -aw-font-family: 'Symbol';
-                        -aw-font-weight: normal;
-                        -aw-list-padding-sml: 11.65pt;
-                        -aw-number-format: '';
-                    "
-                >
-                    <span style="width: 11.65pt; font: 7pt 'Times New Roman'; display: inline-block; -aw-import: ignore;">&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0; </span>
-                    <span style="line-height: 125%; font-family: Arial; font-size: 11pt;">Address : </span><span style="line-height: 125%; font-family: Arial; font-size: 11pt; font-weight: bold;">Bank BRI KC Sumedang. Jl. Prabu Geusan Ulun No.10, Regol Wetan, Kec. Sumedang Sel., Kabupaten Sumedang, Jawa Barat 45311</span>
+                <li>
+                    <span style="font-family: Arial; font-size: 11pt;">Bank Name : BNI UNPAD BANDUNG</span>
                 </li>
             </ul>
             <p style="margin-bottom: 0pt; line-height: 125%;">
@@ -431,10 +337,8 @@
             <p style="margin-bottom: 0pt; line-height: normal;"><span style="font-family: Arial; font-weight: bold; -aw-import: ignore;">&#xa0;</span></p>
             <p style="margin-bottom: 0pt; line-height: normal;"><span style="font-family: Arial; font-weight: bold; -aw-import: ignore;">&#xa0;</span></p>
             <p style="margin-bottom: 0pt; line-height: normal;"><span style="font-family: Arial; font-weight: bold; -aw-import: ignore;">&#xa0;</span></p>
-            <p style="margin-bottom: 0pt; line-height: normal;"><span style="font-family: Arial; font-weight: bold; -aw-import: ignore;">&#xa0;</span></p>
-            <p style="margin-bottom: 0pt; line-height: normal;"><span style="font-family: Arial; font-weight: bold; -aw-import: ignore;">&#xa0;</span></p>
             <p style="margin-bottom: 0pt; line-height: normal; width: 20%;"><span style="font-family: Arial; font-weight: bold; text-decoration: underline;">Lusi Safriani</span></p>
-            <p style="margin-bottom: 0pt; line-height: normal;"><span style="font-family: Arial; font-weight: bold;">Organizing Committee of IcAUMS 2023</span></p>
+            <p style="margin-bottom: 0pt; line-height: normal;"><span style="font-family: Arial; font-weight: bold;">Organizing Committee of ICFMS {{ date('Y') }}</span></p>
             <p style="margin-bottom: 0pt; line-height: normal;"><span style="width: 14.2pt; font-family: Arial; display: inline-block;">&#xa0;</span></p>
             <div style="-aw-headerfooter-type: footer-primary; clear: both;">
                 <p style="margin-bottom: 0pt; line-height: 115%; font-size: 8pt;">
