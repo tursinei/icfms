@@ -217,7 +217,7 @@ class InvoiceService
         ];
 
         $view = $invoice->jenis == 'hotel' ? 'template.invoicehotel_template' : 'template.invoice_template';
-        return view($view, $data);
+        // return view($view, $data);
         $path = public_path('invoice-' . microtime(true) . '.pdf');
         $pdf = Pdf::loadView($view, $data);
         if ($download) {
