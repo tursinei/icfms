@@ -155,7 +155,7 @@ class PaymentNotifService
             'attribute'        => $attribut,
             'currency'         => $invoice->currency,
         ];
-        $view = $invoice->jenis == 'hotel' ? 'template.receipthotel_template' : 'template.receipt_template';
+        $view = $invoice->jenis == 'hotel' ? 'template.receipt-hotel' : 'template.receipt-registration';
         // return view($view, $data);
         $path = public_path('payment-' . microtime(true) . '.pdf');
         $pdf = Pdf::loadView($view, $data);

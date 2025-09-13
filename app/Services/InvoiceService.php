@@ -216,7 +216,7 @@ class InvoiceService
             'currency'         => $invoice->currency
         ];
 
-        $view = $invoice->jenis == 'hotel' ? 'template.invoicehotel_template' : 'template.invoice_template';
+        $view = $invoice->jenis == 'hotel' ? 'template.invoice-hotel' : 'template.invoice-registration';
         // return view($view, $data);
         $path = public_path('invoice-' . microtime(true) . '.pdf');
         $pdf = Pdf::loadView($view, $data);

@@ -70,10 +70,6 @@ Route::middleware('auth')->group(function () {
     // user
     Route::get('invoice',[InvoiceUserController::class, 'index'])->name('invoice-user.index');
     Route::get('invoice/form/{invoiceId}',[InvoiceUserController::class, 'formInvoice'])->name('invoice-user.form');
-    Route::get('send-email', function(Request $request){
-        $service = new \App\Services\InvoiceService();
-        return $service->generateTemplate($request->query('id'), true);
-    })->name('send-email');
 });
 
 Route::middleware(['auth','role:1'])->group(function () {
