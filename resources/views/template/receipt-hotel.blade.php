@@ -2,7 +2,7 @@
 
 @section('konten')
     <p>Details of payment are as follow.</p>
-    <P>No, {{ $invoice_number }}</P>
+    <P>No. {{ $invoice_number }}</P>
     <table class="noborder" cellspacing="0" cellpadding="0" style="margin-bottom: 12pt;">
         <tr>
             <td style="width: 100pt;"> Received From </td>
