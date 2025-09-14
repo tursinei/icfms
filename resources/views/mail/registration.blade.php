@@ -16,13 +16,13 @@
                         </tr>
                     </tbody></table>
                 <br><br>
-                Thank you for signing up for the participation in the 6<sup>th</sup> IcAUMS {{ date('Y') }}.
+                Thank you for signing up for the participation in the 7<sup>th</sup> ICFMS {{ date('Y') }}.
                 <br>
                 Please remember your ID(Email) and password, which you can see above.<br>
                 You can check the status of your paper submission, registration, and personal
                 information by logging in with the ID and password you registered.<br>
                 <br>
-                We thank you very much for your participation in IcAUMS {{ date('Y') }} and hope you visit
+                We thank you very much for your participation in ICFMS {{ date('Y') }} and hope you visit
                 our official website <a href="{{ URL::to('/') }}">{{ URL::to('/') }}</a> constantly for updated information.<br>
                 Should you have further inquiries, please feel free to contact the secretariat. <br>
                 <br>
@@ -31,8 +31,8 @@
                 Best regards,<br>
                 <br>
                 <strong>Organizing Committee</strong><br>
-                <br>6<sup>th</sup> IcAUMS {{ date('Y') }}
-                <br/>Website : <a href="https://icaums2023.org" target="_blank">https://icaums2023.org</a>
+                <br>7<sup>th</sup> ICFMS {{ date('Y') }}
+                <br/>Website : <a href="https://fms-net.org/icfms-2025/" target="_blank">https://fms-net.org/icfms-2025/</a>
                 <br>
             </td>
         </tr>

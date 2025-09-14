@@ -182,7 +182,7 @@ class InvoiceService
             $data['abstract_title'] = $data['abstract_title'];
         }
         $invoice = Invoice::updateOrCreate(['invoice_id' => $data['invoice_id']], $data);
-        $this->sendEmail($data['user_id'], $invoice->invoice_id);
+        $this->sendEmail( $data['user_id'],$invoice->invoice_id);
         return $invoice;
     }
 
@@ -216,7 +216,7 @@ class InvoiceService
             'currency'         => $invoice->currency
         ];
 
-        $view = $invoice->jenis == 'hotel' ? 'template.invoicehotel_template' : 'template.invoice_template';
+        $view = $invoice->jenis == 'hotel' ? 'template.invoice-hotel' : 'template.invoice-registration';
         // return view($view, $data);
         $path = public_path('invoice-' . microtime(true) . '.pdf');
         $pdf = Pdf::loadView($view, $data);

@@ -20,3 +20,4 @@ public/dokumen_fullpaper/
 *.txt
 public/dokumen_payment/*
 *.sql
+public/*.pdf

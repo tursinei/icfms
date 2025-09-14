@@ -18,6 +18,7 @@ use App\Http\Controllers\PaymentNotifController;
 use App\Http\Controllers\PersonalController;
 use App\Http\Controllers\SysinfoController;
 use App\Http\Controllers\UserController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 

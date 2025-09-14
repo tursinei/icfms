@@ -14,7 +14,9 @@ return [
     */
 
     'name' => env('APP_NAME', 'Laravel'),
-
+    'info' => [
+        'title'    => '7<sup>th</sup> International Conference on Functional Materials Science '.now()->year
+    ],
     /*
     |--------------------------------------------------------------------------
     | Application Environment
@@ -237,4 +239,5 @@ return [
         'admin'    => 1,
         'member'   => 0
     ],
+
 ];

@@ -29,12 +29,12 @@
 				</tbody>
 			</table>
 			Feel free to contact us for more information.<br />
-			See you soon at IcAUMS {{ date('Y') }} conference in Bali, Indonesia.<br />
+			See you soon at ICFMS {{ date('Y') }} conference in Bali, Indonesia.<br />
             <br/>
-            If you have any queries, please do not hestitate to contact the secretariat email at <strong>icaums.ims@gmail.com</strong> <br/>
+            If you have any queries, please do not hestitate to contact the secretariat email at <a href="mailto:icfms.id@gmail.com"><strong>icfms.id@gmail.com</strong></a> <br/>
 			<br />
 			Best Regards,<br />
-			IcAUMS {{ date('Y') }} Committee<br />
+			ICFMS {{ date('Y') }} Committee<br />
 		</tr>
 	</tbody>
 </table>
