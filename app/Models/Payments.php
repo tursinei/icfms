@@ -19,6 +19,7 @@ class Payments extends Model
 
     protected $fillable = [
         'payment_id',
+        'invoice_id',
         'file_name',
         'file_path',
         'currency',
@@ -35,6 +36,7 @@ class Payments extends Model
         'file_path' => 'string',
         'currency' => 'string',
         'nominal' => 'double',
+        'invoice_id' => 'integer',
         'user_id' => 'integer'
     ];
 

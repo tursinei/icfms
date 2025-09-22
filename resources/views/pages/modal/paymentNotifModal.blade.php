@@ -32,7 +32,7 @@
             @php
                 $options['placeholder'] = 'Full Name';
             @endphp
-            {!! Form::text('attribut[fullname]', $payment->attribut->name ?? '', $options) !!}
+            {!! Form::text('attribut[fullname]', $payment->attribut->fullname ?? '', $options) !!}
         </div>
     </div>
     <div class="form-group">

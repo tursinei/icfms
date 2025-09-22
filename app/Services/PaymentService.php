@@ -47,9 +47,10 @@ class PaymentService
     {
         return Payments::join('users', 'users.id', 'payments.user_id')
         ->join('users_details', 'users.id', 'users_details.user_id')
+        ->leftJoin('invoice', 'invoice.invoice_id', 'payments.invoice_id')
         ->orderBy('payments.created_at', 'DESC')
         ->get(['payment_id','title', 'users.name', 'payments.created_at', 'users_details.affiliation',
-            'users_details.presentation','currency', 'nominal','email']);
+            'users_details.presentation','payments.currency', 'payments.nominal','email', 'invoice_number']);
     }
 
     public function listTable()

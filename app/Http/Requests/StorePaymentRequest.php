@@ -25,6 +25,7 @@ class StorePaymentRequest extends FormRequest
     {
         return [
             'payment_id'    =>  ['required', 'integer'],
+            'invoice_id'    =>  ['required', 'integer'],
             'note'          =>  ['required_if:payment_id,==,0','nullable', 'mimes:pdf,jpg,jpeg,png', 'max:5024'],
             'currency'      =>  ['required', 'string'],
             'nominal'       =>  ['required'],
@@ -39,6 +40,14 @@ class StorePaymentRequest extends FormRequest
             'note.required_if' => 'Payment Note Field is Required',
             'note.file'     => 'Payment Note Field Should not be empty',
             'note.max'      => 'Must not be greater than 5 Mb'
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
+            'note' => 'Payment Note',
+            'invoice_id' => 'Invoice Number'
         ];
     }
 }

@@ -16,7 +16,7 @@
                         </tr>
                     </tbody></table>
                 <br><br>
-                Thank you for signing up for the participation in the 7<sup>th</sup> ICFMS {{ date('Y') }}.
+                Thank you for signing up for the participation in the {!! config('app.info.title') !!}.
                 <br>
                 Please remember your ID(Email) and password, which you can see above.<br>
                 You can check the status of your paper submission, registration, and personal
@@ -31,7 +31,7 @@
                 Best regards,<br>
                 <br>
                 <strong>Organizing Committee</strong><br>
-                <br>7<sup>th</sup> ICFMS {{ date('Y') }}
+                <br>{!! config('app.info.title') !!}
                 <br/>Website : <a href="https://fms-net.org/icfms-2025/" target="_blank">https://fms-net.org/icfms-2025/</a>
                 <br>
             </td>

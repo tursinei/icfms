@@ -15,12 +15,12 @@ class AddIsActiveAndCreatedAtToMTopicTable extends Migration
     {
         Schema::table('m_topic', function (Blueprint $table) {
             $table->boolean('is_active')->default(true)->after('name');
-            $table->timestamp('created_at')->useCurrent()->after('is_active');
+            $table->timestamp('created')->useCurrent()->after('is_active');
         });
 
         DB::table('m_topic')->update([
             'is_active' => false,
-            'created_at' => '2023-08-01 00:00:00'
+            'created' => '2023-08-01 00:00:00'
         ]);
 
         // 🔹 Tambah data baru dari array
@@ -39,7 +39,7 @@ class AddIsActiveAndCreatedAtToMTopicTable extends Migration
             DB::table('m_topic')->insert([
                 'name' => $name,
                 'is_active' => true,
-                'created_at' => now(),
+                'created' => now(),
             ]);
         }
     }
@@ -53,7 +53,7 @@ class AddIsActiveAndCreatedAtToMTopicTable extends Migration
     {
         DB::table('m_topic')->where('is_active', true)->delete();
         Schema::table('m_topic', function (Blueprint $table) {
-            $table->dropColumn(['is_active', 'created_at']);
+            $table->dropColumn(['is_active', 'created']);
         });
     }
 }
