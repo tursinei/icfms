@@ -23,6 +23,7 @@
                                         <th style="width: 10%" class="text-center">Name</th>
                                         <th style="width: 20%" class="text-center">Affiliation</th>
                                         <th style="width: 15%" class="text-center">Presentation Role</th>
+                                        <th style="width: 15%" class="text-center">No.&nbsp;Invoice</th>
                                         <th style="width: 20%" class="text-center">Nominal</th>
                                         <th style="width: 10%" class="text-center">Note Payments</th>
                                     </tr>
@@ -82,6 +83,10 @@
                 {
                     data: 'presentation',
                     name: 'presentation'
+                },
+                {
+                    data: 'invoice_number',
+                    name: 'invoice_number'
                 },
                 {
                     data: 'terbilang',
