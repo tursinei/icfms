@@ -91,7 +91,7 @@
                 dataType : 'JSON',
                 done : function(res){
                     $("input[name='attribut[title]']").val(res.attribut.title);
-                    $("input[name='attribut[fullname]']").val(res.attribut.name);
+                    $("input[name='attribut[fullname]']").val(res.attribut.fullname);
                     $("input[name='attribut[affiliation]']").val(res.attribut.affiliation);
                     $("input[name='attribut[country]']").val(res.attribut.country);
                     $("input[name='attribut[role]']").val(res.role);

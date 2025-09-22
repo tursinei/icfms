@@ -25,6 +25,19 @@
                         <div class="col-md-5 "style="padding-top: 7px">{{ $totalPaper }}</div>
                     </div>
                     <div class="form-group">
+                        <label class="col-md-3 control-label">Invoice Number</label>
+                        <div class="col-md-5" style="padding-top:7px">
+                            <select name="invoice_id" class="form-control input-sm">
+                                <option value="">-- Select Invoice --</option>
+                                @foreach ($invoices as $inv)
+                                    <option data-id="{{ $payments[$inv->invoice_id]??'' }}" value="{{ $inv->invoice_id }}">
+                                        {{ $inv->invoice_number }} - {{ ucwords($inv->jenis) }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="col-md-3 control-label">Nominal</label>
                         <div class="col-md-2">
                             @php
@@ -33,8 +46,8 @@
                                 $nominal = empty($payment->nominal)?'':number_format($payment->nominal, 0,',','.');
                             @endphp
                             @form_hidden('user_id',$users->user_id??'0')
-                            @form_hidden('payment_id',$payment->payment_id??'0')
-                            @form_select('currency',$opt,$payment->currency??'',['class' => 'form-control input-sm'])
+                            @form_hidden('payment_id','0')
+                            @form_select('currency',$opt,'',['class' => 'form-control input-sm'])
                         </div>
                         <div class="col-md-3">
                             {!! Form::text('nominal', $nominal, ['class' =>'form-control input-sm', 'id'=>'nominal', 'placeholder' => '0,-']) !!}
@@ -43,13 +56,14 @@
                     <div class="form-group">
                         <label class="col-sm-3 control-label">Upload Your Payment Note</label>
                         <div class="col-sm-5">
-                            <div class="btn-group @if(!$isFileUploaded) hidden @endif">
-                                <a id="a-view" href="{{ route('payment.show',['payment' => $payment->payment_id??0, 'action' => 'view']) }}" target="_blank" class="btn btn-primary btn-sm">View File</a>
+                            <div class="btn-group hidden">
+                                <a id="a-view" data-href="{{ route('payment.show',['payment' => '##', 'action' => 'view']) }}"
+                                        href="" target="_blank" class="btn btn-primary btn-sm">View File</a>
                                 <button type="button" id="btn-removeFile" title="Change Payment File" class="btn btn-danger btn-sm">
                                     <i class="fa fa-rotate-left"></i>
                                 </button>
                             </div>
-                            <div id="dv-upload" class="@if($isFileUploaded) hidden @endif">
+                            <div id="dv-upload" class="">
                             {!! Form::file('note', ['class' => 'form-control input-sm']) !!}
                                 <div class="progress progress-sm progress-striped progress-half-rounded light active" style="margin-bottom: 0">
                                     <div id="bar-fileprogress" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">%
@@ -95,6 +109,17 @@ $(document).ready(function(e) {
         'precision' : 0,
         thousands : '.'
     });
+}).on('change','select[name=invoice_id]', function(e){
+    let val = $(this).find('option:selected').data('id');
+    $('input[name="payment_id"]').val(val || '0');
+    if(val == '' || val == undefined) {
+        $('#dv-upload').removeClass('hidden');
+        $('#a-view').parent().addClass('hidden');
+    } else {
+        $('#a-view').attr('href', $('#a-view').data('href').replace('##', val));
+        $('#a-view').parent().removeClass('hidden');
+        $('#dv-upload').addClass('hidden');
+    }
 }).on('submit','#fo-payment', function(e){
     e.preventDefault();
     let fo = $(this), i = fo.find('button[type="submit"] > i');

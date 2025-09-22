@@ -10,7 +10,7 @@
             <h4>Dear <strong>{{ $title }}&nbsp;{{ $name }}</strong><br />
 			{{ $affiliation }}<br />
 			{{ $country }}</h4>
-			Thank you for your payment for participating in The 7<sup>th</sup> ICFMS {{ date('Y') }}.<br/>
+			Thank you for your payment for participating in {!! config('app.info.title') !!}.<br/>
             The committee will immediately confirm your payment and will send proof of receipt of payment.
             See you soon in Bali, Indonesia<br/>
 			<br />

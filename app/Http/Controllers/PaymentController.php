@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePaymentRequest;
 use App\Models\AbstractFile;
 use App\Models\FullPaper;
+use App\Models\Invoice;
 use App\Models\Payments;
 use App\Models\UserDetail;
 use App\Services\PaymentService;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,23 +24,26 @@ class PaymentController extends Controller
      */
     public function index(Request $request)
     {
-        if(session('icfms_tipe_login') == 1){
-            if($request->ajax()){
+        if (session('icfms_tipe_login') == 1) {
+            if ($request->ajax()) {
                 $service = new PaymentService();
                 return $service->listTable();
             }
             return view('pages.admin-payments');
         }
+        $dateBetween = [
+            Carbon::now()->startOfYear()->toDateString(),
+            Carbon::now()->endOfYear()->toDateString()
+        ];
         $users = UserDetail::find(Auth::user()->id);
         $totalAbstract = AbstractFile::where('user_id', Auth::user()->id)->count();
         $totalPaper = FullPaper::where('user_id', Auth::user()->id)->count();
-        $payment = Payments::where('user_id',Auth::user()->id)->first();
-        $isFileUploaded = false;
-        if($payment !== null){
-            $isFileUploaded = File::exists($payment->file_path);
-        }
+        $payment = Payments::where('user_id', Auth::user()->id)->whereBetween('created_at', $dateBetween)->pluck('invoice_id','payment_id');
+        $payments = array_flip(array_filter($payment->toArray()));
+        // dd($payment, $payments);
+        $invoices = Invoice::where('user_id', Auth::user()->id)->whereBetween('tgl_invoice', $dateBetween)->get();
 
-        return view('pages.payment', compact('totalAbstract','totalPaper', 'users','payment', 'isFileUploaded'));
+        return view('pages.payment', compact('totalAbstract', 'totalPaper', 'users', 'payments', 'invoices'));
     }
 
     /**
@@ -78,7 +83,7 @@ class PaymentController extends Controller
     public function show(Payments $payment, $action)
     {
         $path = public_path($payment->file_path);
-        if(File::exists($path)){
+        if (File::exists($path)) {
             return $action == 'view' ? response()->file($path) : response()->download($path);
         } else {
             throw new Exception('File Not Found');
@@ -95,7 +100,7 @@ class PaymentController extends Controller
     {
         $payment = Payments::find($id);
         $path = public_path($payment->file_path);
-        if(File::exists($path)){
+        if (File::exists($path)) {
             File::delete($path);
         }
         $isDelete = $payment->delete();
