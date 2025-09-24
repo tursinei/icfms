@@ -150,7 +150,7 @@ class PaymentNotifService
             'nominal'          => $cur . ' ' . number_format($invoice->nominal),
             'fullname'         => $attribut['fullname'],
             'affiliation'      => $attribut['affiliation'],
-            'date'             => date('d F Y', strtotime($invoice->payment_tgl)),
+            'date'             => date('d F Y', strtotime($invoice->payment_tgl ?? date('Y-m-d'))),
             'abstract_title'   => $invoice->abstract_title,
             'attribute'        => $attribut,
             'currency'         => $invoice->currency,
