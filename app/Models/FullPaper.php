@@ -45,4 +45,12 @@ class FullPaper extends Model
     public function abstract(){
         return $this->belongsTo(AbstractFile::class, 'abstract_id', 'abstract_id');
     }
+
+    protected function scopePeriode($query, $year = null)
+    {
+        if (is_null($year)) {
+            $year = date('Y');
+        }
+        return $query->whereBetween('full_paper.created_at', [$year . '-1-1', $year . '-12-31']);
+    }
 }

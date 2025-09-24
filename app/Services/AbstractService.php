@@ -6,6 +6,7 @@ use App\Http\Requests\StoreAbstractFileRequest;
 use App\Mail\AbstractNotificationMail;
 use App\Models\AbstractFile;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Yajra\DataTables\Facades\DataTables;
 use OpenSpout\Common\Entity\Style\Color;
@@ -29,6 +30,7 @@ class AbstractService
     {
         $data = AbstractFile::join('m_topic', 'm_topic.topic_id', 'abstract_file.topic_id')->where('user_id', $iduser)
             ->orderBy('created_at', 'DESC')
+            ->whereBetween('created_at', [now()->startOfYear(), now()->endOfYear()])
             ->get(['abstract_id', 'name as topic', 'created_at', 'presentation', 'authors', 'abstract_title', 'is_presentation']);
         return DataTables::of($data)->addColumn('action', function ($row) {
             return '<a class="btn btn-success btn-xs" href="'.route('abstract.show',['abstract' => $row->abstract_id]).'"
@@ -43,19 +45,25 @@ class AbstractService
         })->rawColumns(['action', 'date_upload'])->make(true);
     }
 
-    private function getAbstract()
+    private function getAbstract($year = '')
     {
+        if (empty($year)) {
+            $year = date('Y');
+        }
+
+        $between = [Carbon::createFromDate($year,1,1)->startOfYear(), Carbon::createFromDate($year,12,31)->endOfYear()];
         return AbstractFile::join('m_topic', 'm_topic.topic_id', 'abstract_file.topic_id')
-        ->join('users', 'users.id', 'abstract_file.user_id')
-        ->join('users_details','users_details.user_id','users.id')
-        ->orderBy('created_at', 'DESC')
-        ->get(['abstract_id','is_presentation','users.name as fullname' ,'m_topic.name as topic', 'abstract_file.created_at',
-                'abstract_file.presentation', 'authors', 'abstract_title', 'users_details.title','users.email', 'title','affiliation','country']);
+            ->join('users', 'users.id', 'abstract_file.user_id')
+            ->join('users_details','users_details.user_id','users.id')
+            ->orderBy('created_at', 'DESC')
+            ->whereBetween('abstract_file.created_at',$between)
+            ->get(['abstract_id','is_presentation','users.name as fullname' ,'m_topic.name as topic', 'abstract_file.created_at',
+                    'abstract_file.presentation', 'authors', 'abstract_title', 'users_details.title','users.email', 'title','affiliation','country']);
     }
 
-    public function listAbstracts()
+    public function listAbstracts($year = '')
     {
-        $data = $this->getAbstract();
+        $data = $this->getAbstract($year);
         return DataTables::of($data)->addColumn('action', function ($row) {
             return '<a class="btn btn-success btn-xs" href="'.route('abstract.show',['abstract' => $row->abstract_id]).'"
                 title="Download Abstract File" target="_blank"><i class="fa fa-download"></i></a>&nbsp;
@@ -98,7 +106,7 @@ class AbstractService
         return AbstractFile::create($data);
     }
 
-    public function abstractExcel()
+    public function abstractExcel($year)
     {
 
         $writer = WriterEntityFactory::createXLSXWriter();
@@ -109,7 +117,7 @@ class AbstractService
         $styleHeader->setFontName('Arial Narrow');
         $styleHeader->setShouldWrapText(false);
         $styleHeader->setFontSize(12);
-        $writer->openToBrowser('list-abstracts.xlsx');
+        $writer->openToBrowser('list-abstracts-'.$year.'.xlsx');
         $writer->setColumnWidth(20, 1); // date
         $writer->setColumnWidth(30, 2); // email
         $writer->setColumnWidth(10, 3); // title
@@ -122,7 +130,7 @@ class AbstractService
         $writer->setColumnWidth(50, 10); // abstract title
         $writer->setColumnWidth(45, 11); // remarks
 
-        $title1 = WriterEntityFactory::createCell('List Abstracts', $styleHeader);
+        $title1 = WriterEntityFactory::createCell('List Abstracts ('.$year.')', $styleHeader);
         $singleRow = WriterEntityFactory::createRow([$title1]);
         $writer->addRow($singleRow);
 
@@ -138,7 +146,7 @@ class AbstractService
         $namaKolom = ['Date', 'Email','Title','Name', 'Affiliation','Country','Presentation', 'Topic', 'Authors', 'Abstract Title', 'Remarks'];
         $header = WriterEntityFactory::createRowFromArray($namaKolom, $styleHeader);
         $writer->addRow($header);
-        $abstractData = $this->getAbstract();
+        $abstractData = $this->getAbstract($year);
         $styleNumber = (new StyleBuilder())->setBorder($border)->setCellAlignment(CellAlignment::CENTER)->build();
         $styleLeft = (new StyleBuilder())->setBorder($border)->setCellAlignment(CellAlignment::LEFT)->build();
 

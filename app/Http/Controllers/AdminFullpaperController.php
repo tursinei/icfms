@@ -11,14 +11,14 @@ class AdminFullpaperController extends Controller
     {
         if ($request->ajax()) {
             $service = new FullpaperService();
-            return $service->listFullpaper();
+            return $service->listFullpaper($request->year);
         }
         return view('pages.admin-fullpaper');
     }
 
-    public function create()
+    public function create(Request $request)
     {
         $service = new FullpaperService();
-        return $service->fullPaperInExcel();
+        return $service->fullPaperInExcel($request->year);
     }
 }

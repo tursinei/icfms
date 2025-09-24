@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class AbstractFile extends Model
@@ -67,5 +68,13 @@ class AbstractFile extends Model
 
     public function fullPaper(){
         return $this->hasMany(FullPaper::class,'abstract_id', 'abstract_id');
+    }
+
+    protected function scopePeriode(Builder $query, $year = null)
+    {
+        if (is_null($year)) {
+            $year = date('Y');
+        }
+        return $query->whereBetween('created_at', [$year.'-1-1', $year.'-12-31']);
     }
 }

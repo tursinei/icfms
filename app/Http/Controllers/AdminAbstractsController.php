@@ -16,7 +16,7 @@ class AdminAbstractsController extends Controller
     {
         if ($request->ajax()) {
             $service = new AbstractService();
-            return $service->listAbstracts();
+            return $service->listAbstracts($request->year);
         }
         return view('pages.admin-abstracts');
     }
@@ -26,10 +26,10 @@ class AdminAbstractsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         $service = new AbstractService();
-        $service->abstractExcel();
+        $service->abstractExcel($request->year);
     }
- 
+
 }
