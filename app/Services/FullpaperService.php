@@ -18,7 +18,7 @@ class FullpaperService
 
     public function listTable($iduser)
     {
-        $data = FullPaper::join('abstract_file AS a', 'a.abstract_id', 'full_paper.abstract_id')
+        $data = FullPaper::periode()->join('abstract_file AS a', 'a.abstract_id', 'full_paper.abstract_id')
             ->join('m_topic AS t', 't.topic_id', 'a.topic_id')->where('full_paper.user_id', $iduser)
             ->orderBy('full_paper.created_at', 'DESC')
             ->get(['paper_id', 't.name as topic', 'full_paper.created_at','presenter','presentation', 'authors', 'a.paper_title as title']);
@@ -33,21 +33,26 @@ class FullpaperService
         })->rawColumns(['action', 'date_upload'])->make(true);
     }
 
-    private function getFullpaper()
+    private function getFullpaper($year)
     {
+        if (empty($year)) {
+            $year = date('Y');
+        }
+        $between = [$year.'-1-1', $year.'-12-31'];
         return FullPaper::join('abstract_file AS a', 'a.abstract_id', 'full_paper.abstract_id')
             ->join('m_topic AS t', 't.topic_id', 'a.topic_id')
             ->join('users AS u', 'u.id', 'full_paper.user_id')
             ->join('users_details AS ud', 'u.id', 'ud.user_id')
             ->orderBy('full_paper.created_at', 'DESC')
+            ->whereBetween('full_paper.created_at',$between)
             ->get(['paper_id','u.email','ud.title as prefix','ud.affiliation','ud.country',
                     'u.name as fullname' ,'t.name as topic','full_paper.created_at',
                     'presenter','a.presentation', 'authors', 'a.paper_title as title' ,'a.is_presentation']);
     }
     //full paper tanpa user
-    public function listFullpaper()
+    public function listFullpaper($year = '')
     {
-        $data = $this->getFullpaper();
+        $data = $this->getFullpaper($year);
         return DataTables::of($data)->addColumn('action', function ($row) {
             return '<a class="btn btn-success btn-xs" href="'.route('fullpaper.show',['fullpaper' => $row->paper_id]).'"
                 title="Download Paper File" target="_blank" ><i class="fa fa-download"></i></a>&nbsp;
@@ -78,7 +83,7 @@ class FullpaperService
         return FullPaper::create($data);
     }
 
-    public function fullPaperInExcel()
+    public function fullPaperInExcel($year)
     {
         $writer = WriterEntityFactory::createXLSXWriter();
         $defaultStyle = (new StyleBuilder)->setFontName('Arial')->setFontSize(11)->build();
@@ -88,7 +93,7 @@ class FullpaperService
         $styleHeader->setFontName('Arial Narrow');
         $styleHeader->setShouldWrapText(false);
         $styleHeader->setFontSize(12);
-        $writer->openToBrowser('list-fullpaper.xlsx');
+        $writer->openToBrowser('list-fullpaper-'.$year.'.xlsx');
         $writer->setColumnWidth(20, 1); //date
         $writer->setColumnWidth(40, 2); // email
         $writer->setColumnWidth(20, 3); // title
@@ -102,7 +107,7 @@ class FullpaperService
         $writer->setColumnWidth(100, 11); // Paper title
         $writer->setColumnWidth(40, 12); // Remarks
 
-        $title1 = WriterEntityFactory::createCell('List FullPaper', $styleHeader);
+        $title1 = WriterEntityFactory::createCell('List FullPaper ('.$year.')', $styleHeader);
         $singleRow = WriterEntityFactory::createRow([$title1]);
         $writer->addRow($singleRow);
 
@@ -120,7 +125,7 @@ class FullpaperService
         $header = WriterEntityFactory::createRowFromArray($namaKolom, $styleHeader);
         $writer->addRow($header);
 
-        $fullpaperData = $this->getFullpaper();
+        $fullpaperData = $this->getFullpaper($year);
         $styleCenter = (new StyleBuilder())->setBorder($border)->setCellAlignment(CellAlignment::CENTER)->build();
         $styleLeft = (new StyleBuilder())->setBorder($border)->setCellAlignment(CellAlignment::LEFT)->build();
 

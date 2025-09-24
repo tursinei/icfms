@@ -37,7 +37,7 @@ class FullPaperController extends Controller
     public function create()
     {
         $title = 'Full Paper Submission Form';
-        $abstract = AbstractFile::where('user_id', Auth::user()->id)->pluck('abstract_title', 'abstract_id')->toArray();
+        $abstract = AbstractFile::periode()->where('user_id', Auth::user()->id)->pluck('abstract_title', 'abstract_id')->toArray();
         $abstract[0] = '-- Choose Related Abstract --';
         ksort($abstract);
         return view('pages.modal.paperModal', compact('title', 'abstract'));

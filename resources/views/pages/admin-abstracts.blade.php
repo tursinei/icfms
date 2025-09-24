@@ -8,8 +8,14 @@
         <div class="panel">
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-md-12">
-                        <a class="btn btn-success btn-sm pull-right mb-sm" href="{{ route('abstracts.create') }}" target="_blank"><i class="fa fa-file-excel-o"></i> Download Excel</a>
+                    <div class="col-md-12 form-inline">
+                        @php
+                            $years = range(date('Y'), 2022);
+                            $years = array_combine($years, $years);
+                        @endphp
+                        {!! Form::select('select-year', $years, [], ['class' => 'form-control input-small input-sm']) !!}
+                        <a class="btn btn-success btn-sm pull-right mb-sm" id="btn-excel" href="{{ route('abstracts.create') }}"
+                            target="_blank"><i class="fa fa-file-excel-o"></i> Download Excel</a>
                     </div>
                     <div class="col-md-12">
                         <div class="table-responsive">
@@ -45,60 +51,71 @@
 
 @push('js')
     <script type="text/javascript">
+        let url = '{{ route('abstracts.index') }}';
+        let cols = [{
+                data: 'date_upload',
+                name: 'date_upload',
+                className: 'text-center'
+            },
+            {
+                data: 'email',
+                name: 'email'
+            },
+            {
+                data: 'title',
+                name: 'title'
+            },
+            {
+                data: 'fullname',
+                name: 'fullname'
+            },
+            {
+                data: 'affiliation',
+                name: 'affiliation'
+            },
+            {
+                data: 'country',
+                name: 'country'
+            },
+            {
+                data: 'presentation',
+                name: 'presentation'
+            },
+            {
+                data: 'topic',
+                name: 'topic'
+            },
+            {
+                data: 'authors',
+                name: 'authors'
+            },
+            {
+                data: 'abstract_title',
+                name: 'abstract_title'
+            },
+            {
+                data: 'remarks',
+                name: 'remarks'
+            },
+            {
+                data: 'action',
+                name: 'action',
+                className: 'text-center'
+            }
+        ];
         $(document).ready(function(evt) {
-            let url = '{{ route('abstracts.index') }}';
-            let cols = [{
-                    data: 'date_upload',
-                    name: 'date_upload',
-                    className: 'text-center'
-                },
-                {
-                    data: 'email',
-                    name: 'email'
-                },
-                {
-                    data: 'title',
-                    name: 'title'
-                },
-                {
-                    data: 'fullname',
-                    name: 'fullname'
-                },
-                {
-                    data: 'affiliation',
-                    name: 'affiliation'
-                },
-                {
-                    data: 'country',
-                    name: 'country'
-                },
-                {
-                    data: 'presentation',
-                    name: 'presentation'
-                },
-                {
-                    data: 'topic',
-                    name: 'topic'
-                },
-                {
-                    data: 'authors',
-                    name: 'authors'
-                },
-                {
-                    data: 'abstract_title',
-                    name: 'abstract_title'
-                },
-                {
-                    data: 'remarks',
-                    name: 'remarks'
-                },
-                {
-                    data: 'action',
-                    name: 'action',
-                    className: 'text-center'
-                }
-            ];
             refreshTableServerOn('#tbl-paper', url, cols);
+        }).on('change', 'select[name=select-year]', function(params) {
+            let uri = url + '?year=' + $(this).val();
+            refreshTableServerOn('#tbl-paper', uri, cols);
+        }).on('click', '#btn-excel', function(params) {
+            let btn = $(this);
+            let year = $('select[name=select-year]').val();
+            let href = btn.attr('href');
+            if (year) {
+                href += '?year=' + year;
+            }
+            window.open(href, '_blank');
         }).on('click', '.btn-hapus', function(params) {
             let b = $(this),
                 i = b.find('i');
