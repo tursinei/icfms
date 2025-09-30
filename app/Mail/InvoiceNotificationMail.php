@@ -30,7 +30,7 @@ class InvoiceNotificationMail extends Mailable
      */
     public function build()
     {
-        $this->subject('Payment Invoice - IcAUMS ' . date('Y'));
+        $this->subject('Payment Invoice - ICFMS ' . date('Y'));
         $details = $this->userDetail;
         return $this->view('mail.invoice')->with([
             'name'  => implode(' ', [$details->firstname, $details->midlename, $details->lastname]),

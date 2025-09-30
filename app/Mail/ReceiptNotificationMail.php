@@ -30,7 +30,7 @@ class ReceiptNotificationMail extends Mailable
      */
     public function build()
     {
-        $this->subject('Payment Receipt - IcAUMS ' . date('Y'));
+        $this->subject('Payment Receipt - ICFMS ' . date('Y'));
         $details = $this->user->userDetails;
         return $this->view('mail.receipt-payment')->with([
             'name'  => implode(' ', [$details->firstname, $details->midlename, $details->lastname]),
