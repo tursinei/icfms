@@ -29,7 +29,7 @@ class PaymentNotificationMail extends Mailable
      */
     public function build()
     {
-        $this->subject('Payment Completed - IcAUMS '.date('Y'));
+        $this->subject('Payment Completed - ICFMS '.date('Y'));
         $details = $this->userDetail;
         return $this->view('mail.payment')->with([
             'name'  => implode(' ', [$details->firstname, $details->midlename, $details->lastname]),
