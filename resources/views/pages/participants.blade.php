@@ -26,6 +26,7 @@
                                         <th style="width: 10%" class="text-center">Is Verified</th>
                                         <th style="width: 10%" class="text-center">Mobile Number</th>
                                         <th style="width: 10%" class="text-center">Phone Number</th>
+                                        <th style="width: 10%" class="text-center">Registration Date</th>
                                         <th style="width: 5%" class="text-center">&nbsp;</th>
                                     </tr>
                                 </thead>
@@ -46,16 +47,17 @@
         $(document).ready(function(evt) {
             let url = '{{ route('user.index') }}';
             let cols = [
-                { data : 'title', name: 'title', className:'text-center'},
+                { data : 'title', name: 'a.title', className:'text-center'},
                 { data : 'name', name: 'name'},
-                { data : 'address', name: 'address'},
-                { data : 'country', name: 'country'},
+                { data : 'address', name: 'a.address'},
+                { data : 'country', name: 'a.country'},
                 { data : 'email', name: 'email'},
-                { data : 'presentation', name: 'presentation',className:'text-center'},
-                { data : 'affiliation', name: 'affiliation'},
+                { data : 'presentation', name: 'a.presentation',className:'text-center'},
+                { data : 'affiliation', name: 'a.affiliation'},
                 { data : 'verified_at', name: 'verified_at',className:'text-center'},
-                { data : 'mobilenumber', name: 'mobilenumber'},
-                { data : 'phonenumber', name: 'phonenumber'},
+                { data : 'mobilenumber', name: 'a.mobilenumber'},
+                { data : 'phonenumber', name: 'a.phonenumber'},
+                { data : 'verified_date', name: 'email_verified_at', className:'text-center'},
                 { data: 'action', name: 'action',className:'text-center'}
             ];
             refreshTableServerOn('#tbl-participant', url, cols);
