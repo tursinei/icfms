@@ -49,14 +49,15 @@ class UserService
         }
     }
 
-    private function getUsers($tipeUser = 1, $search = '')
+    private function getUsers($tipeUser = 1, $isDatatable = false, Request $request = null)
     {
         $isAdmin = $tipeUser == 1;
         $select = ['users.name','users.email', 'email_verified_at','users.id','a.*'];
         if($isAdmin){
             $select = ['users.name','email','email_verified_at' ,'id', 'a.*'];
         }
-        return User::join('users_details AS a', 'id', 'a.user_id')->where('users.is_admin',$tipeUser)
+        $search = $request ? $request->input('search.value') : null;
+        $query  = User::join('users_details AS a', 'id', 'a.user_id')->where('users.is_admin',$tipeUser)
                 ->when($isAdmin, function($query) use ($search){
                     if ($search == 'verified' || $search == 'unverified') {
                         if ($search == 'verified') {
@@ -65,13 +66,16 @@ class UserService
                             $query->whereNull('email_verified_at');
                         }
                     }
-                })
-                ->orderBy('users.name')->get($select);
+                })->select($select);
+        if($isDatatable){
+            return $query;
+        }
+        return $query->get();
     }
 
     public function listUser($tipeUser){
         $isAdmin = $tipeUser == 1;
-        $data = $this->getUsers($tipeUser);
+        $data = $this->getUsers($tipeUser, true);
         return DataTables::of($data)->addColumn('action', function ($row) use($isAdmin){
             $btnEditOrDel = $isAdmin ? '<a class="btn btn-primary btn-xs btn-edit" data-id="'.$row->id.'" title="Edit Data">
                     <i class="fa fa-pencil"></i></a>' : '<a class="btn btn-success btn-xs btn-download" data-id="'.$row->id.'" title="Download Data">
@@ -81,7 +85,9 @@ class UserService
                 title="'.$titleDel.'"><i class="fa fa-trash-o"></i></button>';
         })->addColumn('verified_at',function($row){
             return empty($row->email_verified_at) ? 'Unverified' : 'Verified';
-        })->rawColumns(['action','verified_at'])->make(true);
+        })->addColumn('verified_date', function($row){
+            return empty($row->email_verified_at) ? '-' : date('d M Y H:i:s', strtotime($row->email_verified_at));
+        })->rawColumns(['action','verified_at', 'verified_date'])->make(true);
     }
 
     public function simpanAdmin(StoreUserRequest $request)
